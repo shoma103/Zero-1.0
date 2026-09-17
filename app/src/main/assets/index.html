@@ -63,7 +63,6 @@ body.light .address-wrap{background:rgba(0,0,0,.06)}
 .address-inner{height:100%;border-radius:19.5px;background:var(--bg2);
   display:flex;align-items:center;gap:9px;padding:0 6px 0 14px;
   transition:background .35s var(--ease)}
-.address-wrap.focused .address-inner{background:var(--bg2)}
 .address-inner svg.lock{width:13px;height:13px;flex:0 0 auto;color:var(--muted)}
 .address-wrap.focused .address-inner svg.lock{color:#a78bfa}
 .address{flex:1;min-width:0;border:none;outline:none;background:transparent;
@@ -150,22 +149,34 @@ body.light .load-bar{background:rgba(0,0,0,.08)}
   transition:opacity .55s var(--ease),transform .6s var(--ease)}
 #pageView:not(.loading) #results{opacity:1;transform:none}
 
+/* КАТЕГОРИИ */
 .section-title{font-size:13px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;
   color:#a78bfa;margin:18px 4px 10px;display:flex;align-items:center;gap:8px}
 .section-title:first-child{margin-top:0}
 .section-title svg{width:14px;height:14px}
 
-.quick-links{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:8px}
-.quick-link{position:relative;overflow:hidden;padding:12px 14px;border-radius:14px;
-  background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(236,72,153,.18));
-  border:1px solid rgba(167,139,250,.25);color:var(--text);
-  font-size:12.5px;font-weight:700;text-align:left;
+.cat-block{margin-bottom:20px;animation:up .5s var(--ease) both}
+.cat-head{display:flex;align-items:center;gap:10px;margin:0 4px 10px;
+  font-size:13.5px;font-weight:800;color:var(--text);letter-spacing:-.2px}
+.cat-emoji{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+  font-size:15px;flex:0 0 auto;
+  background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(236,72,153,.25));
+  border:1px solid rgba(167,139,250,.3)}
+.cat-count{margin-left:auto;font-size:10.5px;color:var(--muted);font-weight:700;
+  padding:3px 8px;border-radius:8px;background:var(--glass);border:1px solid var(--line)}
+
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.cat-link{position:relative;overflow:hidden;padding:12px 14px;border-radius:14px;
+  background:var(--glass);border:1px solid var(--line);
+  color:var(--text);font-size:12.5px;font-weight:700;text-align:left;
   display:flex;align-items:center;gap:9px;
-  transition:transform .4s var(--spring),background .3s}
-.quick-link:active{transform:scale(.95)}
-.quick-link-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;
+  transition:transform .4s var(--spring),background .3s,border-color .3s}
+.cat-link:active{transform:scale(.95);background:rgba(255,255,255,.08)}
+body.light .cat-link:active{background:rgba(0,0,0,.05)}
+.cat-link-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;
   background:linear-gradient(135deg,#a78bfa,#ec4899);
   box-shadow:0 0 8px rgba(167,139,250,.8)}
+.cat-link-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 .result{display:flex;gap:13px;padding:14px;border-radius:18px;
   background:var(--glass);border:1px solid var(--line);margin-bottom:11px;
@@ -214,7 +225,6 @@ body.light .result:active{background:rgba(0,0,0,.05)}
 .empty-icon svg{width:36px;height:36px;color:#fff}
 .empty-state p{font-size:14px;color:var(--muted);line-height:1.6;max-width:280px;margin:0 auto}
 
-/* ---------- НАСТРОЙКИ ---------- */
 .settings-group{margin-bottom:24px;animation:up .55s var(--ease) both}
 .settings-group-title{font-size:11.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;
   color:#a78bfa;margin:0 4px 10px;padding-left:2px}
@@ -234,7 +244,6 @@ body.light .settings-item:active{background:rgba(0,0,0,.05)}
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .settings-arrow{width:20px;height:20px;color:var(--muted);flex:0 0 auto;opacity:.6}
 
-/* Пикер (шторка выбора) */
 .picker-title{font-size:16px;font-weight:800;letter-spacing:-.3px;margin:0 0 16px 4px}
 .picker-option{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;
   padding:15px 16px;border-radius:16px;background:var(--glass);
@@ -262,16 +271,6 @@ body.light .settings-item:active{background:rgba(0,0,0,.05)}
   -webkit-text-fill-color:transparent;animation:shine 7s linear infinite}
 .about-ver{font-size:12px;color:var(--muted);margin-top:6px;font-weight:600}
 .about-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-top:14px}
-
-/* Переключатель */
-.toggle{width:48px;height:28px;border-radius:14px;background:rgba(255,255,255,.1);
-  position:relative;flex:0 0 auto;transition:background .3s}
-body.light .toggle{background:rgba(0,0,0,.1)}
-.toggle::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;
-  border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3);
-  transition:transform .4s var(--spring)}
-.toggle.on{background:linear-gradient(135deg,#7c3aed,#ec4899)}
-.toggle.on::after{transform:translateX(20px)}
 
 .webframe{position:absolute;inset:0;width:100%;height:100%;border:none;background:#fff;
   opacity:0;transition:opacity .5s var(--ease)}
@@ -402,12 +401,6 @@ body.light .sheet-handle{background:rgba(0,0,0,.15)}
   border:1px solid var(--line);color:var(--text)}
 .translate-actions button:active{transform:scale(.96)}
 .translate-actions button:disabled{opacity:.5;pointer-events:none}
-
-.danger-btn{width:100%;padding:15px;border-radius:16px;border:1px solid rgba(244,63,94,.3);
-  background:rgba(244,63,94,.1);color:#f43f5e;font-size:14px;font-weight:700;
-  transition:transform .45s var(--spring),background .3s;
-  position:relative;overflow:hidden}
-.danger-btn:active{transform:scale(.97);background:rgba(244,63,94,.18)}
 </style>
 </head>
 <body>
@@ -493,7 +486,7 @@ body.light .sheet-handle{background:rgba(0,0,0,.15)}
         <div class="page-sub" id="settingsSub">Язык, поиск, тема, данные</div>
       </div>
 
-      <div class="settings-group" id="groupLang">
+      <div class="settings-group">
         <div class="settings-group-title" id="labelLangGroup">Язык</div>
         <div class="settings-item" id="itemLang">
           <div class="settings-icon g-e">
@@ -507,21 +500,7 @@ body.light .sheet-handle{background:rgba(0,0,0,.15)}
         </div>
       </div>
 
-      <div class="settings-group" id="groupSearch">
-        <div class="settings-group-title" id="labelSearchGroup">Поиск</div>
-        <div class="settings-item" id="itemSearch">
-          <div class="settings-icon g-c">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-          </div>
-          <div class="settings-body">
-            <div class="settings-label" id="labelSearch">Поисковик по умолчанию</div>
-            <div class="settings-value" id="valueSearch">DuckDuckGo</div>
-          </div>
-          <svg class="settings-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </div>
-      </div>
-
-      <div class="settings-group" id="groupTheme">
+      <div class="settings-group">
         <div class="settings-group-title" id="labelThemeGroup">Оформление</div>
         <div class="settings-item" id="itemTheme">
           <div class="settings-icon g-f">
@@ -535,7 +514,7 @@ body.light .sheet-handle{background:rgba(0,0,0,.15)}
         </div>
       </div>
 
-      <div class="settings-group" id="groupData">
+      <div class="settings-group">
         <div class="settings-group-title" id="labelDataGroup">Данные</div>
         <div class="settings-item" id="itemClearBm">
           <div class="settings-icon g-g">
@@ -559,12 +538,12 @@ body.light .sheet-handle{background:rgba(0,0,0,.15)}
         </div>
       </div>
 
-      <div class="settings-group" id="groupAbout">
+      <div class="settings-group">
         <div class="settings-group-title" id="labelAboutGroup">О приложении</div>
         <div class="about-box">
           <div class="about-logo">Zero</div>
-          <div class="about-ver">Версия 1.0.0</div>
-          <div class="about-desc" id="aboutDesc">Минималистичный браузер на Chromium. Собственный интерфейс, реальный поиск, встроенный переводчик, закладки.</div>
+          <div class="about-ver">Версия 1.1.0</div>
+          <div class="about-desc" id="aboutDesc">Минималистичный браузер на Chromium. Умный поиск по категориям, встроенный переводчик, закладки.</div>
         </div>
       </div>
     </section>
@@ -621,7 +600,7 @@ body.light .sheet-handle{background:rgba(0,0,0,.15)}
 
 <script>
 /* =====================================================================
-   ZERO BROWSER — v4 с настройками
+   ZERO BROWSER — v5 с умным поиском по категориям
    ===================================================================== */
 
 const $ = s => document.querySelector(s);
@@ -648,6 +627,117 @@ const webframe      = $('#webframe');
 const webBlocked    = $('#webBlocked');
 
 /* =====================================================================
+   КАТЕГОРИИ САЙТОВ
+   Каждая категория — свой список сайтов.
+   Запрос пользователя автоматически подставляется в каждый.
+   ===================================================================== */
+
+const CATEGORIES = [
+  {
+    emoji: '🎬',
+    name: 'Кино и сериалы',
+    sites: [
+      { name: 'Kinopoisk',  url: 'https://www.kinopoisk.ru/index.php?kp_query=' },
+      { name: 'Filmix',     url: 'https://filmix.my/search/' },
+      { name: 'HDrezka',    url: 'https://rezka.ag/search/?q=' },
+      { name: 'LordFilm',   url: 'https://lordfilm.la/index.php?do=search&story=' },
+      { name: 'KinoGo',     url: 'https://kinoogo.zone/?s=' },
+      { name: 'Кинопоиск HD', url: 'https://hd.kinopoisk.ru/search?query=' }
+    ]
+  },
+  {
+    emoji: '🌸',
+    name: 'Аниме',
+    sites: [
+      { name: 'Anilibria',   url: 'https://anilibria.tv/public/search.php?search=' },
+      { name: 'AnimeGo',     url: 'https://animego.org/search/anime?q=' },
+      { name: 'Shikimori',   url: 'https://shikimori.one/animes?search=' },
+      { name: 'YummyAnime',  url: 'https://yummyanime.tv/search/' },
+      { name: 'Anime-Online', url: 'https://anime-online.ru/search?q=' }
+    ]
+  },
+  {
+    emoji: '⚽',
+    name: 'Спорт',
+    sites: [
+      { name: 'Sports.ru',   url: 'https://www.sports.ru/search/?q=' },
+      { name: 'Championat',  url: 'https://www.championat.com/search/?q=' },
+      { name: 'Soccer.ru',   url: 'https://www.soccer.ru/search?q=' },
+      { name: 'Sportbox',    url: 'https://news.sportbox.ru/search?q=' }
+    ]
+  },
+  {
+    emoji: '🎮',
+    name: 'Игры',
+    sites: [
+      { name: 'Steam',       url: 'https://store.steampowered.com/search/?term=' },
+      { name: 'StopGame',    url: 'https://stopgame.ru/search?q=' },
+      { name: 'Игромания',   url: 'https://www.igromania.ru/search/?q=' },
+      { name: 'PlayGround',  url: 'https://playground.ru/search/?q=' }
+    ]
+  },
+  {
+    emoji: '💰',
+    name: 'Криптовалюта',
+    sites: [
+      { name: 'CoinMarketCap', url: 'https://coinmarketcap.com/search/?q=' },
+      { name: 'CoinGecko',   url: 'https://www.coingecko.com/en/search?query=' },
+      { name: 'Binance',     url: 'https://www.binance.com/ru/search?q=' },
+      { name: 'РБК Крипто',  url: 'https://www.rbc.ru/search/?query=' }
+    ]
+  },
+  {
+    emoji: '💡',
+    name: 'Лайфхаки',
+    sites: [
+      { name: 'Лайфхакер',   url: 'https://lifehacker.ru/?s=' },
+      { name: 'AdMe',        url: 'https://adme.media/search/?q=' },
+      { name: 'Пикабу',      url: 'https://pikabu.ru/search.php?q=' },
+      { name: 'Лайфхак',     url: 'https://lifehacki.ru/?s=' }
+    ]
+  },
+  {
+    emoji: '🎵',
+    name: 'Музыка',
+    sites: [
+      { name: 'Яндекс.Музыка', url: 'https://music.yandex.ru/search?text=' },
+      { name: 'Spotify',     url: 'https://open.spotify.com/search/' },
+      { name: 'SoundCloud',  url: 'https://soundcloud.com/search?q=' },
+      { name: 'VK Музыка',   url: 'https://vk.com/audio?q=' }
+    ]
+  },
+  {
+    emoji: '📚',
+    name: 'Книги и обучение',
+    sites: [
+      { name: 'Литрес',      url: 'https://www.litres.ru/search/?q=' },
+      { name: 'Флибуста',    url: 'https://flibusta.is/booksearch?ask=' },
+      { name: 'КиберЛенинка', url: 'https://cyberleninka.ru/search?q=' },
+      { name: 'Хабр',        url: 'https://habr.com/ru/search/?q=' }
+    ]
+  },
+  {
+    emoji: '📰',
+    name: 'Новости',
+    sites: [
+      { name: 'Яндекс.Новости', url: 'https://yandex.ru/news/search?text=' },
+      { name: 'Lenta.ru',    url: 'https://lenta.ru/search?query=' },
+      { name: 'РБК',         url: 'https://www.rbc.ru/search/?query=' },
+      { name: 'РИА',         url: 'https://ria.ru/search/?query=' }
+    ]
+  },
+  {
+    emoji: '🍳',
+    name: 'Рецепты',
+    sites: [
+      { name: 'Поварёшка',   url: 'https://povareshka.ru/?s=' },
+      { name: 'ЕдимДома',    url: 'https://www.edimdoma.ru/search?q=' },
+      { name: 'Кулинарный',  url: 'https://www.koolinar.ru/search?q=' }
+    ]
+  }
+];
+
+/* =====================================================================
    НАСТРОЙКИ + ЯЗЫКИ
    ===================================================================== */
 
@@ -658,337 +748,110 @@ const LANG_PACKS = {
     tagline: 'Минимализм. Скорость. Ничего лишнего.',
     searchPlaceholder: 'Поиск или адрес',
     bigSearchPlaceholder: 'Спросите Zero или введите адрес',
-    navHome: 'Главная',
-    navTabs: 'Вкладки',
-    navBm: 'Закладки',
-    navSettings: 'Ещё',
+    navHome: 'Главная', navTabs: 'Вкладки', navBm: 'Закладки', navSettings: 'Ещё',
     resultsFor: 'Результаты по',
     bookmarksTitle: 'Мои закладки',
-    bookmarksEmpty: 'Пока пусто. Нажмите ⭐ в адресной строке, чтобы сохранить страницу.',
+    bookmarksEmpty: 'Пока пусто. Нажмите ⭐ в адресной строке.',
     bookmarksCount: ['закладка', 'закладки', 'закладок'],
     searchInProgress: 'Ищем в интернете...',
-    quickLinks: 'Быстрые ссылки',
+    categoriesTitle: 'Поиск по категориям',
     ytTitle: 'Видео на YouTube',
     webTitle: 'Веб-результаты',
     wikiTitle: 'Из Википедии',
     nothingFound: 'Ничего не найдено',
-    tryChange: 'Попробуйте изменить запрос или откройте ссылку из блока «Быстрые ссылки».',
+    tryChange: 'Попробуйте изменить запрос или откройте ссылку из категорий.',
     found: 'Найдено',
-    results: 'результатов',
-    andQuick: 'быстрых ссылок',
+    results: 'результатов', andQuick: 'категорий',
     blockedTitle: 'Сайт не разрешает встраивание',
     blockedDesc: 'Многие крупные сайты блокируют открытие внутри других приложений. Откройте ссылку во внешнем браузере.',
     openInBrowser: 'Открыть в браузере',
     addBookmark: 'Добавлено в закладки',
     removeBookmark: 'Удалено из закладок',
     settingsTitle: 'Настройки',
-    settingsSub: 'Язык, поиск, тема, данные',
-    labelLangGroup: 'Язык',
-    labelLang: 'Язык интерфейса',
-    labelSearchGroup: 'Поиск',
-    labelSearch: 'Поисковик по умолчанию',
-    labelThemeGroup: 'Оформление',
-    labelTheme: 'Тема оформления',
+    settingsSub: 'Язык, тема, данные',
+    labelLangGroup: 'Язык', labelLang: 'Язык интерфейса',
+    labelThemeGroup: 'Оформление', labelTheme: 'Тема оформления',
     labelDataGroup: 'Данные',
-    labelClearBm: 'Очистить закладки',
-    valueClearBm: 'Удалить все сохранённые страницы',
-    labelReset: 'Сбросить всё',
-    valueReset: 'Вернуть настройки по умолчанию',
+    labelClearBm: 'Очистить закладки', valueClearBm: 'Удалить все сохранённые страницы',
+    labelReset: 'Сбросить всё', valueReset: 'Вернуть настройки по умолчанию',
     labelAboutGroup: 'О приложении',
-    aboutDesc: 'Минималистичный браузер на Chromium. Собственный интерфейс, реальный поиск, встроенный переводчик, закладки.',
-    themeDark: 'Тёмная',
-    themeLight: 'Светлая',
-    themeAuto: 'Системная',
+    aboutDesc: 'Минималистичный браузер на Chromium. Умный поиск по категориям, встроенный переводчик, закладки.',
+    themeDark: 'Тёмная', themeLight: 'Светлая', themeAuto: 'Системная',
     clearBmConfirmTitle: 'Очистить закладки?',
-    clearBmConfirmText: 'Все сохранённые страницы будут удалены. Это нельзя отменить.',
+    clearBmConfirmText: 'Все сохранённые страницы будут удалены.',
     resetConfirmTitle: 'Сбросить всё?',
-    resetConfirmText: 'Настройки, закладки и данные будут очищены. Это нельзя отменить.',
-    cancel: 'Отмена',
-    confirmClear: 'Очистить',
-    confirmReset: 'Сбросить',
-    cleared: 'Закладки очищены',
-    resetDone: 'Настройки сброшены',
-    aboutMsg: 'Zero — минималистичный браузер.\nВерсия 1.0.0',
-    close: 'Закрыть'
+    resetConfirmText: 'Настройки и закладки будут очищены.',
+    cancel: 'Отмена', confirmClear: 'Очистить', confirmReset: 'Сбросить',
+    cleared: 'Закладки очищены', resetDone: 'Настройки сброшены',
+    sitesFound: 'сайтов'
   },
   en: {
     tagline: 'Minimalism. Speed. Nothing extra.',
     searchPlaceholder: 'Search or address',
     bigSearchPlaceholder: 'Ask Zero or enter address',
-    navHome: 'Home',
-    navTabs: 'Tabs',
-    navBm: 'Bookmarks',
-    navSettings: 'More',
+    navHome: 'Home', navTabs: 'Tabs', navBm: 'Bookmarks', navSettings: 'More',
     resultsFor: 'Results for',
     bookmarksTitle: 'My bookmarks',
-    bookmarksEmpty: 'Empty. Tap ⭐ in the address bar to save a page.',
+    bookmarksEmpty: 'Empty. Tap ⭐ in the address bar.',
     bookmarksCount: ['bookmark', 'bookmarks', 'bookmarks'],
     searchInProgress: 'Searching the web...',
-    quickLinks: 'Quick links',
+    categoriesTitle: 'Search by category',
     ytTitle: 'YouTube videos',
     webTitle: 'Web results',
     wikiTitle: 'From Wikipedia',
     nothingFound: 'Nothing found',
-    tryChange: 'Try another query or open a link from Quick links.',
-    found: 'Found',
-    results: 'results',
-    andQuick: 'quick links',
+    tryChange: 'Try another query or open a link from categories.',
+    found: 'Found', results: 'results', andQuick: 'categories',
     blockedTitle: 'Site blocks embedding',
     blockedDesc: 'Many major sites block opening inside other apps. Open the link in external browser.',
     openInBrowser: 'Open in browser',
-    addBookmark: 'Added to bookmarks',
-    removeBookmark: 'Removed from bookmarks',
-    settingsTitle: 'Settings',
-    settingsSub: 'Language, search, theme, data',
-    labelLangGroup: 'Language',
-    labelLang: 'Interface language',
-    labelSearchGroup: 'Search',
-    labelSearch: 'Default search engine',
-    labelThemeGroup: 'Appearance',
-    labelTheme: 'Theme',
+    addBookmark: 'Added to bookmarks', removeBookmark: 'Removed from bookmarks',
+    settingsTitle: 'Settings', settingsSub: 'Language, theme, data',
+    labelLangGroup: 'Language', labelLang: 'Interface language',
+    labelThemeGroup: 'Appearance', labelTheme: 'Theme',
     labelDataGroup: 'Data',
-    labelClearBm: 'Clear bookmarks',
-    valueClearBm: 'Delete all saved pages',
-    labelReset: 'Reset all',
-    valueReset: 'Restore default settings',
+    labelClearBm: 'Clear bookmarks', valueClearBm: 'Delete all saved pages',
+    labelReset: 'Reset all', valueReset: 'Restore default settings',
     labelAboutGroup: 'About',
-    aboutDesc: 'Minimalist Chromium browser. Custom UI, real search, built-in translator, bookmarks.',
-    themeDark: 'Dark',
-    themeLight: 'Light',
-    themeAuto: 'System',
+    aboutDesc: 'Minimalist Chromium browser. Smart category search, built-in translator, bookmarks.',
+    themeDark: 'Dark', themeLight: 'Light', themeAuto: 'System',
     clearBmConfirmTitle: 'Clear bookmarks?',
-    clearBmConfirmText: 'All saved pages will be removed. This cannot be undone.',
+    clearBmConfirmText: 'All saved pages will be removed.',
     resetConfirmTitle: 'Reset all?',
-    resetConfirmText: 'Settings, bookmarks and data will be cleared. This cannot be undone.',
-    cancel: 'Cancel',
-    confirmClear: 'Clear',
-    confirmReset: 'Reset',
-    cleared: 'Bookmarks cleared',
-    resetDone: 'Settings reset',
-    aboutMsg: 'Zero — minimalist browser.\nVersion 1.0.0',
-    close: 'Close'
-  },
-  uk: {
-    tagline: 'Мінімалізм. Швидкість. Нічого зайвого.',
-    searchPlaceholder: 'Пошук або адреса',
-    bigSearchPlaceholder: 'Запитайте Zero або введіть адресу',
-    navHome: 'Головна',
-    navTabs: 'Вкладки',
-    navBm: 'Закладки',
-    navSettings: 'Ще',
-    resultsFor: 'Результати за',
-    bookmarksTitle: 'Мої закладки',
-    bookmarksEmpty: 'Порожньо. Натисніть ⭐ в адресному рядку, щоб зберегти сторінку.',
-    bookmarksCount: ['закладка', 'закладки', 'закладок'],
-    searchInProgress: 'Шукаємо в інтернеті...',
-    quickLinks: 'Швидкі посилання',
-    ytTitle: 'Відео на YouTube',
-    webTitle: 'Веб-результати',
-    wikiTitle: 'З Вікіпедії',
-    nothingFound: 'Нічого не знайдено',
-    tryChange: 'Спробуйте інший запит або відкрийте посилання з блоку «Швидкі посилання».',
-    found: 'Знайдено',
-    results: 'результатів',
-    andQuick: 'швидких посилань',
-    blockedTitle: 'Сайт не дозволяє вбудовування',
-    blockedDesc: 'Багато великих сайтів блокують відкриття всередині інших програм. Відкрийте посилання в зовнішньому браузері.',
-    openInBrowser: 'Відкрити в браузері',
-    addBookmark: 'Додано в закладки',
-    removeBookmark: 'Видалено із закладок',
-    settingsTitle: 'Налаштування',
-    settingsSub: 'Мова, пошук, тема, дані',
-    labelLangGroup: 'Мова',
-    labelLang: 'Мова інтерфейсу',
-    labelSearchGroup: 'Пошук',
-    labelSearch: 'Пошуковик за замовчуванням',
-    labelThemeGroup: 'Оформлення',
-    labelTheme: 'Тема оформлення',
-    labelDataGroup: 'Дані',
-    labelClearBm: 'Очистити закладки',
-    valueClearBm: 'Видалити всі збережені сторінки',
-    labelReset: 'Скинути все',
-    valueReset: 'Повернути налаштування за замовчуванням',
-    labelAboutGroup: 'Про додаток',
-    aboutDesc: 'Мінімалістичний браузер на Chromium. Власний інтерфейс, справжній пошук, вбудований перекладач, закладки.',
-    themeDark: 'Темна',
-    themeLight: 'Світла',
-    themeAuto: 'Системна',
-    clearBmConfirmTitle: 'Очистити закладки?',
-    clearBmConfirmText: 'Усі збережені сторінки буде видалено. Це не можна скасувати.',
-    resetConfirmTitle: 'Скинути все?',
-    resetConfirmText: 'Налаштування, закладки та дані буде очищено. Це не можна скасувати.',
-    cancel: 'Скасувати',
-    confirmClear: 'Очистити',
-    confirmReset: 'Скинути',
-    cleared: 'Закладки очищено',
-    resetDone: 'Налаштування скинуто',
-    aboutMsg: 'Zero — мінімалістичний браузер.\nВерсія 1.0.0',
-    close: 'Закрити'
-  },
-  de: {
-    tagline: 'Minimalismus. Geschwindigkeit. Nichts überflüssig.',
-    searchPlaceholder: 'Suchen oder Adresse',
-    bigSearchPlaceholder: 'Fragen Sie Zero oder geben Sie eine Adresse ein',
-    navHome: 'Start',
-    navTabs: 'Tabs',
-    navBm: 'Lesezeichen',
-    navSettings: 'Mehr',
-    resultsFor: 'Ergebnisse für',
-    bookmarksTitle: 'Meine Lesezeichen',
-    bookmarksEmpty: 'Leer. Tippen Sie ⭐ in der Adressleiste, um eine Seite zu speichern.',
-    bookmarksCount: ['Lesezeichen', 'Lesezeichen', 'Lesezeichen'],
-    searchInProgress: 'Suche im Internet...',
-    quickLinks: 'Schnellzugriff',
-    ytTitle: 'YouTube-Videos',
-    webTitle: 'Web-Ergebnisse',
-    wikiTitle: 'Aus Wikipedia',
-    nothingFound: 'Nichts gefunden',
-    tryChange: 'Versuchen Sie eine andere Anfrage oder öffnen Sie einen Link aus Schnellzugriff.',
-    found: 'Gefunden',
-    results: 'Ergebnisse',
-    andQuick: 'Schnellzugriffe',
-    blockedTitle: 'Seite blockiert Einbettung',
-    blockedDesc: 'Viele große Seiten blockieren das Öffnen in anderen Apps. Öffnen Sie den Link im externen Browser.',
-    openInBrowser: 'Im Browser öffnen',
-    addBookmark: 'Zu Lesezeichen hinzugefügt',
-    removeBookmark: 'Aus Lesezeichen entfernt',
-    settingsTitle: 'Einstellungen',
-    settingsSub: 'Sprache, Suche, Design, Daten',
-    labelLangGroup: 'Sprache',
-    labelLang: 'Oberflächensprache',
-    labelSearchGroup: 'Suche',
-    labelSearch: 'Standard-Suchmaschine',
-    labelThemeGroup: 'Design',
-    labelTheme: 'Design',
-    labelDataGroup: 'Daten',
-    labelClearBm: 'Lesezeichen löschen',
-    valueClearBm: 'Alle gespeicherten Seiten löschen',
-    labelReset: 'Alles zurücksetzen',
-    valueReset: 'Standardeinstellungen wiederherstellen',
-    labelAboutGroup: 'Über die App',
-    aboutDesc: 'Minimalistischer Chromium-Browser. Eigene Oberfläche, echte Suche, integrierter Übersetzer, Lesezeichen.',
-    themeDark: 'Dunkel',
-    themeLight: 'Hell',
-    themeAuto: 'System',
-    clearBmConfirmTitle: 'Lesezeichen löschen?',
-    clearBmConfirmText: 'Alle gespeicherten Seiten werden entfernt. Dies kann nicht rückgängig gemacht werden.',
-    resetConfirmTitle: 'Alles zurücksetzen?',
-    resetConfirmText: 'Einstellungen, Lesezeichen und Daten werden gelöscht. Dies kann nicht rückgängig gemacht werden.',
-    cancel: 'Abbrechen',
-    confirmClear: 'Löschen',
-    confirmReset: 'Zurücksetzen',
-    cleared: 'Lesezeichen gelöscht',
-    resetDone: 'Einstellungen zurückgesetzt',
-    aboutMsg: 'Zero — minimalistischer Browser.\nVersion 1.0.0',
-    close: 'Schließen'
-  },
-  es: {
-    tagline: 'Minimalismo. Velocidad. Nada extra.',
-    searchPlaceholder: 'Buscar o dirección',
-    bigSearchPlaceholder: 'Pregunta a Zero o ingresa dirección',
-    navHome: 'Inicio',
-    navTabs: 'Pestañas',
-    navBm: 'Marcadores',
-    navSettings: 'Más',
-    resultsFor: 'Resultados para',
-    bookmarksTitle: 'Mis marcadores',
-    bookmarksEmpty: 'Vacío. Toca ⭐ en la barra de direcciones para guardar una página.',
-    bookmarksCount: ['marcador', 'marcadores', 'marcadores'],
-    searchInProgress: 'Buscando en internet...',
-    quickLinks: 'Enlaces rápidos',
-    ytTitle: 'Videos de YouTube',
-    webTitle: 'Resultados web',
-    wikiTitle: 'De Wikipedia',
-    nothingFound: 'Nada encontrado',
-    tryChange: 'Prueba otra consulta o abre un enlace de Enlaces rápidos.',
-    found: 'Encontrados',
-    results: 'resultados',
-    andQuick: 'enlaces rápidos',
-    blockedTitle: 'El sitio bloquea la inserción',
-    blockedDesc: 'Muchos sitios grandes bloquean abrirse dentro de otras apps. Abre el enlace en el navegador externo.',
-    openInBrowser: 'Abrir en navegador',
-    addBookmark: 'Añadido a marcadores',
-    removeBookmark: 'Eliminado de marcadores',
-    settingsTitle: 'Ajustes',
-    settingsSub: 'Idioma, búsqueda, tema, datos',
-    labelLangGroup: 'Idioma',
-    labelLang: 'Idioma de la interfaz',
-    labelSearchGroup: 'Búsqueda',
-    labelSearch: 'Buscador predeterminado',
-    labelThemeGroup: 'Apariencia',
-    labelTheme: 'Tema',
-    labelDataGroup: 'Datos',
-    labelClearBm: 'Borrar marcadores',
-    valueClearBm: 'Eliminar todas las páginas guardadas',
-    labelReset: 'Restablecer todo',
-    valueReset: 'Volver a ajustes predeterminados',
-    labelAboutGroup: 'Acerca de',
-    aboutDesc: 'Navegador Chromium minimalista. Interfaz propia, búsqueda real, traductor integrado, marcadores.',
-    themeDark: 'Oscuro',
-    themeLight: 'Claro',
-    themeAuto: 'Sistema',
-    clearBmConfirmTitle: '¿Borrar marcadores?',
-    clearBmConfirmText: 'Todas las páginas guardadas serán eliminadas. Esto no se puede deshacer.',
-    resetConfirmTitle: '¿Restablecer todo?',
-    resetConfirmText: 'Ajustes, marcadores y datos serán eliminados. Esto no se puede deshacer.',
-    cancel: 'Cancelar',
-    confirmClear: 'Borrar',
-    confirmReset: 'Restablecer',
-    cleared: 'Marcadores borrados',
-    resetDone: 'Ajustes restablecidos',
-    aboutMsg: 'Zero — navegador minimalista.\nVersión 1.0.0',
-    close: 'Cerrar'
+    resetConfirmText: 'Settings and bookmarks will be cleared.',
+    cancel: 'Cancel', confirmClear: 'Clear', confirmReset: 'Reset',
+    cleared: 'Bookmarks cleared', resetDone: 'Settings reset',
+    sitesFound: 'sites'
   }
 };
 
 const LANG_NAMES = {
   ru: { name: 'Русский', flag: '🇷🇺' },
-  en: { name: 'English', flag: '🇬🇧' },
-  uk: { name: 'Українська', flag: '🇺🇦' },
-  de: { name: 'Deutsch', flag: '🇩🇪' },
-  es: { name: 'Español', flag: '🇪🇸' }
-};
-
-const SEARCH_ENGINES = {
-  ddg: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
-  google: { name: 'Google', url: 'https://www.google.com/search?q=' },
-  yandex: { name: 'Яндекс', url: 'https://yandex.ru/search/?text=' },
-  bing: { name: 'Bing', url: 'https://www.bing.com/search?q=' }
+  en: { name: 'English', flag: '🇬🇧' }
 };
 
 const THEMES = ['dark', 'light', 'auto'];
 
-let settings = {
-  lang: 'ru',
-  searchEngine: 'ddg',
-  theme: 'dark'
-};
+let settings = { lang: 'ru', theme: 'dark' };
 
 function loadSettings() {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw);
-      if (parsed.lang && LANG_PACKS[parsed.lang]) settings.lang = parsed.lang;
-      if (parsed.searchEngine && SEARCH_ENGINES[parsed.searchEngine]) settings.searchEngine = parsed.searchEngine;
-      if (parsed.theme && THEMES.includes(parsed.theme)) settings.theme = parsed.theme;
+      const p = JSON.parse(raw);
+      if (p.lang && LANG_PACKS[p.lang]) settings.lang = p.lang;
+      if (p.theme && THEMES.includes(p.theme)) settings.theme = p.theme;
     }
   } catch {}
 }
-
 function saveSettings() {
   try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch {}
 }
-
-function T() {
-  return LANG_PACKS[settings.lang] || LANG_PACKS.ru;
-}
+function T() { return LANG_PACKS[settings.lang] || LANG_PACKS.ru; }
 
 function applyTheme() {
   let mode = settings.theme;
-  if (mode === 'auto') {
-    mode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-  }
+  if (mode === 'auto') mode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   document.body.classList.toggle('light', mode === 'light');
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', mode === 'light' ? '#f4f4f8' : '#08080c');
@@ -1009,8 +872,6 @@ function applyLanguage() {
   $('#settingsSub').textContent = t.settingsSub;
   $('#labelLangGroup').textContent = t.labelLangGroup;
   $('#labelLang').textContent = t.labelLang;
-  $('#labelSearchGroup').textContent = t.labelSearchGroup;
-  $('#labelSearch').textContent = t.labelSearch;
   $('#labelThemeGroup').textContent = t.labelThemeGroup;
   $('#labelTheme').textContent = t.labelTheme;
   $('#labelDataGroup').textContent = t.labelDataGroup;
@@ -1023,19 +884,11 @@ function applyLanguage() {
   $('#blockedTitle').textContent = t.blockedTitle;
   $('#blockedDesc').textContent = t.blockedDesc;
   $('#openExternalFromBlocked').textContent = t.openInBrowser;
-  $('#valueLang').textContent = (LANG_NAMES[settings.lang] || LANG_NAMES.ru).name;
-  $('#valueSearch').textContent = SEARCH_ENGINES[settings.searchEngine].name;
+  $('#valueLang').textContent = LANG_NAMES[settings.lang].name;
   $('#valueTheme').textContent = settings.theme === 'dark' ? t.themeDark
     : settings.theme === 'light' ? t.themeLight : t.themeAuto;
-  // Заголовок закладок
   const bmTitleEl = $('#bmTitle');
   if (bmTitleEl) bmTitleEl.innerHTML = t.bookmarksTitle.replace(' ', ' <em>') + '</em>';
-  // Заголовок результатов
-  const q = $('#pageQuery');
-  if (q) {
-    const parent = q.parentElement;
-    parent.innerHTML = t.resultsFor + ' <em id="pageQuery">' + escapeHtml(q.textContent) + '</em>';
-  }
   updateBmCount();
 }
 
@@ -1046,14 +899,10 @@ function applyLanguage() {
 const state = {
   view: 'home',
   tabs: [{ id: 1, title: 'Zero', url: 'zero://home', grad: 'g-e', letter: 'Z' }],
-  activeTab: 1,
-  nextId: 2,
-  history: [{ type: 'home' }],
-  histIndex: 0,
-  currentUrl: null,
-  currentTitle: '',
-  bookmarks: [],
-  blockedTimer: null,
+  activeTab: 1, nextId: 2,
+  history: [{ type: 'home' }], histIndex: 0,
+  currentUrl: null, currentTitle: '',
+  bookmarks: [], blockedTimer: null,
   lastSelection: ''
 };
 
@@ -1099,8 +948,7 @@ function toggleBookmark(url, title) {
   const norm = normalizeUrl(url);
   const idx = state.bookmarks.findIndex(b => normalizeUrl(b.url) === norm);
   if (idx >= 0) {
-    state.bookmarks.splice(idx, 1);
-    saveBookmarks(); updateStar(); return false;
+    state.bookmarks.splice(idx, 1); saveBookmarks(); updateStar(); return false;
   }
   state.bookmarks.unshift({ url: norm, title: title || hostOf(norm), added: Date.now() });
   saveBookmarks(); updateStar();
@@ -1123,7 +971,7 @@ btnStar.addEventListener('click', e => {
 
 /* ================= RIPPLE ================= */
 document.addEventListener('pointerdown', e => {
-  const el = e.target.closest('.icon-btn, .nav-btn, .tile, .tab-item, .fab, .web-blocked button, .star-btn, .bm-del, .lang-btn, .quick-link, .translate-actions button, .settings-item, .picker-option, .danger-btn');
+  const el = e.target.closest('.icon-btn, .nav-btn, .tile, .tab-item, .fab, .web-blocked button, .star-btn, .bm-del, .lang-btn, .cat-link, .translate-actions button, .settings-item, .picker-option');
   if (!el) return;
   const r = el.getBoundingClientRect();
   const size = Math.max(r.width, r.height) * 2.2;
@@ -1176,15 +1024,11 @@ function updateNavButtons() {
 }
 function goBack() {
   if (state.histIndex <= 0) return;
-  state.histIndex--;
-  renderEntry(state.history[state.histIndex], false);
-  updateNavButtons();
+  state.histIndex--; renderEntry(state.history[state.histIndex], false); updateNavButtons();
 }
 function goForward() {
   if (state.histIndex >= state.history.length - 1) return;
-  state.histIndex++;
-  renderEntry(state.history[state.histIndex], false);
-  updateNavButtons();
+  state.histIndex++; renderEntry(state.history[state.histIndex], false); updateNavButtons();
 }
 
 /* ================= ВИДЫ ================= */
@@ -1203,16 +1047,12 @@ function showView(name) {
   });
   updateStar();
 }
-
 function renderEntry(entry, push = true) {
   if (push) pushHistory(entry);
   if (entry.type === 'home') {
-    showView('home');
-    address.value = '';
-    state.currentUrl = null;
-    state.currentTitle = '';
-    webframe.src = 'about:blank';
-    updateStar();
+    showView('home'); address.value = '';
+    state.currentUrl = null; state.currentTitle = '';
+    webframe.src = 'about:blank'; updateStar();
     return;
   }
   if (entry.type === 'search') { runSearch(entry.q, false); return; }
@@ -1242,20 +1082,14 @@ async function searchDuckDuckGo(q) {
       }
       if (!href.startsWith('http')) return;
       out.push({
-        source: 'web',
-        title: a.textContent.trim(),
-        url: href,
+        source: 'web', title: a.textContent.trim(), url: href,
         desc: snip ? snip.textContent.trim() : '',
         icon: hostOf(href)[0] ? hostOf(href)[0].toUpperCase() : '?',
-        grad: 'g-c',
-        badge: hostOf(href)
+        grad: 'g-c', badge: hostOf(href)
       });
     });
-    return out.slice(0, 15);
-  } catch (e) {
-    console.error('DDG error', e);
-    return [];
-  }
+    return out.slice(0, 12);
+  } catch (e) { return []; }
 }
 
 const PIPED_INSTANCES = [
@@ -1274,15 +1108,11 @@ async function searchYouTube(q) {
       if (!res.ok) continue;
       const data = await res.json();
       if (!data || !data.items) continue;
-      return data.items.slice(0, 6).map(v => ({
-        source: 'youtube',
-        title: v.title,
+      return data.items.slice(0, 5).map(v => ({
+        source: 'youtube', title: v.title,
         url: 'https://www.youtube.com' + (v.url || ''),
         desc: (v.uploaderName || '') + (v.views ? ' • ' + formatViews(v.views) : ''),
-        thumb: v.thumbnail,
-        icon: 'Y',
-        grad: 'g-a',
-        badge: 'YouTube'
+        thumb: v.thumbnail, icon: 'Y', grad: 'g-a', badge: 'YouTube'
       }));
     } catch (e) { continue; }
   }
@@ -1291,10 +1121,10 @@ async function searchYouTube(q) {
 
 function formatViews(n) {
   if (!n && n !== 0) return '';
-  if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B views';
-  if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M views';
-  if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K views';
-  return n + ' views';
+  if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
+  if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+  if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+  return n + '';
 }
 
 async function searchWikipedia(q) {
@@ -1306,29 +1136,42 @@ async function searchWikipedia(q) {
     const data = await res.json();
     if (!data.query || !data.query.search) return [];
     return data.query.search.map(r => ({
-      source: 'wiki',
-      title: r.title,
+      source: 'wiki', title: r.title,
       url: 'https://' + wikiLang + '.wikipedia.org/wiki/' + encodeURIComponent(r.title),
       desc: (r.snippet || '').replace(/<[^>]*>/g, ''),
-      icon: 'W',
-      grad: 'g-e',
-      badge: 'Wikipedia'
+      icon: 'W', grad: 'g-e', badge: 'Wikipedia'
     }));
-  } catch (e) {
-    return [];
-  }
+  } catch (e) { return []; }
 }
 
-function buildQuickLinks(q) {
+/* Категории — каждая ссылка с автоподстановкой запроса */
+function buildCategoriesHTML(q) {
   const enc = encodeURIComponent(q);
-  return [
-    { name: 'Google', url: 'https://www.google.com/search?q=' + enc },
-    { name: 'Яндекс', url: 'https://yandex.ru/search/?text=' + enc },
-    { name: 'YouTube', url: 'https://m.youtube.com/results?search_query=' + enc },
-    { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' + enc },
-    { name: 'Wikipedia', url: 'https://ru.m.wikipedia.org/w/index.php?search=' + enc },
-    { name: 'GitHub', url: 'https://github.com/search?q=' + enc }
-  ];
+  const t = T();
+  let html = `<div class="section-title">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    ${t.categoriesTitle}
+  </div>`;
+
+  CATEGORIES.forEach((cat, idx) => {
+    html += `<div class="cat-block" style="animation-delay:${(idx * 0.04).toFixed(2)}s">
+      <div class="cat-head">
+        <div class="cat-emoji">${cat.emoji}</div>
+        <div>${escapeHtml(cat.name)}</div>
+        <div class="cat-count">${cat.sites.length} ${t.sitesFound}</div>
+      </div>
+      <div class="cat-grid">
+        ${cat.sites.map(s => `
+          <button class="cat-link" data-url="${escapeHtml(s.url + enc)}">
+            <span class="cat-link-dot"></span>
+            <span class="cat-link-name">${escapeHtml(s.name)}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+  });
+
+  return html;
 }
 
 async function runSearch(q, push = true) {
@@ -1343,7 +1186,7 @@ async function runSearch(q, push = true) {
   $('#pageQuery').textContent = q;
   $('#pageSub').textContent = t.searchInProgress;
 
-  const tab = state.tabs.find(t => t.id === state.activeTab);
+  const tab = state.tabs.find(x => x.id === state.activeTab);
   if (tab) { tab.title = q; tab.url = 'zero://search?q=' + encodeURIComponent(q); }
 
   const resultsContainer = $('#results');
@@ -1359,22 +1202,7 @@ async function runSearch(q, push = true) {
   const yt  = ytRes.status === 'fulfilled'  ? ytRes.value  : [];
   const wiki= wikiRes.status === 'fulfilled'? wikiRes.value: [];
 
-  const quick = buildQuickLinks(q);
-  const qlHTML = `
-    <div class="section-title">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
-      ${t.quickLinks}
-    </div>
-    <div class="quick-links">
-      ${quick.map(l => `
-        <button class="quick-link" data-url="${escapeHtml(l.url)}">
-          <span class="quick-link-dot"></span>${escapeHtml(l.name)}
-        </button>
-      `).join('')}
-    </div>
-  `;
-
-  let html = qlHTML;
+  let html = buildCategoriesHTML(q);
 
   const renderBlock = (items, title, iconSvg) => {
     if (!items.length) return '';
@@ -1411,14 +1239,15 @@ async function runSearch(q, push = true) {
 
   resultsContainer.innerHTML = html;
 
-  resultsContainer.querySelectorAll('.quick-link').forEach(btn => {
+  resultsContainer.querySelectorAll('.cat-link').forEach(btn => {
     btn.addEventListener('click', () => renderEntry({ type: 'url', url: btn.dataset.url }));
   });
   resultsContainer.querySelectorAll('.result[data-url]').forEach(el => {
     el.addEventListener('click', () => renderEntry({ type: 'url', url: el.dataset.url }));
   });
 
-  $('#pageSub').textContent = t.found + ': ' + (yt.length + web.length + wiki.length) + ' ' + t.results + ' + ' + quick.length + ' ' + t.andQuick;
+  const totalSites = CATEGORIES.reduce((sum, c) => sum + c.sites.length, 0);
+  $('#pageSub').textContent = t.found + ': ' + (yt.length + web.length + wiki.length) + ' ' + t.results + ' + ' + totalSites + ' ' + t.sitesFound;
   setTimeout(() => pageView.classList.remove('loading'), 500);
 }
 
@@ -1432,7 +1261,7 @@ function loadUrl(rawUrl, push = true) {
   state.currentUrl = url;
   state.currentTitle = hostOf(url);
 
-  const tab = state.tabs.find(t => t.id === state.activeTab);
+  const tab = state.tabs.find(x => x.id === state.activeTab);
   if (tab) { tab.title = state.currentTitle; tab.url = url; }
 
   if (window.ZeroAndroid && typeof window.ZeroAndroid.openUrl === 'function') {
@@ -1473,17 +1302,13 @@ function submitQuery(q) {
   q = String(q).trim();
   if (!q) return;
   if (isUrl(q)) renderEntry({ type: 'url', url: q });
-  else {
-    // Если пользователь явно хочет поисковик, но у нас есть свой агрегатор — используем свой
-    renderEntry({ type: 'search', q });
-  }
+  else renderEntry({ type: 'search', q });
 }
 address.addEventListener('focus', () => addrWrap.classList.add('focused'));
 address.addEventListener('blur',  () => addrWrap.classList.remove('focused'));
 address.addEventListener('keydown', e => {
   if (e.key === 'Enter' && address.value.trim()) {
-    address.blur();
-    submitQuery(address.value);
+    address.blur(); submitQuery(address.value);
   }
 });
 bigSearch.addEventListener('keydown', e => {
@@ -1503,9 +1328,7 @@ $('#tiles').addEventListener('click', e => {
 btnBack.addEventListener('click', () => {
   if (window.ZeroAndroid && typeof window.ZeroAndroid.goBack === 'function') {
     window.ZeroAndroid.goBack();
-  } else {
-    goBack();
-  }
+  } else goBack();
 });
 btnFwd.addEventListener('click', goForward);
 btnReload.addEventListener('click', () => {
@@ -1531,7 +1354,6 @@ const TRANSLATE_ENDPOINTS = [
   'https://translate.astian.org/translate',
   'https://libretranslate.de/translate'
 ];
-
 const TRANSLATE_LANGS = [
   { code: 'ru', flag: '🇷🇺', name: 'Русский' },
   { code: 'en', flag: '🇬🇧', name: 'English' },
@@ -1539,12 +1361,9 @@ const TRANSLATE_LANGS = [
   { code: 'de', flag: '🇩🇪', name: 'Deutsch' },
   { code: 'fr', flag: '🇫🇷', name: 'Français' },
   { code: 'es', flag: '🇪🇸', name: 'Español' },
-  { code: 'it', flag: '🇮🇹', name: 'Italiano' },
-  { code: 'pl', flag: '🇵🇱', name: 'Polski' },
   { code: 'tr', flag: '🇹🇷', name: 'Türkçe' },
   { code: 'zh', flag: '🇨🇳', name: '中文' },
-  { code: 'ja', flag: '🇯🇵', name: '日本語' },
-  { code: 'ar', flag: '🇸🇦', name: 'العربية' }
+  { code: 'ja', flag: '🇯🇵', name: '日本語' }
 ];
 
 async function translateText(text, targetLang, sourceLang = 'auto') {
@@ -1600,8 +1419,7 @@ function openTranslator() {
       <button class="primary" id="btnDoTranslate" ${!state.lastSelection ? 'disabled' : ''}>Перевести</button>
     </div>
   `;
-  scrim.classList.add('show');
-  sheet.classList.add('show');
+  scrim.classList.add('show'); sheet.classList.add('show');
 
   $('#btnPasteFrom').addEventListener('click', async () => {
     try {
@@ -1617,8 +1435,7 @@ function openTranslator() {
     if (!state.lastSelection.trim()) return;
     const code = sheetContent.querySelector('.lang-btn.current')?.dataset.code || cur;
     localStorage.setItem('zero_lang', code);
-    doBtn.disabled = true;
-    doBtn.textContent = '...';
+    doBtn.disabled = true; doBtn.textContent = '...';
     try {
       const out = await translateText(state.lastSelection, code);
       $('#selectionResultText').textContent = out;
@@ -1627,8 +1444,7 @@ function openTranslator() {
       $('#selectionResultText').textContent = 'Ошибка перевода';
       $('#selectionResult').style.display = '';
     } finally {
-      doBtn.disabled = false;
-      doBtn.textContent = 'Перевести';
+      doBtn.disabled = false; doBtn.textContent = 'Перевести';
     }
   });
 
@@ -1650,9 +1466,7 @@ $$('.nav-btn').forEach(btn => {
     if (act === 'home') {
       if (window.ZeroAndroid && typeof window.ZeroAndroid.goHome === 'function') {
         window.ZeroAndroid.goHome();
-      } else {
-        renderEntry({ type: 'home' });
-      }
+      } else renderEntry({ type: 'home' });
     }
     if (act === 'tabs') openSheet('tabs');
     if (act === 'bookmarks') showBookmarks();
@@ -1669,10 +1483,7 @@ function updateBmCount() {
     ? '—'
     : state.bookmarks.length + ' ' + pluralCount(state.bookmarks.length);
 }
-function showBookmarks() {
-  showView('bookmarks');
-  renderBookmarks();
-}
+function showBookmarks() { showView('bookmarks'); renderBookmarks(); }
 function renderBookmarks() {
   const list = $('#bookmarksList');
   const empty = $('#bookmarksEmpty');
@@ -1713,79 +1524,39 @@ function renderBookmarks() {
   });
 }
 
-/* =====================================================================
-   НАСТРОЙКИ
-   ===================================================================== */
-function showSettings() {
-  showView('settings');
-}
+/* ================= НАСТРОЙКИ ================= */
+function showSettings() { showView('settings'); }
 
 $('#itemLang').addEventListener('click', () => {
-  openPicker(
-    T().labelLang,
+  openPicker(T().labelLang,
     Object.keys(LANG_PACKS).map(code => ({
-      value: code,
-      flag: LANG_NAMES[code].flag,
-      name: LANG_NAMES[code].name,
+      value: code, flag: LANG_NAMES[code].flag, name: LANG_NAMES[code].name,
       selected: settings.lang === code
     })),
     (val) => {
-      settings.lang = val;
-      saveSettings();
-      applyLanguage();
-      closeSheet();
+      settings.lang = val; saveSettings();
+      applyLanguage(); closeSheet();
       flashMessage('Язык изменён');
-    }
-  );
-});
-
-$('#itemSearch').addEventListener('click', () => {
-  openPicker(
-    T().labelSearch,
-    Object.keys(SEARCH_ENGINES).map(key => ({
-      value: key,
-      flag: '',
-      name: SEARCH_ENGINES[key].name,
-      selected: settings.searchEngine === key
-    })),
-    (val) => {
-      settings.searchEngine = val;
-      saveSettings();
-      applyLanguage();
-      closeSheet();
-      flashMessage('Поисковик: ' + SEARCH_ENGINES[val].name);
-    }
-  );
+    });
 });
 
 $('#itemTheme').addEventListener('click', () => {
   const t = T();
-  openPicker(
-    t.labelTheme,
-    [
-      { value: 'dark', flag: '🌙', name: t.themeDark, selected: settings.theme === 'dark' },
-      { value: 'light', flag: '☀️', name: t.themeLight, selected: settings.theme === 'light' },
-      { value: 'auto', flag: '⚙️', name: t.themeAuto, selected: settings.theme === 'auto' }
-    ],
-    (val) => {
-      settings.theme = val;
-      saveSettings();
-      applyTheme();
-      applyLanguage();
-      closeSheet();
-    }
-  );
+  openPicker(t.labelTheme, [
+    { value: 'dark', flag: '🌙', name: t.themeDark, selected: settings.theme === 'dark' },
+    { value: 'light', flag: '☀️', name: t.themeLight, selected: settings.theme === 'light' },
+    { value: 'auto', flag: '⚙️', name: t.themeAuto, selected: settings.theme === 'auto' }
+  ], (val) => {
+    settings.theme = val; saveSettings();
+    applyTheme(); applyLanguage(); closeSheet();
+  });
 });
 
 $('#itemClearBm').addEventListener('click', () => {
   const t = T();
   confirmSheet(t.clearBmConfirmTitle, t.clearBmConfirmText, t.confirmClear, () => {
-    state.bookmarks = [];
-    saveBookmarks();
-    updateStar();
-    updateBmCount();
-    closeSheet();
-    flashMessage(t.cleared);
+    state.bookmarks = []; saveBookmarks(); updateStar(); updateBmCount();
+    closeSheet(); flashMessage(t.cleared);
   });
 });
 
@@ -1793,13 +1564,10 @@ $('#itemReset').addEventListener('click', () => {
   const t = T();
   confirmSheet(t.resetConfirmTitle, t.resetConfirmText, t.confirmReset, () => {
     try { localStorage.removeItem(SETTINGS_KEY); localStorage.removeItem('zero_bookmarks'); } catch {}
-    settings = { lang: 'ru', searchEngine: 'ddg', theme: 'dark' };
+    settings = { lang: 'ru', theme: 'dark' };
     state.bookmarks = [];
-    applyTheme();
-    applyLanguage();
-    updateBmCount();
-    closeSheet();
-    flashMessage(t.resetDone);
+    applyTheme(); applyLanguage(); updateBmCount();
+    closeSheet(); flashMessage(t.resetDone);
   });
 });
 
@@ -1817,8 +1585,7 @@ function openPicker(title, options, onSelect) {
   sheetContent.querySelectorAll('.picker-option').forEach(btn => {
     btn.addEventListener('click', () => onSelect(btn.dataset.value));
   });
-  scrim.classList.add('show');
-  sheet.classList.add('show');
+  scrim.classList.add('show'); sheet.classList.add('show');
 }
 
 function confirmSheet(title, text, confirmLabel, onConfirm) {
@@ -1833,14 +1600,12 @@ function confirmSheet(title, text, confirmLabel, onConfirm) {
   `;
   $('#cfCancel').addEventListener('click', closeSheet);
   $('#cfConfirm').addEventListener('click', onConfirm);
-  scrim.classList.add('show');
-  sheet.classList.add('show');
+  scrim.classList.add('show'); sheet.classList.add('show');
 }
 
 /* ================= ВКЛАДКИ ================= */
 function updateTabCount() { tabCount.textContent = state.tabs.length; }
 
-/* ================= ШТОРКА ================= */
 function openSheet(type) {
   if (type === 'tabs') {
     sheetContent.innerHTML = `<div class="sheet-title">${T().navTabs} (${state.tabs.length})</div>` +
@@ -1860,12 +1625,10 @@ function openSheet(type) {
       });
     });
   }
-  scrim.classList.add('show');
-  sheet.classList.add('show');
+  scrim.classList.add('show'); sheet.classList.add('show');
 }
 function closeSheet() {
-  scrim.classList.remove('show');
-  sheet.classList.remove('show');
+  scrim.classList.remove('show'); sheet.classList.remove('show');
 }
 scrim.addEventListener('click', closeSheet);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
