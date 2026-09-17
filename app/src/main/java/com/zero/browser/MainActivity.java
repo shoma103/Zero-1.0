@@ -16,6 +16,7 @@ import java.util.Map;
 public class MainActivity extends Activity {
 
     private WebView webView;
+    private static final String HOME_URL = "file:///android_asset/index.html";
 
     private static final String UA =
         "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 " +
@@ -43,6 +44,9 @@ public class MainActivity extends Activity {
 
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
+
+        // JS-мост: HTML говорит нативной части, какой URL открыть
+        webView.addJavascriptInterface(new ZeroBridge(), "ZeroAndroid");
 
         webView.setWebChromeClient(new WebChromeClient());
 
@@ -117,16 +121,66 @@ public class MainActivity extends Activity {
                 }
                 return false;
             }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
         });
 
-        webView.loadUrl("file:///android_asset/index.html");
+        Intent intent = getIntent();
+        if (intent != null && intent.getData() != null) {
+            webView.loadUrl(intent.getData().toString());
+        } else {
+            webView.loadUrl(HOME_URL);
+        }
+
         setContentView(webView);
+    }
+
+    private class ZeroBridge {
+        @JavascriptInterface
+        public void openUrl(final String url) {
+            runOnUiThread(() -> {
+                if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+                    webView.loadUrl(url);
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void goBack() {
+            runOnUiThread(() -> {
+                if (webView.canGoBack()) webView.goBack();
+            });
+        }
+
+        @JavascriptInterface
+        public void goHome() {
+            runOnUiThread(() -> webView.loadUrl(HOME_URL));
+        }
+
+        @JavascriptInterface
+        public String getCurrentUrl() {
+            return webView.getUrl();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (webView.canGoBack()) webView.goBack();
-        else super.onBackPressed();
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null && intent.getData() != null) {
+            webView.loadUrl(intent.getData().toString());
+        }
     }
 
     @Override
@@ -147,4 +201,4 @@ public class MainActivity extends Activity {
         webView.destroy();
         super.onDestroy();
     }
-          }
+}
