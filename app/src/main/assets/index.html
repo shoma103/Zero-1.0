@@ -246,7 +246,7 @@ button{font-family:inherit;cursor:pointer}
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-top:1px solid var(--line);position:relative;z-index:5}
 .nav-btn{position:relative;overflow:hidden;display:flex;flex-direction:column;
-  align-items:center;gap:3px;padding:7px 15px;border:none;border-radius:15px;
+  align-items:center;gap:3px;padding:7px 12px;border:none;border-radius:15px;
   background:transparent;color:var(--muted);font-size:9.5px;font-weight:700;
   transition:transform .45s var(--spring),color .3s,background .3s}
 .nav-btn svg{width:22px;height:22px;position:relative;z-index:1;transition:filter .35s}
@@ -334,6 +334,78 @@ button{font-family:inherit;cursor:pointer}
   border:1px solid var(--line);color:var(--text)}
 .translate-actions button:active{transform:scale(.96)}
 .translate-actions button:disabled{opacity:.5;pointer-events:none}
+
+/* ---- СТИЛИ ДЛЯ РАЗДЕЛА КРИПТА ---- */
+.crypto-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 20px;
+}
+
+.crypto-card {
+  position: relative;
+  overflow: hidden;
+  padding: 16px 16px 0 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .035);
+  border: 1px solid var(--line);
+  transition: transform .45s var(--spring), background .3s;
+  animation: up .5s var(--ease) both;
+}
+.crypto-card:active { transform: scale(.985); }
+
+.crypto-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.crypto-name-wrap { display: flex; align-items: center; gap: 10px; }
+
+.crypto-icon {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 15px; color: #fff;
+  flex: 0 0 auto;
+}
+
+.crypto-name { font-size: 15px; font-weight: 700; letter-spacing: -.2px; }
+.crypto-symbol { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; margin-top: 1px; }
+
+.crypto-price-wrap { text-align: right; }
+.crypto-price { font-size: 17px; font-weight: 800; letter-spacing: -.3px; }
+.crypto-change { font-size: 12px; font-weight: 700; margin-top: 2px; }
+.crypto-change.up { color: #10b981; }
+.crypto-change.down { color: #f43f5e; }
+
+.crypto-chart-container {
+  width: 100%;
+  height: 180px;
+  margin-top: 4px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0d0d14;
+}
+
+.crypto-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.crypto-icon.btc { background: linear-gradient(135deg, #f7931a, #ffb347); }
+.crypto-icon.eth { background: linear-gradient(135deg, #627eea, #8fa8ff); }
+.crypto-icon.ton { background: linear-gradient(135deg, #0098ea, #33bbff); }
+.crypto-icon.sol { background: linear-gradient(135deg, #9945ff, #14f195); }
+.crypto-icon.trx { background: linear-gradient(135deg, #ff060a, #ff5c5c); }
+.crypto-icon.usdt { background: linear-gradient(135deg, #26a17b, #4ed6a8); }
+.crypto-icon.not { background: linear-gradient(135deg, #000000, #333333); }
+.crypto-icon.bnb { background: linear-gradient(135deg, #f3ba2f, #ffd966); }
+.crypto-icon.xrp { background: linear-gradient(135deg, #23292f, #4a5568); }
+.crypto-icon.doge { background: linear-gradient(135deg, #c2a633, #e0c44a); }
 </style>
 </head>
 <body>
@@ -413,6 +485,19 @@ button{font-family:inherit;cursor:pointer}
       </div>
     </section>
 
+    <section class="view hidden" id="cryptoView">
+      <div class="page-head" style="margin-bottom:14px">
+        <div class="page-q">Рынок <em>криптовалют</em></div>
+        <div class="page-sub" id="cryptoSub">Загрузка данных...</div>
+      </div>
+      <div id="cryptoGrid" class="crypto-grid">
+        <div class="crypto-loading">
+          <div class="spinner" style="width:30px;height:30px;border-width:2.5px"></div>
+          <span style="color:var(--muted);font-size:13px;margin-left:12px">Получаем актуальные данные...</span>
+        </div>
+      </div>
+    </section>
+
     <section class="view web hidden" id="webView">
       <div class="web-loading"><div class="spinner"></div></div>
       <iframe id="webframe" class="webframe"
@@ -441,9 +526,12 @@ button{font-family:inherit;cursor:pointer}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a2 2 0 01-2 2h-4v-6H9v6H5a2 2 0 01-2-2z"/></svg>
       Главная
     </button>
-    <button class="nav-btn" data-act="new">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      Новая
+    <button class="nav-btn" data-act="crypto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 6v12M15 9.5c0-1.5-1.3-2.5-3-2.5s-3 1-3 2.5 1.3 2.5 3 2.5 3 1 3 2.5-1.3 2.5-3 2.5-3-1-3-2.5"/>
+      </svg>
+      Крипта
     </button>
     <button class="nav-btn" data-act="tabs">
       <span class="tab-badge" id="tabCount">1</span>
@@ -467,9 +555,10 @@ button{font-family:inherit;cursor:pointer}
   <div id="sheetContent"></div>
 </div>
 
+<script src="https://s3.tradingview.com/tv.js"></script>
 <script>
 /* =====================================================================
-   ZERO BROWSER — search engine v3 (реальные результаты)
+   ZERO BROWSER — search engine v3 + crypto
    ===================================================================== */
 
 const $ = s => document.querySelector(s);
@@ -479,6 +568,7 @@ const homeView      = $('#homeView');
 const pageView      = $('#pageView');
 const webView       = $('#webView');
 const bookmarksView = $('#bookmarksView');
+const cryptoView    = $('#cryptoView');
 const address       = $('#address');
 const addrWrap      = $('#addrWrap');
 const bigSearch     = $('#bigSearch');
@@ -509,7 +599,6 @@ const state = {
   lastSelection: ''
 };
 
-/* ---------- CORS-прокси (перебираются по очереди) ---------- */
 const CORS_PROXIES = [
   'https://api.allorigins.win/raw?url=',
   'https://corsproxy.io/?url=',
@@ -576,7 +665,7 @@ btnStar.addEventListener('click', e => {
 
 /* ================= RIPPLE ================= */
 document.addEventListener('pointerdown', e => {
-  const el = e.target.closest('.icon-btn, .nav-btn, .tile, .tab-item, .new-tab-btn, .fab, .web-blocked button, .star-btn, .bm-del, .lang-btn, .quick-link, .translate-actions button');
+  const el = e.target.closest('.icon-btn, .nav-btn, .tile, .tab-item, .new-tab-btn, .fab, .web-blocked button, .star-btn, .bm-del, .lang-btn, .quick-link, .translate-actions button, .crypto-card');
   if (!el) return;
   const r = el.getBoundingClientRect();
   const size = Math.max(r.width, r.height) * 2.2;
@@ -646,12 +735,16 @@ function showView(name) {
   pageView.classList.toggle('hidden', name !== 'page');
   webView.classList.toggle('hidden', name !== 'web');
   bookmarksView.classList.toggle('hidden', name !== 'bookmarks');
+  cryptoView.classList.toggle('hidden', name !== 'crypto');
   $$('.nav-btn').forEach(b => {
     const isHome = b.dataset.act === 'home' && name === 'home';
     const isBm = b.dataset.act === 'bookmarks' && name === 'bookmarks';
-    b.classList.toggle('active', isHome || isBm);
+    const isCr = b.dataset.act === 'crypto' && name === 'crypto';
+    b.classList.toggle('active', isHome || isBm || isCr);
   });
   updateStar();
+  // Останавливаем обновления, когда уходим с крипты
+  if (name !== 'crypto') stopCryptoUpdates();
 }
 
 function renderEntry(entry, push = true) {
@@ -673,7 +766,6 @@ function renderEntry(entry, push = true) {
    ПОИСК
    ===================================================================== */
 
-/* --- Источник 1: DuckDuckGo через HTML-парсинг --- */
 async function searchDuckDuckGo(q) {
   try {
     const html = await fetchViaProxy('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(q) + '&kl=ru-ru');
@@ -709,7 +801,6 @@ async function searchDuckDuckGo(q) {
   }
 }
 
-/* --- Источник 2: YouTube через Piped API --- */
 const PIPED_INSTANCES = [
   'https://pipedapi.kavin.rocks',
   'https://api.piped.private.coffee',
@@ -749,7 +840,6 @@ function formatViews(n) {
   return n + ' просмотров';
 }
 
-/* --- Источник 3: Wikipedia --- */
 async function searchWikipedia(q) {
   try {
     const url = 'https://ru.wikipedia.org/w/api.php?action=query&list=search&srsearch=' +
@@ -771,7 +861,6 @@ async function searchWikipedia(q) {
   }
 }
 
-/* --- Быстрые ссылки для любого запроса --- */
 function buildQuickLinks(q) {
   const enc = encodeURIComponent(q);
   return [
@@ -786,7 +875,6 @@ function buildQuickLinks(q) {
   ];
 }
 
-/* --- Главная функция поиска --- */
 async function runSearch(q, push = true) {
   if (push) pushHistory({ type: 'search', q });
   showView('page');
@@ -878,7 +966,7 @@ async function runSearch(q, push = true) {
 }
 
 /* =====================================================================
-   ЗАГРУЗКА URL В НАТИВНЫЙ WEBVIEW (полноценный браузер)
+   ЗАГРУЗКА URL В НАТИВНЫЙ WEBVIEW
    ===================================================================== */
 function loadUrl(rawUrl, push = true) {
   const url = normalizeUrl(rawUrl);
@@ -890,13 +978,11 @@ function loadUrl(rawUrl, push = true) {
   const tab = state.tabs.find(t => t.id === state.activeTab);
   if (tab) { tab.title = state.currentTitle; tab.url = url; }
 
-  // Если мы в APK — открываем через нативный WebView (полноценный браузер)
   if (window.ZeroAndroid && typeof window.ZeroAndroid.openUrl === 'function') {
     window.ZeroAndroid.openUrl(url);
     return;
   }
 
-  // Fallback для обычного браузера — iframe (как было)
   showView('web');
   webView.classList.remove('loaded');
   webBlocked.classList.remove('show');
@@ -969,6 +1055,8 @@ btnReload.addEventListener('click', () => {
   } else if (state.view === 'page') {
     const q = $('#pageQuery').textContent;
     if (q) runSearch(q, false);
+  } else if (state.view === 'crypto') {
+    fetchCryptoPrices();
   }
 });
 $('#openExternal').addEventListener('click', () => {
@@ -979,7 +1067,7 @@ $('#openExternalFromBlocked').addEventListener('click', () => {
 });
 
 /* =====================================================================
-   ПЕРЕВОДЧИК (LibreTranslate)
+   ПЕРЕВОДЧИК
    ===================================================================== */
 const TRANSLATE_ENDPOINTS = [
   'https://translate.astian.org/translate',
@@ -1100,6 +1188,132 @@ function openTranslator() {
 }
 
 /* =====================================================================
+   КРИПТА
+   ===================================================================== */
+const CRYPTO_LIST = [
+  { id: 'bitcoin',   symbol: 'BTC',  name: 'Bitcoin',   icon: 'B',  iconClass: 'btc',  tvSymbol: 'BINANCE:BTCUSDT' },
+  { id: 'ethereum',  symbol: 'ETH',  name: 'Ethereum',  icon: 'E',  iconClass: 'eth',  tvSymbol: 'BINANCE:ETHUSDT' },
+  { id: 'the-open-network', symbol: 'TON', name: 'Toncoin', icon: 'T', iconClass: 'ton', tvSymbol: 'OKX:TONUSDT' },
+  { id: 'solana',    symbol: 'SOL',  name: 'Solana',    icon: 'S',  iconClass: 'sol',  tvSymbol: 'BINANCE:SOLUSDT' },
+  { id: 'tron',      symbol: 'TRX',  name: 'TRON',      icon: 'T',  iconClass: 'trx',  tvSymbol: 'BINANCE:TRXUSDT' },
+  { id: 'tether',    symbol: 'USDT', name: 'Tether',    icon: 'U',  iconClass: 'usdt', tvSymbol: 'BINANCE:USDTUSD' },
+  { id: 'notcoin',   symbol: 'NOT',  name: 'Notcoin',   icon: 'N',  iconClass: 'not',  tvSymbol: 'OKX:NOTUSDT' },
+  { id: 'binancecoin', symbol: 'BNB', name: 'BNB',      icon: 'B',  iconClass: 'bnb',  tvSymbol: 'BINANCE:BNBUSDT' },
+  { id: 'ripple',    symbol: 'XRP',  name: 'XRP',       icon: 'X',  iconClass: 'xrp',  tvSymbol: 'BINANCE:XRPUSDT' },
+  { id: 'dogecoin',  symbol: 'DOGE', name: 'Dogecoin',  icon: 'D',  iconClass: 'doge', tvSymbol: 'BINANCE:DOGEUSDT' }
+];
+
+let cryptoPricesInterval = null;
+
+function renderCryptoCards() {
+  const grid = $('#cryptoGrid');
+  if (!grid) return;
+
+  grid.innerHTML = CRYPTO_LIST.map((coin, i) => `
+    <div class="crypto-card" style="animation-delay:${(i * 0.05).toFixed(2)}s">
+      <div class="crypto-header">
+        <div class="crypto-name-wrap">
+          <div class="crypto-icon ${coin.iconClass}">${coin.icon}</div>
+          <div>
+            <div class="crypto-name">${coin.name}</div>
+            <div class="crypto-symbol">${coin.symbol}</div>
+          </div>
+        </div>
+        <div class="crypto-price-wrap">
+          <div class="crypto-price" id="price-${coin.symbol}">—</div>
+          <div class="crypto-change" id="change-${coin.symbol}">—</div>
+        </div>
+      </div>
+      <div class="crypto-chart-container" id="chart-${coin.symbol}"></div>
+    </div>
+  `).join('');
+
+  // Графики TradingView
+  CRYPTO_LIST.forEach(coin => {
+    const container = document.getElementById('chart-' + coin.symbol);
+    if (!container) return;
+    if (typeof TradingView !== 'undefined') {
+      new TradingView.widget({
+        "autosize": true,
+        "symbol": coin.tvSymbol,
+        "interval": "60",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "ru",
+        "toolbar_bg": "#0d0d14",
+        "enable_publishing": false,
+        "hide_side_toolbar": true,
+        "allow_symbol_change": false,
+        "save_image": false,
+        "container_id": "chart-" + coin.symbol
+      });
+    } else {
+      container.innerHTML = '<div style="display:grid;place-items:center;height:100%;color:#8b8b96;font-size:12px">График недоступен</div>';
+    }
+  });
+
+  fetchCryptoPrices();
+  if (cryptoPricesInterval) clearInterval(cryptoPricesInterval);
+  cryptoPricesInterval = setInterval(fetchCryptoPrices, 60000);
+}
+
+async function fetchCryptoPrices() {
+  const sub = $('#cryptoSub');
+  if (sub) sub.textContent = 'Обновление...';
+
+  try {
+    const ids = CRYPTO_LIST.map(c => c.id).join(',');
+    const url = 'https://api.coingecko.com/api/v3/simple/price?ids=' + ids + '&vs_currencies=usd&include_24hr_change=true';
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('CoinGecko error');
+    const data = await res.json();
+
+    CRYPTO_LIST.forEach(coin => {
+      const d = data[coin.id];
+      if (!d) return;
+
+      const priceEl = document.getElementById('price-' + coin.symbol);
+      const changeEl = document.getElementById('change-' + coin.symbol);
+
+      if (priceEl) {
+        const p = d.usd;
+        priceEl.textContent = p >= 1
+          ? '$' + p.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+          : '$' + p.toFixed(6);
+      }
+
+      if (changeEl) {
+        const c = d.usd_24h_change || 0;
+        changeEl.textContent = (c >= 0 ? '+' : '') + c.toFixed(2) + '%';
+        changeEl.className = 'crypto-change ' + (c >= 0 ? 'up' : 'down');
+      }
+    });
+
+    if (sub) {
+      const now = new Date();
+      const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+      sub.textContent = 'Обновлено в ' + time + ' • CoinGecko';
+    }
+  } catch (e) {
+    console.error('Crypto fetch error:', e);
+    if (sub) sub.textContent = 'Ошибка загрузки цен. Потяните вниз или откройте заново.';
+  }
+}
+
+function stopCryptoUpdates() {
+  if (cryptoPricesInterval) {
+    clearInterval(cryptoPricesInterval);
+    cryptoPricesInterval = null;
+  }
+}
+
+function showCrypto() {
+  showView('crypto');
+  renderCryptoCards();
+}
+
+/* =====================================================================
    НАВИГАЦИЯ
    ===================================================================== */
 $$('.nav-btn').forEach(btn => {
@@ -1112,9 +1326,9 @@ $$('.nav-btn').forEach(btn => {
         renderEntry({ type: 'home' });
       }
     }
-    if (act === 'new')  addTab();
     if (act === 'tabs') openSheet('tabs');
     if (act === 'bookmarks') showBookmarks();
+    if (act === 'crypto') showCrypto();
     if (act === 'settings') openSheet('settings');
   });
 });
@@ -1167,20 +1381,6 @@ function renderBookmarks() {
 }
 
 /* ================= ВКЛАДКИ ================= */
-function addTab() {
-  const id = state.nextId++;
-  const grads = ['g-e','g-f','g-g','g-h','g-b','g-c'];
-  state.tabs.push({
-    id, title: 'Новая вкладка', url: 'zero://home',
-    grad: grads[id % grads.length], letter: 'Z'
-  });
-  state.activeTab = id;
-  updateTabCount();
-  state.history = [{ type: 'home' }];
-  state.histIndex = 0;
-  updateNavButtons();
-  renderEntry({ type: 'home' }, false);
-}
 function updateTabCount() { tabCount.textContent = state.tabs.length; }
 
 /* ================= ШТОРКА ================= */
@@ -1194,8 +1394,7 @@ function openSheet(type) {
             <div class="tab-title">${escapeHtml(t.title)}</div>
             <div class="tab-url">${escapeHtml(t.url)}</div>
           </div>
-        </div>`).join('') +
-      `<button class="new-tab-btn" id="sheetNewTab">+ Новая вкладка</button>`;
+        </div>`).join('');
     sheetContent.querySelectorAll('.tab-item').forEach(item => {
       item.addEventListener('click', () => {
         state.activeTab = +item.dataset.id;
@@ -1203,12 +1402,11 @@ function openSheet(type) {
         renderEntry({ type: 'home' }, false);
       });
     });
-    const nt = $('#sheetNewTab');
-    if (nt) nt.addEventListener('click', () => { addTab(); closeSheet(); });
   }
   if (type === 'settings') {
     sheetContent.innerHTML = `<div class="sheet-title">Настройки</div>` +
       menuItem('🔖','Закладки','open-bookmarks') +
+      menuItem('📈','Крипта','open-crypto') +
       menuItem('🌐','Переводчик','translator') +
       menuItem('🎨','Тема оформления','theme') +
       menuItem('🔍','Поисковик по умолчанию','search') +
@@ -1230,6 +1428,7 @@ function bindMenu() {
     i.addEventListener('click', () => {
       const key = i.dataset.key;
       if (key === 'open-bookmarks') { closeSheet(); showBookmarks(); return; }
+      if (key === 'open-crypto') { closeSheet(); showCrypto(); return; }
       if (key === 'translator') { closeSheet(); if (state.currentUrl) setTimeout(openTranslator, 300); return; }
       closeSheet();
     });
@@ -1267,4 +1466,4 @@ updateStar();
 setTimeout(() => bigSearch.focus({ preventScroll: true }), 600);
 </script>
 </body>
-</html>
+  </html>
