@@ -469,8 +469,7 @@ button{font-family:inherit;cursor:pointer}
 
 <script>
 /* =====================================================================
-   ZERO BROWSER — search engine v2
-   Источники: DuckDuckGo (HTML-парсинг), YouTube (Piped API), Wikipedia (MediaWiki)
+   ZERO BROWSER — search engine v3 (реальные результаты)
    ===================================================================== */
 
 const $ = s => document.querySelector(s);
@@ -685,7 +684,6 @@ async function searchDuckDuckGo(q) {
       const snip = node.querySelector('.result__snippet');
       if (!a) return;
       let href = a.getAttribute('href') || '';
-      // DDG иногда оборачивает ссылки в редирект
       if (href.startsWith('//duckduckgo.com/l/?uddg=')) {
         try {
           const u = new URL('https:' + href);
@@ -704,14 +702,14 @@ async function searchDuckDuckGo(q) {
         badge: hostOf(href)
       });
     });
-    return out.slice(0, 12);
+    return out.slice(0, 15);
   } catch (e) {
     console.error('DDG error', e);
     return [];
   }
 }
 
-/* --- Источник 2: YouTube через Piped API (открытый фронтенд) --- */
+/* --- Источник 2: YouTube через Piped API --- */
 const PIPED_INSTANCES = [
   'https://pipedapi.kavin.rocks',
   'https://api.piped.private.coffee',
@@ -773,16 +771,18 @@ async function searchWikipedia(q) {
   }
 }
 
-/* --- Специальный блок «Быстрые ссылки» для сериалов/фильмов --- */
+/* --- Быстрые ссылки для любого запроса --- */
 function buildQuickLinks(q) {
   const enc = encodeURIComponent(q);
   return [
+    { name: 'Google', url: 'https://www.google.com/search?q=' + enc },
+    { name: 'Яндекс', url: 'https://yandex.ru/search/?text=' + enc },
+    { name: 'YouTube', url: 'https://m.youtube.com/results?search_query=' + enc },
+    { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' + enc },
     { name: 'Kinopoisk', url: 'https://www.kinopoisk.ru/index.php?kp_query=' + enc },
     { name: 'Filmix', url: 'https://filmix.my/search/' + enc },
     { name: 'HDrezka', url: 'https://rezka.ag/search/?q=' + enc },
-    { name: 'KinoGo', url: 'https://kinoogo.zone/?s=' + enc },
-    { name: 'LordFilm', url: 'https://lordfilm.la/index.php?do=search&story=' + enc },
-    { name: 'Rutube', url: 'https://rutube.ru/search/?query=' + enc }
+    { name: 'RuTracker', url: 'https://rutracker.org/forum/tracker.php?nm=' + enc }
   ];
 }
 
@@ -804,7 +804,6 @@ async function runSearch(q, push = true) {
   const resultsContainer = $('#results');
   resultsContainer.innerHTML = '';
 
-  // Запускаем параллельно
   const [webRes, ytRes, wikiRes] = await Promise.allSettled([
     searchDuckDuckGo(q),
     searchYouTube(q),
@@ -815,12 +814,11 @@ async function runSearch(q, push = true) {
   const yt  = ytRes.status === 'fulfilled'  ? ytRes.value  : [];
   const wiki= wikiRes.status === 'fulfilled'? wikiRes.value: [];
 
-  // Быстрые ссылки для просмотра
   const quick = buildQuickLinks(q);
   const qlHTML = `
     <div class="section-title">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Смотреть онлайн
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+      Быстрые ссылки
     </div>
     <div class="quick-links">
       ${quick.map(l => `
@@ -862,13 +860,12 @@ async function runSearch(q, push = true) {
   if (yt.length + web.length + wiki.length === 0) {
     html += `<div class="result"><div class="result-body">
       <div class="result-title">Ничего не найдено</div>
-      <div class="result-desc">Попробуйте изменить запрос или откройте ссылку из блока «Смотреть онлайн».</div>
+      <div class="result-desc">Попробуйте изменить запрос или откройте ссылку из блока «Быстрые ссылки».</div>
     </div></div>`;
   }
 
   resultsContainer.innerHTML = html;
 
-  // Обработчики кликов
   resultsContainer.querySelectorAll('.quick-link').forEach(btn => {
     btn.addEventListener('click', () => renderEntry({ type: 'url', url: btn.dataset.url }));
   });
@@ -881,20 +878,29 @@ async function runSearch(q, push = true) {
 }
 
 /* =====================================================================
-   ЗАГРУЗКА URL ВО ФРЕЙМ
+   ЗАГРУЗКА URL В НАТИВНЫЙ WEBVIEW (полноценный браузер)
    ===================================================================== */
 function loadUrl(rawUrl, push = true) {
   const url = normalizeUrl(rawUrl);
   if (!url) return;
   if (push) pushHistory({ type: 'url', url });
+  state.currentUrl = url;
+  state.currentTitle = hostOf(url);
+
+  const tab = state.tabs.find(t => t.id === state.activeTab);
+  if (tab) { tab.title = state.currentTitle; tab.url = url; }
+
+  // Если мы в APK — открываем через нативный WebView (полноценный браузер)
+  if (window.ZeroAndroid && typeof window.ZeroAndroid.openUrl === 'function') {
+    window.ZeroAndroid.openUrl(url);
+    return;
+  }
+
+  // Fallback для обычного браузера — iframe (как было)
   showView('web');
   webView.classList.remove('loaded');
   webBlocked.classList.remove('show');
   address.value = url;
-  state.currentUrl = url;
-  state.currentTitle = hostOf(url);
-  const tab = state.tabs.find(t => t.id === state.activeTab);
-  if (tab) { tab.title = state.currentTitle; tab.url = url; }
   webframe.src = url;
   updateStar();
   clearTimeout(state.blockedTimer);
@@ -902,6 +908,7 @@ function loadUrl(rawUrl, push = true) {
     if (!webView.classList.contains('loaded')) webBlocked.classList.add('show');
   }, 4000);
 }
+
 webframe.addEventListener('load', () => {
   clearTimeout(state.blockedTimer);
   webView.classList.add('loaded');
@@ -947,7 +954,13 @@ $('#tiles').addEventListener('click', e => {
   const tile = e.target.closest('.tile');
   if (tile) renderEntry({ type: 'url', url: tile.dataset.url });
 });
-btnBack.addEventListener('click', goBack);
+btnBack.addEventListener('click', () => {
+  if (window.ZeroAndroid && typeof window.ZeroAndroid.goBack === 'function') {
+    window.ZeroAndroid.goBack();
+  } else {
+    goBack();
+  }
+});
 btnFwd.addEventListener('click', goForward);
 btnReload.addEventListener('click', () => {
   if (state.view === 'web' && state.currentUrl) {
@@ -1092,7 +1105,13 @@ function openTranslator() {
 $$('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const act = btn.dataset.act;
-    if (act === 'home') renderEntry({ type: 'home' });
+    if (act === 'home') {
+      if (window.ZeroAndroid && typeof window.ZeroAndroid.goHome === 'function') {
+        window.ZeroAndroid.goHome();
+      } else {
+        renderEntry({ type: 'home' });
+      }
+    }
     if (act === 'new')  addTab();
     if (act === 'tabs') openSheet('tabs');
     if (act === 'bookmarks') showBookmarks();
@@ -1248,4 +1267,4 @@ updateStar();
 setTimeout(() => bigSearch.focus({ preventScroll: true }), 600);
 </script>
 </body>
-  </html>
+</html>
