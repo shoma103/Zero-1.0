@@ -4,7 +4,7 @@
     <!-- ============================================================
          ZERO BROWSER
          Минималистичный браузер на Chromium
-         Версия: 1.3.0
+         Версия: 1.4.0
          ============================================================ -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
@@ -15,7 +15,7 @@
 
     <style>
         /* ============================================================
-           ПЕРЕМЕННЫЕ И БАЗОВЫЕ СТИЛИ
+           1. ПЕРЕМЕННЫЕ
            ============================================================ */
         :root {
             --bg: #08080c;
@@ -38,6 +38,9 @@
             --glass: rgba(0, 0, 0, .04);
         }
 
+        /* ============================================================
+           2. СБРОС СТИЛЕЙ
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -71,7 +74,7 @@
         }
 
         /* ============================================================
-           ФОНОВЫЕ ОРБЫ
+           3. ФОНОВЫЕ ОРБЫ
            ============================================================ */
         .bg {
             position: fixed;
@@ -150,7 +153,7 @@
         }
 
         /* ============================================================
-           КАРКАС ПРИЛОЖЕНИЯ
+           4. КАРКАС
            ============================================================ */
         .app {
             position: fixed;
@@ -163,7 +166,7 @@
         }
 
         /* ============================================================
-           ВЕРХНЯЯ ПАНЕЛЬ
+           5. ВЕРХНЯЯ ПАНЕЛЬ
            ============================================================ */
         .topbar {
             display: flex;
@@ -215,7 +218,7 @@
         }
 
         /* ============================================================
-           АДРЕСНАЯ СТРОКА
+           6. АДРЕСНАЯ СТРОКА
            ============================================================ */
         .address-wrap {
             flex: 1;
@@ -316,7 +319,7 @@
         }
 
         /* ============================================================
-           ПРИВАТНЫЙ РЕЖИМ
+           7. ПРИВАТНЫЙ РЕЖИМ
            ============================================================ */
         body.private .topbar {
             background: linear-gradient(180deg, rgba(20, 10, 30, .95), rgba(20, 10, 30, .5));
@@ -345,7 +348,7 @@
         }
 
         /* ============================================================
-           КОНТЕНТ И ВИДЫ
+           8. КОНТЕНТ И ВИДЫ
            ============================================================ */
         .content {
             flex: 1;
@@ -396,7 +399,7 @@
         }
 
         /* ============================================================
-           ГЛАВНАЯ — HERO
+           9. ГЛАВНАЯ
            ============================================================ */
         .hero {
             text-align: center;
@@ -425,9 +428,6 @@
             font-weight: 500;
         }
 
-        /* ============================================================
-           БОЛЬШОЙ ПОИСК НА ГЛАВНОЙ
-           ============================================================ */
         .big-search {
             padding: 1.5px;
             border-radius: 21px;
@@ -470,9 +470,6 @@
             color: var(--muted);
         }
 
-        /* ============================================================
-           ПЛИТКИ
-           ============================================================ */
         .tiles {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -517,40 +514,17 @@
             font-weight: 600;
         }
 
-        .g-a {
-            background: linear-gradient(135deg, #ff2d55, #ff6b35);
-        }
-
-        .g-b {
-            background: linear-gradient(135deg, #229ed9, #37bbfe);
-        }
-
-        .g-c {
-            background: linear-gradient(135deg, #0077ff, #4a9eff);
-        }
-
-        .g-d {
-            background: linear-gradient(135deg, #4b5563, #8b95a5);
-        }
-
-        .g-e {
-            background: linear-gradient(135deg, #7c3aed, #ec4899);
-        }
-
-        .g-f {
-            background: linear-gradient(135deg, #06b6d4, #3b82f6);
-        }
-
-        .g-g {
-            background: linear-gradient(135deg, #f59e0b, #f43f5e);
-        }
-
-        .g-h {
-            background: linear-gradient(135deg, #10b981, #06b6d4);
-        }
+        .g-a { background: linear-gradient(135deg, #ff2d55, #ff6b35); }
+        .g-b { background: linear-gradient(135deg, #229ed9, #37bbfe); }
+        .g-c { background: linear-gradient(135deg, #0077ff, #4a9eff); }
+        .g-d { background: linear-gradient(135deg, #4b5563, #8b95a5); }
+        .g-e { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+        .g-f { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+        .g-g { background: linear-gradient(135deg, #f59e0b, #f43f5e); }
+        .g-h { background: linear-gradient(135deg, #10b981, #06b6d4); }
 
         /* ============================================================
-           СТРАНИЦА РЕЗУЛЬТАТОВ
+           10. РЕЗУЛЬТАТЫ
            ============================================================ */
         .page-head {
             margin-bottom: 18px;
@@ -628,12 +602,8 @@
         }
 
         @keyframes load {
-            0% {
-                transform: translateX(-110%);
-            }
-            100% {
-                transform: translateX(400%);
-            }
+            0% { transform: translateX(-110%); }
+            100% { transform: translateX(400%); }
         }
 
         #pageView:not(.loading) .load-bar {
@@ -674,9 +644,6 @@
             height: 14px;
         }
 
-        /* ============================================================
-           КАТЕГОРИИ САЙТОВ
-           ============================================================ */
         .cat-block {
             margin-bottom: 20px;
             animation: up .5s var(--ease) both;
@@ -759,9 +726,6 @@
             text-overflow: ellipsis;
         }
 
-        /* ============================================================
-           РЕЗУЛЬТАТЫ ПОИСКА
-           ============================================================ */
         .result {
             display: flex;
             gap: 13px;
@@ -849,28 +813,14 @@
             text-transform: uppercase;
         }
 
-        .result-badge.yt {
-            background: rgba(255, 45, 85, .22);
-            color: #ff8fa8;
-        }
-
-        .result-badge.wiki {
-            background: rgba(124, 58, 237, .22);
-            color: #c4b5fd;
-        }
-
-        .result-badge.web {
-            background: rgba(6, 182, 212, .2);
-            color: #67e8f9;
-        }
+        .result-badge.yt { background: rgba(255, 45, 85, .22); color: #ff8fa8; }
+        .result-badge.wiki { background: rgba(124, 58, 237, .22); color: #c4b5fd; }
+        .result-badge.web { background: rgba(6, 182, 212, .2); color: #67e8f9; }
 
         /* ============================================================
-           ИСТОРИЯ
+           11. ИСТОРИЯ / ЗАГРУЗКИ / ЗАКЛАДКИ
            ============================================================ */
-        .hist-group {
-            margin-bottom: 18px;
-            animation: up .55s var(--ease) both;
-        }
+        .hist-group { margin-bottom: 18px; animation: up .55s var(--ease) both; }
 
         .hist-date {
             font-size: 11.5px;
@@ -908,10 +858,7 @@
             flex: 0 0 42px;
         }
 
-        .hist-body {
-            flex: 1;
-            min-width: 0;
-        }
+        .hist-body { flex: 1; min-width: 0; }
 
         .hist-title {
             font-size: 13.5px;
@@ -960,9 +907,6 @@
             background: rgba(244, 63, 94, .12);
         }
 
-        /* ============================================================
-           ЗАГРУЗКИ
-           ============================================================ */
         .dl-item {
             display: flex;
             align-items: center;
@@ -990,10 +934,7 @@
             box-shadow: 0 8px 22px -10px rgba(0, 0, 0, .8);
         }
 
-        .dl-body {
-            flex: 1;
-            min-width: 0;
-        }
+        .dl-body { flex: 1; min-width: 0; }
 
         .dl-name {
             font-size: 14px;
@@ -1012,9 +953,6 @@
             text-overflow: ellipsis;
         }
 
-        /* ============================================================
-           ЗАКЛАДКИ
-           ============================================================ */
         .bm-item {
             display: flex;
             align-items: center;
@@ -1046,10 +984,7 @@
             color: #fff;
         }
 
-        .bm-body {
-            flex: 1;
-            min-width: 0;
-        }
+        .bm-body { flex: 1; min-width: 0; }
 
         .bm-title {
             font-size: 14.5px;
@@ -1068,9 +1003,6 @@
             text-overflow: ellipsis;
         }
 
-        /* ============================================================
-           ПУСТЫЕ СОСТОЯНИЯ
-           ============================================================ */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -1102,9 +1034,6 @@
             margin: 0 auto;
         }
 
-        /* ============================================================
-           ПОИСК ВНУТРИ РАЗДЕЛА
-           ============================================================ */
         .search-box {
             padding: 12px 16px;
             border-radius: 14px;
@@ -1138,11 +1067,9 @@
         }
 
         /* ============================================================
-           НАСТРОЙКИ
+           12. НАСТРОЙКИ
            ============================================================ */
-        .settings-group {
-            margin-bottom: 24px;
-        }
+        .settings-group { margin-bottom: 24px; }
 
         .settings-group-title {
             font-size: 11.5px;
@@ -1188,10 +1115,7 @@
             height: 20px;
         }
 
-        .settings-body {
-            flex: 1;
-            min-width: 0;
-        }
+        .settings-body { flex: 1; min-width: 0; }
 
         .settings-label {
             font-size: 14.5px;
@@ -1215,9 +1139,6 @@
             opacity: .6;
         }
 
-        /* ============================================================
-           ПИКЕР
-           ============================================================ */
         .picker-title {
             font-size: 16px;
             font-weight: 800;
@@ -1288,9 +1209,6 @@
             opacity: 1;
         }
 
-        /* ============================================================
-           О ПРИЛОЖЕНИИ
-           ============================================================ */
         .about-box {
             padding: 20px;
             border-radius: 20px;
@@ -1327,7 +1245,7 @@
         }
 
         /* ============================================================
-           ВЕБ-ФРЕЙМ
+           13. ВЕБ-ФРЕЙМ
            ============================================================ */
         .webframe {
             position: absolute;
@@ -1368,14 +1286,9 @@
         }
 
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
-        /* ============================================================
-           ПЛАВАЮЩИЕ КНОПКИ
-           ============================================================ */
         .fab {
             position: absolute;
             bottom: 20px;
@@ -1460,7 +1373,7 @@
         }
 
         /* ============================================================
-           НИЖНЯЯ ПАНЕЛЬ
+           14. НИЖНЯЯ ПАНЕЛЬ
            ============================================================ */
         .bottombar {
             display: flex;
@@ -1531,7 +1444,7 @@
         }
 
         /* ============================================================
-           RIPPLE
+           15. RIPPLE
            ============================================================ */
         .ripple {
             position: absolute;
@@ -1544,14 +1457,11 @@
         }
 
         @keyframes rip {
-            to {
-                transform: scale(1);
-                opacity: 0;
-            }
+            to { transform: scale(1); opacity: 0; }
         }
 
         /* ============================================================
-           ШТОРКА
+           16. ШТОРКА
            ============================================================ */
         .scrim {
             position: fixed;
@@ -1588,13 +1498,9 @@
             scrollbar-width: none;
         }
 
-        .sheet::-webkit-scrollbar {
-            display: none;
-        }
+        .sheet::-webkit-scrollbar { display: none; }
 
-        .sheet.show {
-            transform: none;
-        }
+        .sheet.show { transform: none; }
 
         .sheet-handle {
             width: 42px;
@@ -1649,11 +1555,7 @@
             color: #fff;
         }
 
-        .tab-meta {
-            flex: 1;
-            min-width: 0;
-            text-align: left;
-        }
+        .tab-meta { flex: 1; min-width: 0; text-align: left; }
 
         .tab-title {
             font-size: 14px;
@@ -1672,9 +1574,7 @@
             text-overflow: ellipsis;
         }
 
-        .tab-item.toggle-row {
-            justify-content: space-between;
-        }
+        .tab-item.toggle-row { justify-content: space-between; }
 
         .toggle {
             width: 48px;
@@ -1708,7 +1608,7 @@
         }
 
         /* ============================================================
-           ПЕРЕВОДЧИК
+           17. ПЕРЕВОДЧИК
            ============================================================ */
         .lang-grid {
             display: grid;
@@ -1733,19 +1633,14 @@
             transition: transform .45s var(--spring), background .3s, border-color .3s;
         }
 
-        .lang-btn:active {
-            transform: scale(.94);
-        }
+        .lang-btn:active { transform: scale(.94); }
 
         .lang-btn.current {
             background: linear-gradient(135deg, rgba(6, 182, 212, .35), rgba(59, 130, 246, .35));
             border-color: rgba(103, 232, 249, .5);
         }
 
-        .lang-flag {
-            font-size: 24px;
-            line-height: 1;
-        }
+        .lang-flag { font-size: 24px; line-height: 1; }
 
         .lang-name {
             font-size: 11px;
@@ -1826,26 +1721,26 @@
 
 <body>
 
-    <!-- ФОНОВЫЕ ОРБЫ -->
+    <!-- ФОН -->
     <div class="bg">
         <div class="orb a"></div>
         <div class="orb b"></div>
         <div class="orb c"></div>
     </div>
 
-    <!-- КАРКАС ПРИЛОЖЕНИЯ -->
+    <!-- ПРИЛОЖЕНИЕ -->
     <div class="app">
 
-        <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+        <!-- ВЕРХ -->
         <header class="topbar">
 
-            <button class="icon-btn off" id="btnBack" aria-label="Назад">
+            <button class="icon-btn off" id="btnBack">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M15 18l-6-6 6-6"/>
                 </svg>
             </button>
 
-            <button class="icon-btn off" id="btnFwd" aria-label="Вперёд">
+            <button class="icon-btn off" id="btnFwd">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 18l6-6-6-6"/>
                 </svg>
@@ -1861,7 +1756,7 @@
 
                     <input id="address" class="address" placeholder="Поиск или адрес" autocomplete="off" spellcheck="false" enterkeyhint="go">
 
-                    <button class="star-btn" id="btnStar" aria-label="В закладки">
+                    <button class="star-btn" id="btnStar">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
@@ -1870,7 +1765,7 @@
                 </div>
             </div>
 
-            <button class="icon-btn" id="btnReload" aria-label="Обновить">
+            <button class="icon-btn" id="btnReload">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 12a9 9 0 11-3-6.7"/>
                     <path d="M21 4v5h-5"/>
@@ -1884,12 +1779,10 @@
 
             <!-- ГЛАВНАЯ -->
             <section class="view" id="homeView">
-
                 <div class="hero">
                     <div class="logo">Zero</div>
                     <div class="tagline" id="taglineText">Минимализм. Скорость. Приватность.</div>
                 </div>
-
                 <div class="big-search">
                     <div class="big-search-inner">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
@@ -1899,71 +1792,32 @@
                         <input id="bigSearch" placeholder="Спросите Zero или введите адрес">
                     </div>
                 </div>
-
                 <div class="tiles" id="tiles">
-
-                    <div class="tile" data-url="https://m.youtube.com">
-                        <div class="tile-icon g-a">YT</div>
-                        <div class="tile-label">YouTube</div>
-                    </div>
-
-                    <div class="tile" data-url="https://telegram.org">
-                        <div class="tile-icon g-b">TG</div>
-                        <div class="tile-label">Telegram</div>
-                    </div>
-
-                    <div class="tile" data-url="https://m.vk.com">
-                        <div class="tile-icon g-c">VK</div>
-                        <div class="tile-label">ВКонтакте</div>
-                    </div>
-
-                    <div class="tile" data-url="https://github.com">
-                        <div class="tile-icon g-d">GH</div>
-                        <div class="tile-label">GitHub</div>
-                    </div>
-
-                    <div class="tile" data-url="https://ru.m.wikipedia.org">
-                        <div class="tile-icon g-e">W</div>
-                        <div class="tile-label">Википедия</div>
-                    </div>
-
-                    <div class="tile" data-url="https://www.reddit.com">
-                        <div class="tile-icon g-f">R</div>
-                        <div class="tile-label">Reddit</div>
-                    </div>
-
-                    <div class="tile" data-url="https://music.yandex.ru">
-                        <div class="tile-icon g-g">M</div>
-                        <div class="tile-label">Музыка</div>
-                    </div>
-
-                    <div class="tile" data-url="https://lenta.ru">
-                        <div class="tile-icon g-h">N</div>
-                        <div class="tile-label">Новости</div>
-                    </div>
-
+                    <div class="tile" data-url="https://m.youtube.com"><div class="tile-icon g-a">YT</div><div class="tile-label">YouTube</div></div>
+                    <div class="tile" data-url="https://telegram.org"><div class="tile-icon g-b">TG</div><div class="tile-label">Telegram</div></div>
+                    <div class="tile" data-url="https://m.vk.com"><div class="tile-icon g-c">VK</div><div class="tile-label">ВКонтакте</div></div>
+                    <div class="tile" data-url="https://github.com"><div class="tile-icon g-d">GH</div><div class="tile-label">GitHub</div></div>
+                    <div class="tile" data-url="https://ru.m.wikipedia.org"><div class="tile-icon g-e">W</div><div class="tile-label">Википедия</div></div>
+                    <div class="tile" data-url="https://www.reddit.com"><div class="tile-icon g-f">R</div><div class="tile-label">Reddit</div></div>
+                    <div class="tile" data-url="https://music.yandex.ru"><div class="tile-icon g-g">M</div><div class="tile-label">Музыка</div></div>
+                    <div class="tile" data-url="https://lenta.ru"><div class="tile-icon g-h">N</div><div class="tile-label">Новости</div></div>
                 </div>
-
             </section>
 
-            <!-- РЕЗУЛЬТАТЫ ПОИСКА -->
+            <!-- РЕЗУЛЬТАТЫ -->
             <section class="view hidden" id="pageView">
-
                 <div class="page-head">
                     <div>
                         <div class="page-q">Результаты по <em id="pageQuery">запросу</em></div>
                         <div class="page-sub" id="pageSub"></div>
                     </div>
                 </div>
-
                 <div class="load-bar"></div>
                 <div id="results"></div>
-
             </section>
 
             <!-- ИСТОРИЯ -->
             <section class="view hidden" id="historyView">
-
                 <div class="page-head">
                     <div>
                         <div class="page-q">История <em>посещений</em></div>
@@ -1971,7 +1825,6 @@
                     </div>
                     <button class="head-action danger" id="clearHistoryBtn">Очистить</button>
                 </div>
-
                 <div class="search-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
                         <circle cx="11" cy="11" r="7"/>
@@ -1979,9 +1832,7 @@
                     </svg>
                     <input id="historySearch" placeholder="Поиск по истории" autocomplete="off">
                 </div>
-
                 <div id="historyList"></div>
-
                 <div class="empty-state" id="historyEmpty" style="display:none">
                     <div class="empty-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1991,12 +1842,10 @@
                     </div>
                     <p>История пуста. Все посещённые страницы появятся здесь.</p>
                 </div>
-
             </section>
 
             <!-- ЗАГРУЗКИ -->
             <section class="view hidden" id="downloadsView">
-
                 <div class="page-head">
                     <div>
                         <div class="page-q">Мои <em>загрузки</em></div>
@@ -2004,23 +1853,19 @@
                     </div>
                     <button class="head-action danger" id="clearDownloadsBtn">Очистить</button>
                 </div>
-
                 <div id="downloadsList"></div>
-
                 <div class="empty-state" id="downloadsEmpty" style="display:none">
                     <div class="empty-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                         </svg>
                     </div>
-                    <p>Загрузок пока нет. Скачанные файлы появятся здесь.</p>
+                    <p>Загрузок пока нет.</p>
                 </div>
-
             </section>
 
             <!-- ЗАКЛАДКИ -->
             <section class="view hidden" id="bookmarksView">
-
                 <div class="page-head">
                     <div>
                         <div class="page-q" id="bmTitle">Мои <em>закладки</em></div>
@@ -2028,23 +1873,19 @@
                     </div>
                     <button class="head-action" id="bmExportBtn">Экспорт</button>
                 </div>
-
                 <div id="bookmarksList"></div>
-
                 <div class="empty-state" id="bookmarksEmpty" style="display:none">
                     <div class="empty-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
                     </div>
-                    <p id="bmEmptyText">Пока пусто. Нажмите ⭐ в адресной строке.</p>
+                    <p id="bmEmptyText">Пока пусто.</p>
                 </div>
-
             </section>
 
             <!-- НАСТРОЙКИ -->
             <section class="view hidden" id="settingsView">
-
                 <div class="page-head" style="margin-bottom:18px">
                     <div>
                         <div class="page-q" id="settingsTitle">Настройки</div>
@@ -2053,9 +1894,7 @@
                 </div>
 
                 <div class="settings-group">
-
                     <div class="settings-group-title" id="labelLangGroup">Язык</div>
-
                     <div class="settings-item" id="itemLang">
                         <div class="settings-icon g-e">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2071,7 +1910,6 @@
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
                     </div>
-
                     <div class="settings-item" id="itemSearch">
                         <div class="settings-icon g-c">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
@@ -2087,13 +1925,10 @@
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
                     </div>
-
                 </div>
 
                 <div class="settings-group">
-
                     <div class="settings-group-title" id="labelThemeGroup">Оформление</div>
-
                     <div class="settings-item" id="itemTheme">
                         <div class="settings-icon g-f">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2109,13 +1944,10 @@
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
                     </div>
-
                 </div>
 
                 <div class="settings-group">
-
                     <div class="settings-group-title" id="labelDataGroup">Данные</div>
-
                     <div class="settings-item" id="itemImportBm">
                         <div class="settings-icon g-d">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2130,7 +1962,6 @@
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
                     </div>
-
                     <div class="settings-item" id="itemClearBm">
                         <div class="settings-icon g-g">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2145,7 +1976,6 @@
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
                     </div>
-
                     <div class="settings-item" id="itemClearCookies">
                         <div class="settings-icon g-a">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2161,7 +1991,6 @@
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
                     </div>
-
                     <div class="settings-item" id="itemClearAll">
                         <div class="settings-icon" style="background:linear-gradient(135deg,#f43f5e,#ec4899)">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2177,7 +2006,6 @@
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
                     </div>
-
                     <div class="settings-item" id="itemReset">
                         <div class="settings-icon g-a">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2192,69 +2020,56 @@
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
                     </div>
-
                 </div>
 
                 <div class="settings-group">
-
                     <div class="settings-group-title" id="labelAboutGroup">О приложении</div>
-
                     <div class="about-box">
                         <div class="about-logo">Zero</div>
-                        <div class="about-ver">Версия 1.3.0</div>
+                        <div class="about-ver">Версия 1.4.0</div>
                         <div class="about-desc" id="aboutDesc">Приватный браузер без регистрации и сбора данных. Никаких аккаунтов, никакой аналитики. Всё хранится только на твоём устройстве.</div>
                     </div>
-
                 </div>
-
             </section>
 
-            <!-- ВЕБ-СТРАНИЦА -->
+            <!-- ВЕБ -->
             <section class="view web hidden" id="webView">
-
                 <div class="web-loading">
                     <div class="spinner"></div>
                 </div>
-
                 <iframe id="webframe" class="webframe" referrerpolicy="no-referrer"
                     sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation-by-user-activation">
                 </iframe>
-
-                <button class="fab fab-translate" id="btnTranslate" title="Перевести">
+                <button class="fab fab-translate" id="btnTranslate">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 5h10M8 3v2c0 5-3 8-5 9M5 9c0 3 3 5 5 6"/>
                         <path d="M12 21l5-12 5 12M14 17h6"/>
                     </svg>
                 </button>
-
-                <button class="fab fab-external" id="openExternal" title="Открыть в браузере">
+                <button class="fab fab-external" id="openExternal">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
                         <path d="M15 3h6v6"/>
                         <path d="M10 14L21 3"/>
                     </svg>
                 </button>
-
                 <div class="web-blocked" id="webBlocked">
                     <h3 id="blockedTitle">Сайт не разрешает встраивание</h3>
                     <p id="blockedDesc">Откройте ссылку во внешнем браузере.</p>
                     <button id="openExternalFromBlocked">Открыть в браузере</button>
                 </div>
-
             </section>
 
         </main>
 
         <!-- НИЖНЯЯ ПАНЕЛЬ -->
         <nav class="bottombar">
-
             <button class="nav-btn active" data-act="home">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 10l9-7 9 7v10a2 2 0 01-2 2h-4v-6H9v6H5a2 2 0 01-2-2z"/>
                 </svg>
                 <span id="navHome">Главная</span>
             </button>
-
             <button class="nav-btn" data-act="tabs">
                 <span class="tab-badge" id="tabCount">1</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2263,23 +2078,19 @@
                 </svg>
                 <span id="navTabs">Вкладки</span>
             </button>
-
             <button class="nav-btn" data-act="bookmarks">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
                 <span id="navBm">Закладки</span>
             </button>
-
             <button class="nav-btn" data-act="settings">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 21v-6M4 11V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 15h4M10 8h4M18 16h4"/>
                 </svg>
                 <span id="navSettings">Ещё</span>
             </button>
-
         </nav>
-
     </div>
 
     <!-- ШТОРКА -->
@@ -2319,183 +2130,123 @@
         const webBlocked = $('#webBlocked');
 
         /* ============================================================
-           КАТЕГОРИИ САЙТОВ
+           КАТЕГОРИИ
            ============================================================ */
         const CATEGORIES = [
-            {
-                emoji: '🎬',
-                name: 'Кино и сериалы',
-                sites: [
-                    { name: 'Kinopoisk', url: 'https://www.kinopoisk.ru/index.php?kp_query=' },
-                    { name: 'Filmix', url: 'https://filmix.my/search/' },
-                    { name: 'HDrezka', url: 'https://rezka.ag/search/?q=' },
-                    { name: 'LordFilm', url: 'https://lordfilm.la/index.php?do=search&story=' },
-                    { name: 'KinoGo', url: 'https://kinoogo.zone/?s=' },
-                    { name: 'Кинопоиск HD', url: 'https://hd.kinopoisk.ru/search?query=' },
-                    { name: 'Иви', url: 'https://www.ivi.ru/search/?q=' },
-                    { name: 'Okko', url: 'https://okko.tv/search/' },
-                    { name: 'Wink', url: 'https://wink.ru/search?query=' },
-                    { name: 'Premier', url: 'https://premier.one/search?query=' }
-                ]
-            },
-            {
-                emoji: '🌸',
-                name: 'Аниме',
-                sites: [
-                    { name: 'Anilibria', url: 'https://anilibria.tv/public/search.php?search=' },
-                    { name: 'AnimeGo', url: 'https://animego.org/search/anime?q=' },
-                    { name: 'Shikimori', url: 'https://shikimori.one/animes?search=' },
-                    { name: 'YummyAnime', url: 'https://yummyanime.tv/search/' },
-                    { name: 'Anime-Online', url: 'https://anime-online.ru/search?q=' },
-                    { name: 'AnimeVost', url: 'https://animevost.org/?s=' }
-                ]
-            },
-            {
-                emoji: '⚽',
-                name: 'Спорт',
-                sites: [
-                    { name: 'Sports.ru', url: 'https://www.sports.ru/search/?q=' },
-                    { name: 'Championat', url: 'https://www.championat.com/search/?q=' },
-                    { name: 'Soccer.ru', url: 'https://www.soccer.ru/search?q=' },
-                    { name: 'Sportbox', url: 'https://news.sportbox.ru/search?q=' },
-                    { name: 'Матч ТВ', url: 'https://matchtv.ru/search/?query=' },
-                    { name: 'СЭ', url: 'https://www.sport-express.ru/search/?q=' }
-                ]
-            },
-            {
-                emoji: '🎮',
-                name: 'Игры',
-                sites: [
-                    { name: 'Steam', url: 'https://store.steampowered.com/search/?term=' },
-                    { name: 'StopGame', url: 'https://stopgame.ru/search?q=' },
-                    { name: 'Игромания', url: 'https://www.igromania.ru/search/?q=' },
-                    { name: 'PlayGround', url: 'https://playground.ru/search/?q=' },
-                    { name: 'DTF', url: 'https://dtf.ru/search/v2/content?q=' },
-                    { name: 'VGTimes', url: 'https://vgtimes.ru/search/?q=' }
-                ]
-            },
-            {
-                emoji: '💰',
-                name: 'Криптовалюта',
-                sites: [
-                    { name: 'CoinMarketCap', url: 'https://coinmarketcap.com/search/?q=' },
-                    { name: 'CoinGecko', url: 'https://www.coingecko.com/en/search?query=' },
-                    { name: 'Binance', url: 'https://www.binance.com/ru/search?q=' },
-                    { name: 'РБК Крипто', url: 'https://www.rbc.ru/search/?query=' },
-                    { name: 'CoinDesk', url: 'https://www.coindesk.com/search?s=' },
-                    { name: 'ForkLog', url: 'https://forklog.com/?s=' }
-                ]
-            },
-            {
-                emoji: '💡',
-                name: 'Лайфхаки',
-                sites: [
-                    { name: 'Лайфхакер', url: 'https://lifehacker.ru/?s=' },
-                    { name: 'AdMe', url: 'https://adme.media/search/?q=' },
-                    { name: 'Пикабу', url: 'https://pikabu.ru/search.php?q=' },
-                    { name: 'Лайфхак', url: 'https://lifehacki.ru/?s=' },
-                    { name: 'Wonderzine', url: 'https://www.wonderzine.com/wonderzine/search?q=' }
-                ]
-            },
-            {
-                emoji: '🎵',
-                name: 'Музыка',
-                sites: [
-                    { name: 'Яндекс.Музыка', url: 'https://music.yandex.ru/search?text=' },
-                    { name: 'Spotify', url: 'https://open.spotify.com/search/' },
-                    { name: 'SoundCloud', url: 'https://soundcloud.com/search?q=' },
-                    { name: 'VK Музыка', url: 'https://vk.com/audio?q=' },
-                    { name: 'Apple Music', url: 'https://music.apple.com/ru/search?term=' },
-                    { name: 'Deezer', url: 'https://www.deezer.com/search/' }
-                ]
-            },
-            {
-                emoji: '📚',
-                name: 'Книги и обучение',
-                sites: [
-                    { name: 'Литрес', url: 'https://www.litres.ru/search/?q=' },
-                    { name: 'Флибуста', url: 'https://flibusta.is/booksearch?ask=' },
-                    { name: 'КиберЛенинка', url: 'https://cyberleninka.ru/search?q=' },
-                    { name: 'Хабр', url: 'https://habr.com/ru/search/?q=' },
-                    { name: 'Coursera', url: 'https://www.coursera.org/search?query=' },
-                    { name: 'Инфоурок', url: 'https://infourok.ru/search?search=' }
-                ]
-            },
-            {
-                emoji: '📰',
-                name: 'Новости',
-                sites: [
-                    { name: 'Яндекс.Новости', url: 'https://yandex.ru/news/search?text=' },
-                    { name: 'Lenta.ru', url: 'https://lenta.ru/search?query=' },
-                    { name: 'РБК', url: 'https://www.rbc.ru/search/?query=' },
-                    { name: 'РИА', url: 'https://ria.ru/search/?query=' },
-                    { name: 'ТАСС', url: 'https://tass.ru/search?searchStr=' },
-                    { name: 'Meduza', url: 'https://meduza.io/search?query=' }
-                ]
-            },
-            {
-                emoji: '🍳',
-                name: 'Рецепты',
-                sites: [
-                    { name: 'Поварёшка', url: 'https://povareshka.ru/?s=' },
-                    { name: 'ЕдимДома', url: 'https://www.edimdoma.ru/search?q=' },
-                    { name: 'Кулинарный', url: 'https://www.koolinar.ru/search?q=' },
-                    { name: 'Гастрономъ', url: 'https://www.gastronom.ru/search?query=' },
-                    { name: 'Повар.ру', url: 'https://povar.ru/search.html?q=' }
-                ]
-            },
-            {
-                emoji: '💼',
-                name: 'Работа',
-                sites: [
-                    { name: 'hh.ru', url: 'https://hh.ru/search/vacancy?text=' },
-                    { name: 'SuperJob', url: 'https://www.superjob.ru/vacancy/search/?keywords=' },
-                    { name: 'Работа.ру', url: 'https://www.rabota.ru/vacancies?query=' },
-                    { name: 'LinkedIn', url: 'https://www.linkedin.com/jobs/search/?keywords=' },
-                    { name: 'Avito Работа', url: 'https://www.avito.ru/rossiya/vakansii?q=' }
-                ]
-            },
-            {
-                emoji: '🩺',
-                name: 'Здоровье',
-                sites: [
-                    { name: 'Rlsnet', url: 'https://www.rlsnet.ru/search?query=' },
-                    { name: 'Здоровье Mail', url: 'https://health.mail.ru/search/?q=' },
-                    { name: 'MedAboutMe', url: 'https://medaboutme.ru/search/?q=' },
-                    { name: 'WebMD', url: 'https://www.webmd.com/search/search_results/default.aspx?query=' }
-                ]
-            },
-            {
-                emoji: '🚗',
-                name: 'Авто',
-                sites: [
-                    { name: 'Drive2', url: 'https://www.drive2.ru/search/?text=' },
-                    { name: 'Drom', url: 'https://www.drom.ru/search/?q=' },
-                    { name: 'Auto.ru', url: 'https://auto.ru/search/?query=' },
-                    { name: 'За рулём', url: 'https://www.zr.ru/search/?q=' }
-                ]
-            },
-            {
-                emoji: '✈️',
-                name: 'Путешествия',
-                sites: [
-                    { name: 'Aviasales', url: 'https://www.aviasales.ru/search?q=' },
-                    { name: 'Ostrovok', url: 'https://ostrovok.ru/search/?q=' },
-                    { name: 'Туту.ру', url: 'https://www.tutu.ru/search/?q=' },
-                    { name: 'Booking', url: 'https://www.booking.com/searchresults.ru.html?ss=' }
-                ]
-            },
-            {
-                emoji: '🛒',
-                name: 'Покупки',
-                sites: [
-                    { name: 'Ozon', url: 'https://www.ozon.ru/search/?text=' },
-                    { name: 'Wildberries', url: 'https://www.wildberries.ru/catalog/0/search.aspx?search=' },
-                    { name: 'Яндекс.Маркет', url: 'https://market.yandex.ru/search?text=' },
-                    { name: 'AliExpress', url: 'https://aliexpress.ru/wholesale?SearchText=' },
-                    { name: 'Avito', url: 'https://www.avito.ru/all?q=' }
-                ]
-            }
+            { emoji: '🎬', name: 'Кино и сериалы', sites: [
+                { name: 'Kinopoisk', url: 'https://www.kinopoisk.ru/index.php?kp_query=' },
+                { name: 'Filmix', url: 'https://filmix.my/search/' },
+                { name: 'HDrezka', url: 'https://rezka.ag/search/?q=' },
+                { name: 'LordFilm', url: 'https://lordfilm.la/index.php?do=search&story=' },
+                { name: 'KinoGo', url: 'https://kinoogo.zone/?s=' },
+                { name: 'Кинопоиск HD', url: 'https://hd.kinopoisk.ru/search?query=' },
+                { name: 'Иви', url: 'https://www.ivi.ru/search/?q=' },
+                { name: 'Okko', url: 'https://okko.tv/search/' },
+                { name: 'Wink', url: 'https://wink.ru/search?query=' },
+                { name: 'Premier', url: 'https://premier.one/search?query=' }
+            ]},
+            { emoji: '🌸', name: 'Аниме', sites: [
+                { name: 'Anilibria', url: 'https://anilibria.tv/public/search.php?search=' },
+                { name: 'AnimeGo', url: 'https://animego.org/search/anime?q=' },
+                { name: 'Shikimori', url: 'https://shikimori.one/animes?search=' },
+                { name: 'YummyAnime', url: 'https://yummyanime.tv/search/' },
+                { name: 'Anime-Online', url: 'https://anime-online.ru/search?q=' },
+                { name: 'AnimeVost', url: 'https://animevost.org/?s=' }
+            ]},
+            { emoji: '⚽', name: 'Спорт', sites: [
+                { name: 'Sports.ru', url: 'https://www.sports.ru/search/?q=' },
+                { name: 'Championat', url: 'https://www.championat.com/search/?q=' },
+                { name: 'Soccer.ru', url: 'https://www.soccer.ru/search?q=' },
+                { name: 'Sportbox', url: 'https://news.sportbox.ru/search?q=' },
+                { name: 'Матч ТВ', url: 'https://matchtv.ru/search/?query=' },
+                { name: 'СЭ', url: 'https://www.sport-express.ru/search/?q=' }
+            ]},
+            { emoji: '🎮', name: 'Игры', sites: [
+                { name: 'Steam', url: 'https://store.steampowered.com/search/?term=' },
+                { name: 'StopGame', url: 'https://stopgame.ru/search?q=' },
+                { name: 'Игромания', url: 'https://www.igromania.ru/search/?q=' },
+                { name: 'PlayGround', url: 'https://playground.ru/search/?q=' },
+                { name: 'DTF', url: 'https://dtf.ru/search/v2/content?q=' },
+                { name: 'VGTimes', url: 'https://vgtimes.ru/search/?q=' }
+            ]},
+            { emoji: '💰', name: 'Криптовалюта', sites: [
+                { name: 'CoinMarketCap', url: 'https://coinmarketcap.com/search/?q=' },
+                { name: 'CoinGecko', url: 'https://www.coingecko.com/en/search?query=' },
+                { name: 'Binance', url: 'https://www.binance.com/ru/search?q=' },
+                { name: 'РБК Крипто', url: 'https://www.rbc.ru/search/?query=' },
+                { name: 'CoinDesk', url: 'https://www.coindesk.com/search?s=' },
+                { name: 'ForkLog', url: 'https://forklog.com/?s=' }
+            ]},
+            { emoji: '💡', name: 'Лайфхаки', sites: [
+                { name: 'Лайфхакер', url: 'https://lifehacker.ru/?s=' },
+                { name: 'AdMe', url: 'https://adme.media/search/?q=' },
+                { name: 'Пикабу', url: 'https://pikabu.ru/search.php?q=' },
+                { name: 'Лайфхак', url: 'https://lifehacki.ru/?s=' },
+                { name: 'Wonderzine', url: 'https://www.wonderzine.com/wonderzine/search?q=' }
+            ]},
+            { emoji: '🎵', name: 'Музыка', sites: [
+                { name: 'Яндекс.Музыка', url: 'https://music.yandex.ru/search?text=' },
+                { name: 'Spotify', url: 'https://open.spotify.com/search/' },
+                { name: 'SoundCloud', url: 'https://soundcloud.com/search?q=' },
+                { name: 'VK Музыка', url: 'https://vk.com/audio?q=' },
+                { name: 'Apple Music', url: 'https://music.apple.com/ru/search?term=' },
+                { name: 'Deezer', url: 'https://www.deezer.com/search/' }
+            ]},
+            { emoji: '📚', name: 'Книги и обучение', sites: [
+                { name: 'Литрес', url: 'https://www.litres.ru/search/?q=' },
+                { name: 'Флибуста', url: 'https://flibusta.is/booksearch?ask=' },
+                { name: 'КиберЛенинка', url: 'https://cyberleninka.ru/search?q=' },
+                { name: 'Хабр', url: 'https://habr.com/ru/search/?q=' },
+                { name: 'Coursera', url: 'https://www.coursera.org/search?query=' },
+                { name: 'Инфоурок', url: 'https://infourok.ru/search?search=' }
+            ]},
+            { emoji: '📰', name: 'Новости', sites: [
+                { name: 'Яндекс.Новости', url: 'https://yandex.ru/news/search?text=' },
+                { name: 'Lenta.ru', url: 'https://lenta.ru/search?query=' },
+                { name: 'РБК', url: 'https://www.rbc.ru/search/?query=' },
+                { name: 'РИА', url: 'https://ria.ru/search/?query=' },
+                { name: 'ТАСС', url: 'https://tass.ru/search?searchStr=' },
+                { name: 'Meduza', url: 'https://meduza.io/search?query=' }
+            ]},
+            { emoji: '🍳', name: 'Рецепты', sites: [
+                { name: 'Поварёшка', url: 'https://povareshka.ru/?s=' },
+                { name: 'ЕдимДома', url: 'https://www.edimdoma.ru/search?q=' },
+                { name: 'Кулинарный', url: 'https://www.koolinar.ru/search?q=' },
+                { name: 'Гастрономъ', url: 'https://www.gastronom.ru/search?query=' },
+                { name: 'Повар.ру', url: 'https://povar.ru/search.html?q=' }
+            ]},
+            { emoji: '💼', name: 'Работа', sites: [
+                { name: 'hh.ru', url: 'https://hh.ru/search/vacancy?text=' },
+                { name: 'SuperJob', url: 'https://www.superjob.ru/vacancy/search/?keywords=' },
+                { name: 'Работа.ру', url: 'https://www.rabota.ru/vacancies?query=' },
+                { name: 'LinkedIn', url: 'https://www.linkedin.com/jobs/search/?keywords=' },
+                { name: 'Avito Работа', url: 'https://www.avito.ru/rossiya/vakansii?q=' }
+            ]},
+            { emoji: '🩺', name: 'Здоровье', sites: [
+                { name: 'Rlsnet', url: 'https://www.rlsnet.ru/search?query=' },
+                { name: 'Здоровье Mail', url: 'https://health.mail.ru/search/?q=' },
+                { name: 'MedAboutMe', url: 'https://medaboutme.ru/search/?q=' },
+                { name: 'WebMD', url: 'https://www.webmd.com/search/search_results/default.aspx?query=' }
+            ]},
+            { emoji: '🚗', name: 'Авто', sites: [
+                { name: 'Drive2', url: 'https://www.drive2.ru/search/?text=' },
+                { name: 'Drom', url: 'https://www.drom.ru/search/?q=' },
+                { name: 'Auto.ru', url: 'https://auto.ru/search/?query=' },
+                { name: 'За рулём', url: 'https://www.zr.ru/search/?q=' }
+            ]},
+            { emoji: '✈️', name: 'Путешествия', sites: [
+                { name: 'Aviasales', url: 'https://www.aviasales.ru/search?q=' },
+                { name: 'Ostrovok', url: 'https://ostrovok.ru/search/?q=' },
+                { name: 'Туту.ру', url: 'https://www.tutu.ru/search/?q=' },
+                { name: 'Booking', url: 'https://www.booking.com/searchresults.ru.html?ss=' }
+            ]},
+            { emoji: '🛒', name: 'Покупки', sites: [
+                { name: 'Ozon', url: 'https://www.ozon.ru/search/?text=' },
+                { name: 'Wildberries', url: 'https://www.wildberries.ru/catalog/0/search.aspx?search=' },
+                { name: 'Яндекс.Маркет', url: 'https://market.yandex.ru/search?text=' },
+                { name: 'AliExpress', url: 'https://aliexpress.ru/wholesale?SearchText=' },
+                { name: 'Avito', url: 'https://www.avito.ru/all?q=' }
+            ]}
         ];
 
         /* ============================================================
@@ -2509,7 +2260,7 @@
         };
 
         /* ============================================================
-           ЯЗЫКОВЫЕ ПАКЕТЫ
+           ЯЗЫКИ
            ============================================================ */
         const SETTINGS_KEY = 'zero_settings';
 
@@ -2588,17 +2339,14 @@
                 menuSettings: 'Все настройки',
                 privateOn: 'Приватный режим включён',
                 privateOff: 'Приватный режим выключен',
-                historyTitle: 'История',
-                historyEmpty: 'История пуста.',
                 historyCount: ['запись', 'записи', 'записей'],
                 today: 'Сегодня',
                 yesterday: 'Вчера',
-                downloadsTitle: 'Загрузки',
-                downloadsEmpty: 'Загрузок пока нет.',
                 downloadsCount: ['файл', 'файла', 'файлов'],
                 exportDone: 'Закладки экспортированы',
                 importDone: 'Закладки импортированы',
-                importError: 'Ошибка импорта'
+                importError: 'Ошибка импорта',
+                webFallback: 'Не удалось загрузить веб-результаты. Откройте поиск напрямую:'
             },
             en: {
                 tagline: 'Minimalism. Speed. Privacy.',
@@ -2674,17 +2422,14 @@
                 menuSettings: 'All settings',
                 privateOn: 'Private mode ON',
                 privateOff: 'Private mode OFF',
-                historyTitle: 'History',
-                historyEmpty: 'History is empty.',
                 historyCount: ['entry', 'entries', 'entries'],
                 today: 'Today',
                 yesterday: 'Yesterday',
-                downloadsTitle: 'Downloads',
-                downloadsEmpty: 'No downloads yet.',
                 downloadsCount: ['file', 'files', 'files'],
                 exportDone: 'Bookmarks exported',
                 importDone: 'Bookmarks imported',
-                importError: 'Import error'
+                importError: 'Import error',
+                webFallback: 'Could not load web results. Open search directly:'
             }
         };
 
@@ -2695,9 +2440,6 @@
 
         const THEMES = ['dark', 'light', 'auto'];
 
-        /* ============================================================
-           НАСТРОЙКИ И СОСТОЯНИЕ
-           ============================================================ */
         let settings = {
             lang: 'ru',
             theme: 'dark',
@@ -2808,7 +2550,7 @@
         }
 
         /* ============================================================
-           CORS-ПРОКСИ
+           ПРОКСИ
            ============================================================ */
         async function fetchViaProxy(u) {
             let lastErr = null;
@@ -2833,17 +2575,11 @@
             try {
                 const r = localStorage.getItem('zero_bookmarks');
                 state.bookmarks = r ? JSON.parse(r) : [];
-            } catch (e) {
-                state.bookmarks = [];
-            }
+            } catch (e) { state.bookmarks = []; }
         }
-
         function saveBookmarks() {
-            try {
-                localStorage.setItem('zero_bookmarks', JSON.stringify(state.bookmarks));
-            } catch (e) {}
+            try { localStorage.setItem('zero_bookmarks', JSON.stringify(state.bookmarks)); } catch (e) {}
         }
-
         loadBookmarks();
 
         function isBookmarked(url) {
@@ -2851,7 +2587,6 @@
             const n = normalizeUrl(url);
             return state.bookmarks.some(b => normalizeUrl(b.url) === n);
         }
-
         function toggleBookmark(url, title) {
             if (!url) return false;
             const n = normalizeUrl(url);
@@ -2862,25 +2597,19 @@
                 updateStar();
                 return false;
             }
-            state.bookmarks.unshift({
-                url: n,
-                title: title || hostOf(n),
-                added: Date.now()
-            });
+            state.bookmarks.unshift({ url: n, title: title || hostOf(n), added: Date.now() });
             saveBookmarks();
             updateStar();
             btnStar.classList.add('bounce');
             setTimeout(() => btnStar.classList.remove('bounce'), 600);
             return true;
         }
-
         function updateStar() {
             const on = isBookmarked(state.currentUrl);
             btnStar.classList.toggle('on', on);
             btnStar.style.opacity = state.currentUrl ? '' : '0';
             btnStar.style.pointerEvents = state.currentUrl ? '' : 'none';
         }
-
         btnStar.addEventListener('click', e => {
             e.stopPropagation();
             if (!state.currentUrl) return;
@@ -2895,17 +2624,11 @@
             try {
                 const r = localStorage.getItem('zero_history');
                 state.browsingHistory = r ? JSON.parse(r) : [];
-            } catch (e) {
-                state.browsingHistory = [];
-            }
+            } catch (e) { state.browsingHistory = []; }
         }
-
         function saveBrowsingHistory() {
-            try {
-                localStorage.setItem('zero_history', JSON.stringify(state.browsingHistory.slice(0, 500)));
-            } catch (e) {}
+            try { localStorage.setItem('zero_history', JSON.stringify(state.browsingHistory.slice(0, 500))); } catch (e) {}
         }
-
         loadBrowsingHistory();
 
         function addToHistory(url, title) {
@@ -2914,74 +2637,49 @@
             const norm = normalizeUrl(url);
             const last = state.browsingHistory[0];
             if (last && normalizeUrl(last.url) === norm && (Date.now() - last.visited) < 300000) return;
-            state.browsingHistory.unshift({
-                url: norm,
-                title: title || hostOf(norm),
-                visited: Date.now()
-            });
-            if (state.browsingHistory.length > 500) {
-                state.browsingHistory.length = 500;
-            }
+            state.browsingHistory.unshift({ url: norm, title: title || hostOf(norm), visited: Date.now() });
+            if (state.browsingHistory.length > 500) state.browsingHistory.length = 500;
             saveBrowsingHistory();
         }
-
         function updateHistoryCount() {
             const el = $('#historyCount');
             if (!el) return;
             el.textContent = state.browsingHistory.length === 0
-                ? '—'
-                : state.browsingHistory.length + ' ' + pluralN(state.browsingHistory.length, T().historyCount);
+                ? '—' : state.browsingHistory.length + ' ' + pluralN(state.browsingHistory.length, T().historyCount);
         }
-
-        function showHistory() {
-            showView('history');
-            renderHistory();
-        }
-
+        function showHistory() { showView('history'); renderHistory(); }
         function renderHistory() {
             const list = $('#historyList');
             const empty = $('#historyEmpty');
             updateHistoryCount();
             list.innerHTML = '';
-
             const q = ($('#historySearch').value || '').toLowerCase().trim();
             let items = state.browsingHistory;
-            if (q) {
-                items = items.filter(i =>
-                    (i.title || '').toLowerCase().includes(q) ||
-                    (i.url || '').toLowerCase().includes(q)
-                );
-            }
-
-            if (items.length === 0) {
-                empty.style.display = '';
-                return;
-            }
+            if (q) items = items.filter(i =>
+                (i.title || '').toLowerCase().includes(q) ||
+                (i.url || '').toLowerCase().includes(q)
+            );
+            if (items.length === 0) { empty.style.display = ''; return; }
             empty.style.display = 'none';
-
             const groups = {};
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
             const yesterday = today - 86400000;
-
             items.forEach(item => {
                 const d = new Date(item.visited);
                 const day = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-                let key;
-                if (day === today) key = T().today;
-                else if (day === yesterday) key = T().yesterday;
-                else key = d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+                let key = day === today ? T().today
+                    : day === yesterday ? T().yesterday
+                    : d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
                 if (!groups[key]) groups[key] = [];
                 groups[key].push(item);
             });
-
             let idx = 0;
             Object.entries(groups).forEach(([date, its]) => {
                 const g = document.createElement('div');
                 g.className = 'hist-group';
                 g.style.animationDelay = (idx * 0.04) + 's';
                 g.innerHTML = `<div class="hist-date">${escapeHtml(date)}</div>`;
-
                 its.forEach(item => {
                     const d = new Date(item.visited);
                     const time = d.getHours().toString().padStart(2, '0') + ':' +
@@ -3006,9 +2704,7 @@
                     });
                     el.querySelector('.hist-del').addEventListener('click', e => {
                         e.stopPropagation();
-                        const i = state.browsingHistory.findIndex(x =>
-                            x.url === item.url && x.visited === item.visited
-                        );
+                        const i = state.browsingHistory.findIndex(x => x.url === item.url && x.visited === item.visited);
                         if (i >= 0) {
                             state.browsingHistory.splice(i, 1);
                             saveBrowsingHistory();
@@ -3021,7 +2717,6 @@
                 idx++;
             });
         }
-
         $('#historySearch').addEventListener('input', renderHistory);
         $('#clearHistoryBtn').addEventListener('click', () => {
             const t = T();
@@ -3041,51 +2736,33 @@
             try {
                 const r = localStorage.getItem('zero_downloads');
                 state.downloads = r ? JSON.parse(r) : [];
-            } catch (e) {
-                state.downloads = [];
-            }
+            } catch (e) { state.downloads = []; }
         }
-
         function saveDownloads() {
-            try {
-                localStorage.setItem('zero_downloads', JSON.stringify(state.downloads.slice(0, 200)));
-            } catch (e) {}
+            try { localStorage.setItem('zero_downloads', JSON.stringify(state.downloads.slice(0, 200))); } catch (e) {}
         }
-
         loadDownloads();
-
         function updateDownloadsCount() {
             const el = $('#downloadsCount');
             if (!el) return;
             el.textContent = state.downloads.length === 0
-                ? '—'
-                : state.downloads.length + ' ' + pluralN(state.downloads.length, T().downloadsCount);
+                ? '—' : state.downloads.length + ' ' + pluralN(state.downloads.length, T().downloadsCount);
         }
-
-        function showDownloads() {
-            showView('downloads');
-            renderDownloads();
-        }
-
+        function showDownloads() { showView('downloads'); renderDownloads(); }
         function renderDownloads() {
             const list = $('#downloadsList');
             const empty = $('#downloadsEmpty');
             updateDownloadsCount();
             list.innerHTML = '';
-
-            if (state.downloads.length === 0) {
-                empty.style.display = '';
-                return;
-            }
+            if (state.downloads.length === 0) { empty.style.display = ''; return; }
             empty.style.display = 'none';
-
             const grads = ['g-a', 'g-b', 'g-c', 'g-e', 'g-f', 'g-g', 'g-h'];
             state.downloads.forEach((d, i) => {
                 const el = document.createElement('div');
                 el.className = 'dl-item';
                 el.style.animationDelay = (i * 0.04) + 's';
                 el.innerHTML = `
-                    <div class="dl-icon ${grads[i % grads.length]}">${(d.name[0] || '?').toUpperCase()}</div>
+                    <div class="dl-icon ${grads[i%grads.length]}">${(d.name[0] || '?').toUpperCase()}</div>
                     <div class="dl-body">
                         <div class="dl-name">${escapeHtml(d.name)}</div>
                         <div class="dl-meta">${new Date(d.date).toLocaleString('ru-RU')}</div>
@@ -3098,9 +2775,7 @@
                 `;
                 el.querySelector('.dl-del').addEventListener('click', e => {
                     e.stopPropagation();
-                    const idx = state.downloads.findIndex(x =>
-                        x.url === d.url && x.date === d.date
-                    );
+                    const idx = state.downloads.findIndex(x => x.url === d.url && x.date === d.date);
                     if (idx >= 0) {
                         state.downloads.splice(idx, 1);
                         saveDownloads();
@@ -3110,7 +2785,6 @@
                 list.appendChild(el);
             });
         }
-
         $('#clearDownloadsBtn').addEventListener('click', () => {
             const t = T();
             confirmSheet(t.clearDownloadsConfirmTitle, t.clearDownloadsConfirmText, t.confirmClear, () => {
@@ -3157,37 +2831,22 @@
             let s = String(input).trim();
             if (!s) return '';
             if (!/^https?:\/\//i.test(s)) s = 'https://' + s;
-            try {
-                return new URL(s).href;
-            } catch (e) {
-                return s;
-            }
+            try { return new URL(s).href; } catch (e) { return s; }
         }
-
         function isUrl(input) {
             const s = String(input).trim();
             if (/\s/.test(s)) return false;
             return /^([a-z]+:\/\/)?([\w-]+\.)+[a-z]{2,}(\/.*)?$/i.test(s);
         }
-
         function hostOf(url) {
-            try {
-                return new URL(url).hostname.replace(/^www\./, '');
-            } catch (e) {
-                return String(url);
-            }
+            try { return new URL(url).hostname.replace(/^www\./, ''); }
+            catch (e) { return String(url); }
         }
-
         function escapeHtml(s) {
             return String(s).replace(/[&<>"']/g, c => ({
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#39;'
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
             } [c]));
         }
-
         function pluralN(n, forms) {
             const a = Math.abs(n) % 100;
             const b = a % 10;
@@ -3196,13 +2855,10 @@
             if (b === 1) return forms[0];
             return forms[2];
         }
-
-        function pluralCount(n) {
-            return pluralN(n, T().bookmarksCount);
-        }
+        function pluralCount(n) { return pluralN(n, T().bookmarksCount); }
 
         /* ============================================================
-           ИСТОРИЯ НАВИГАЦИИ
+           НАВИГАЦИЯ
            ============================================================ */
         function pushHistory(e) {
             state.history = state.history.slice(0, state.histIndex + 1);
@@ -3210,19 +2866,16 @@
             state.histIndex = state.history.length - 1;
             updateNavButtons();
         }
-
         function updateNavButtons() {
             btnBack.classList.toggle('off', state.histIndex <= 0);
             btnFwd.classList.toggle('off', state.histIndex >= state.history.length - 1);
         }
-
         function goBack() {
             if (state.histIndex <= 0) return;
             state.histIndex--;
             renderEntry(state.history[state.histIndex], false);
             updateNavButtons();
         }
-
         function goForward() {
             if (state.histIndex >= state.history.length - 1) return;
             state.histIndex++;
@@ -3230,9 +2883,6 @@
             updateNavButtons();
         }
 
-        /* ============================================================
-           ВИДЫ
-           ============================================================ */
         function showView(name) {
             state.view = name;
             homeView.classList.toggle('hidden', name !== 'home');
@@ -3242,17 +2892,14 @@
             settingsView.classList.toggle('hidden', name !== 'settings');
             historyView.classList.toggle('hidden', name !== 'history');
             downloadsView.classList.toggle('hidden', name !== 'downloads');
-
             $$('.nav-btn').forEach(b => {
                 const h = b.dataset.act === 'home' && name === 'home';
                 const bm = b.dataset.act === 'bookmarks' && name === 'bookmarks';
                 const s = b.dataset.act === 'settings' && name === 'settings';
                 b.classList.toggle('active', h || bm || s);
             });
-
             updateStar();
         }
-
         function renderEntry(e, push = true) {
             if (push) pushHistory(e);
             if (e.type === 'home') {
@@ -3264,27 +2911,20 @@
                 updateStar();
                 return;
             }
-            if (e.type === 'search') {
-                runSearch(e.q, false);
-                return;
-            }
-            if (e.type === 'url') {
-                loadUrl(e.url, false);
-                return;
-            }
+            if (e.type === 'search') { runSearch(e.q, false); return; }
+            if (e.type === 'url') { loadUrl(e.url, false); return; }
         }
 
         /* ============================================================
-           ПОИСК DUCKDUCKGO
+           ПОИСК DDG
            ============================================================ */
-        async function searchDuckDuckGo(q) {
+        async function searchDDG(q) {
             try {
                 const html = await fetchViaProxy(
                     'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(q) + '&kl=ru-ru'
                 );
                 const doc = new DOMParser().parseFromString(html, 'text/html');
                 const out = [];
-
                 doc.querySelectorAll('.result').forEach(n => {
                     const a = n.querySelector('.result__a');
                     const s = n.querySelector('.result__snippet');
@@ -3308,23 +2948,69 @@
                         badge: hostOf(h)
                     });
                 });
-                return out.slice(0, 12);
-            } catch (e) {
-                return [];
-            }
+                return out;
+            } catch (e) { return []; }
+        }
+
+        /* ============================================================
+           ПОИСК BING
+           ============================================================ */
+        async function searchBing(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://www.bing.com/search?q=' + encodeURIComponent(q) + '&setlang=ru&cc=RU'
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('li.b_algo').forEach(li => {
+                    const a = li.querySelector('h2 a');
+                    const d = li.querySelector('.b_caption p') ||
+                        li.querySelector('.b_lineclamp2') ||
+                        li.querySelector('p');
+                    if (!a || !a.href) return;
+                    out.push({
+                        source: 'web',
+                        title: a.textContent.trim(),
+                        url: a.href,
+                        desc: d ? d.textContent.trim() : '',
+                        icon: hostOf(a.href)[0] ? hostOf(a.href)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(a.href)
+                    });
+                });
+                return out;
+            } catch (e) { return []; }
+        }
+
+        /* ============================================================
+           ОБЪЕДИНЁННЫЙ ПОИСК
+           ============================================================ */
+        async function searchWebMulti(q) {
+            const [ddg, bing] = await Promise.allSettled([searchDDG(q), searchBing(q)]);
+            const a = ddg.status === 'fulfilled' ? ddg.value : [];
+            const b = bing.status === 'fulfilled' ? bing.value : [];
+            const seen = new Set();
+            const merged = [];
+            a.concat(b).forEach(item => {
+                const key = normalizeUrl(item.url);
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    merged.push(item);
+                }
+            });
+            return merged.slice(0, 15);
         }
 
         /* ============================================================
            ПОИСК YOUTUBE
            ============================================================ */
-        const PIPED_INSTANCES = [
+        const PIPED = [
             'https://pipedapi.kavin.rocks',
             'https://api.piped.private.coffee',
             'https://pipedapi.adminforge.de'
         ];
-
         async function searchYouTube(q) {
-            for (const base of PIPED_INSTANCES) {
+            for (const base of PIPED) {
                 try {
                     const c = new AbortController();
                     const timer = setTimeout(() => c.abort(), 8000);
@@ -3346,13 +3032,10 @@
                         grad: 'g-a',
                         badge: 'YouTube'
                     }));
-                } catch (e) {
-                    continue;
-                }
+                } catch (e) { continue; }
             }
             return [];
         }
-
         function formatViews(n) {
             if (!n && n !== 0) return '';
             if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
@@ -3382,9 +3065,7 @@
                     grad: 'g-e',
                     badge: 'Wikipedia'
                 }));
-            } catch (e) {
-                return [];
-            }
+            } catch (e) { return []; }
         }
 
         /* ============================================================
@@ -3420,7 +3101,6 @@
                     </div>
                 </div>`;
             });
-
             return html;
         }
 
@@ -3449,7 +3129,7 @@
             rc.innerHTML = '';
 
             const [wR, yR, wkR] = await Promise.allSettled([
-                searchDuckDuckGo(q),
+                searchWebMulti(q),
                 searchYouTube(q),
                 searchWikipedia(q)
             ]);
@@ -3460,41 +3140,89 @@
 
             let html = buildCategoriesHTML(q);
 
-            const renderBlock = (items, title, icon) => {
-                if (!items.length) return '';
-                let b = `<div class="section-title">${icon}${title}</div>`;
-                items.forEach((it, i) => {
-                    const thumb = it.thumb ?
-                        `<div class="result-thumb"><img src="${escapeHtml(it.thumb)}" alt="" onerror="this.parentElement.classList.add('${it.grad||'g-c'}');this.parentElement.textContent='${it.icon||'?'}'"></div>` :
-                        `<div class="result-thumb ${it.grad||'g-c'}">${it.icon||'?'}</div>`;
-                    const bc = it.source === 'youtube' ? 'yt' : it.source === 'wiki' ? 'wiki' : 'web';
-                    b += `<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.05).toFixed(2)}s both">
+            /* --- Блок YouTube --- */
+            if (yt.length) {
+                html += `<div class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    ${t.ytTitle}
+                </div>`;
+                yt.forEach((it, i) => {
+                    const thumb = `<div class="result-thumb"><img src="${escapeHtml(it.thumb)}" alt=""></div>`;
+                    html += `<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.05).toFixed(2)}s both">
                         ${thumb}
                         <div class="result-body">
                             <div class="result-title">${escapeHtml(it.title)}</div>
                             <div class="result-url">${escapeHtml(hostOf(it.url))}</div>
                             <div class="result-desc">${escapeHtml(it.desc || '')}</div>
                         </div>
-                        <div class="result-badge ${bc}">${escapeHtml(it.badge || '')}</div>
+                        <div class="result-badge yt">YouTube</div>
                     </div>`;
                 });
-                return b;
-            };
+            }
 
-            html += renderBlock(yt, t.ytTitle,
-                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>');
-            html += renderBlock(web, t.webTitle,
-                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>');
-            html += renderBlock(wiki, t.wikiTitle,
-                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>');
+            /* --- Блок веб-результатов (ВСЕГДА) --- */
+            html += `<div class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/>
+                </svg>
+                ${t.webTitle}
+            </div>`;
 
-            if (yt.length + web.length + wiki.length === 0) {
-                html += `<div class="result">
-                    <div class="result-body">
-                        <div class="result-title">${t.nothingFound}</div>
-                        <div class="result-desc">${t.tryChange}</div>
+            if (web.length) {
+                web.forEach((it, i) => {
+                    const thumb = `<div class="result-thumb ${it.grad || 'g-c'}">${it.icon || '?'}</div>`;
+                    html += `<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.05).toFixed(2)}s both">
+                        ${thumb}
+                        <div class="result-body">
+                            <div class="result-title">${escapeHtml(it.title)}</div>
+                            <div class="result-url">${escapeHtml(hostOf(it.url))}</div>
+                            <div class="result-desc">${escapeHtml(it.desc || '')}</div>
+                        </div>
+                        <div class="result-badge web">${escapeHtml(it.badge || '')}</div>
+                    </div>`;
+                });
+            } else {
+                const enc = encodeURIComponent(q);
+                html += `<div class="result" style="display:block">
+                    <div style="font-size:13px;color:var(--muted);margin-bottom:12px">${t.webFallback}</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                        <button class="cat-link" data-url="https://www.google.com/search?q=${enc}">
+                            <span class="cat-link-dot"></span><span class="cat-link-name">Google</span>
+                        </button>
+                        <button class="cat-link" data-url="https://yandex.ru/search/?text=${enc}">
+                            <span class="cat-link-dot"></span><span class="cat-link-name">Яндекс</span>
+                        </button>
+                        <button class="cat-link" data-url="https://duckduckgo.com/?q=${enc}">
+                            <span class="cat-link-dot"></span><span class="cat-link-name">DuckDuckGo</span>
+                        </button>
+                        <button class="cat-link" data-url="https://www.bing.com/search?q=${enc}">
+                            <span class="cat-link-dot"></span><span class="cat-link-name">Bing</span>
+                        </button>
                     </div>
                 </div>`;
+            }
+
+            /* --- Блок Википедии --- */
+            if (wiki.length) {
+                html += `<div class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+                    </svg>
+                    ${t.wikiTitle}
+                </div>`;
+                wiki.forEach((it, i) => {
+                    html += `<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.05).toFixed(2)}s both">
+                        <div class="result-thumb ${it.grad}">${it.icon}</div>
+                        <div class="result-body">
+                            <div class="result-title">${escapeHtml(it.title)}</div>
+                            <div class="result-url">${escapeHtml(hostOf(it.url))}</div>
+                            <div class="result-desc">${escapeHtml(it.desc || '')}</div>
+                        </div>
+                        <div class="result-badge wiki">Wikipedia</div>
+                    </div>`;
+                });
             }
 
             rc.innerHTML = html;
@@ -3524,30 +3252,24 @@
             state.currentUrl = url;
             state.currentTitle = hostOf(url);
             addToHistory(url, hostOf(url));
-
             const tab = state.tabs.find(x => x.id === state.activeTab);
             if (tab) {
                 tab.title = state.currentTitle;
                 tab.url = url;
             }
-
             if (window.ZeroAndroid && typeof window.ZeroAndroid.openUrl === 'function') {
                 window.ZeroAndroid.openUrl(url);
                 return;
             }
-
             showView('web');
             webView.classList.remove('loaded');
             webBlocked.classList.remove('show');
             address.value = url;
             webframe.src = url;
             updateStar();
-
             clearTimeout(state.blockedTimer);
             state.blockedTimer = setTimeout(() => {
-                if (!webView.classList.contains('loaded')) {
-                    webBlocked.classList.add('show');
-                }
+                if (!webView.classList.contains('loaded')) webBlocked.classList.add('show');
             }, 4000);
         }
 
@@ -3575,7 +3297,6 @@
             if (isUrl(q)) renderEntry({ type: 'url', url: q });
             else renderEntry({ type: 'search', q });
         }
-
         address.addEventListener('focus', () => addrWrap.classList.add('focused'));
         address.addEventListener('blur', () => addrWrap.classList.remove('focused'));
         address.addEventListener('keydown', e => {
@@ -3584,7 +3305,6 @@
                 submitQuery(address.value);
             }
         });
-
         bigSearch.addEventListener('keydown', e => {
             if (e.key === 'Enter' && bigSearch.value.trim()) {
                 submitQuery(bigSearch.value);
@@ -3599,14 +3319,11 @@
             const t = e.target.closest('.tile');
             if (t) renderEntry({ type: 'url', url: t.dataset.url });
         });
-
         btnBack.addEventListener('click', () => {
             if (window.ZeroAndroid && window.ZeroAndroid.goBack) window.ZeroAndroid.goBack();
             else goBack();
         });
-
         btnFwd.addEventListener('click', goForward);
-
         btnReload.addEventListener('click', () => {
             if (state.view === 'web' && state.currentUrl) {
                 webframe.src = state.currentUrl;
@@ -3616,7 +3333,6 @@
                 if (q) runSearch(q, false);
             }
         });
-
         $('#openExternal').addEventListener('click', () => {
             if (state.currentUrl) window.open(state.currentUrl, '_blank', 'noopener');
         });
@@ -3631,7 +3347,6 @@
             'https://translate.astian.org/translate',
             'https://libretranslate.de/translate'
         ];
-
         const TRANSLATE_LANGS = [
             { code: 'ru', flag: '🇷🇺', name: 'Русский' },
             { code: 'en', flag: '🇬🇧', name: 'English' },
@@ -3643,7 +3358,6 @@
             { code: 'zh', flag: '🇨🇳', name: '中文' },
             { code: 'ja', flag: '🇯🇵', name: '日本語' }
         ];
-
         async function translateText(text, tgt, src = 'auto') {
             const trimmed = String(text).trim();
             if (!trimmed || trimmed.length < 2) return trimmed;
@@ -3655,31 +3369,21 @@
                     const r = await fetch(ep, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            q: trimmed,
-                            source: src,
-                            target: tgt,
-                            format: 'text'
-                        }),
+                        body: JSON.stringify({ q: trimmed, source: src, target: tgt, format: 'text' }),
                         signal: c.signal
                     });
                     clearTimeout(timer);
                     if (!r.ok) throw new Error('HTTP ' + r.status);
                     const d = await r.json();
                     if (d && d.translatedText) return d.translatedText;
-                } catch (e) {
-                    lastErr = e;
-                    continue;
-                }
+                } catch (e) { lastErr = e; continue; }
             }
             throw lastErr || new Error('unavailable');
         }
-
         btnTranslate.addEventListener('click', () => {
             if (!state.currentUrl) return;
             openTranslator();
         });
-
         function openTranslator() {
             const cur = localStorage.getItem('zero_lang') || 'ru';
             sheetContent.innerHTML = `
@@ -3707,7 +3411,6 @@
             `;
             scrim.classList.add('show');
             sheet.classList.add('show');
-
             $('#btnPasteFrom').addEventListener('click', async () => {
                 try {
                     const t = await navigator.clipboard.readText();
@@ -3716,7 +3419,6 @@
                     $('#btnDoTranslate').disabled = !t.trim();
                 } catch (e) {}
             });
-
             const doBtn = $('#btnDoTranslate');
             doBtn.addEventListener('click', async () => {
                 if (!state.lastSelection.trim()) return;
@@ -3736,7 +3438,6 @@
                     doBtn.textContent = 'Перевести';
                 }
             });
-
             sheetContent.querySelectorAll('.lang-btn').forEach(b => {
                 b.addEventListener('click', () => {
                     const c = b.dataset.code;
@@ -3765,33 +3466,22 @@
         });
 
         /* ============================================================
-           ЗАКЛАДКИ — ОТОБРАЖЕНИЕ
+           ЗАКЛАДКИ
            ============================================================ */
         function updateBmCount() {
             const el = $('#bookmarksCount');
             if (!el) return;
             el.textContent = state.bookmarks.length === 0
-                ? '—'
-                : state.bookmarks.length + ' ' + pluralCount(state.bookmarks.length);
+                ? '—' : state.bookmarks.length + ' ' + pluralCount(state.bookmarks.length);
         }
-
-        function showBookmarks() {
-            showView('bookmarks');
-            renderBookmarks();
-        }
-
+        function showBookmarks() { showView('bookmarks'); renderBookmarks(); }
         function renderBookmarks() {
             const list = $('#bookmarksList');
             const empty = $('#bookmarksEmpty');
             updateBmCount();
             list.innerHTML = '';
-
-            if (state.bookmarks.length === 0) {
-                empty.style.display = '';
-                return;
-            }
+            if (state.bookmarks.length === 0) { empty.style.display = ''; return; }
             empty.style.display = 'none';
-
             const grads = ['g-a', 'g-b', 'g-c', 'g-e', 'g-f', 'g-g', 'g-h'];
             state.bookmarks.forEach((b, i) => {
                 const h = hostOf(b.url);
@@ -3816,9 +3506,7 @@
                 });
                 el.querySelector('.bm-del').addEventListener('click', e => {
                     e.stopPropagation();
-                    const idx = state.bookmarks.findIndex(x =>
-                        x.url === b.url && x.added === b.added
-                    );
+                    const idx = state.bookmarks.findIndex(x => x.url === b.url && x.added === b.added);
                     if (idx >= 0) {
                         state.bookmarks.splice(idx, 1);
                         saveBookmarks();
@@ -3830,7 +3518,6 @@
                 list.appendChild(el);
             });
         }
-
         $('#bmExportBtn').addEventListener('click', () => {
             const t = T();
             try {
@@ -3847,17 +3534,13 @@
                 a.click();
                 setTimeout(() => URL.revokeObjectURL(url), 1000);
                 flashMessage(t.exportDone);
-            } catch (e) {
-                flashMessage(t.importError);
-            }
+            } catch (e) { flashMessage(t.importError); }
         });
 
         /* ============================================================
            НАСТРОЙКИ
            ============================================================ */
-        function showSettings() {
-            showView('settings');
-        }
+        function showSettings() { showView('settings'); }
 
         $('#itemLang').addEventListener('click', () => {
             openPicker(
@@ -3877,7 +3560,6 @@
                 }
             );
         });
-
         $('#itemSearch').addEventListener('click', () => {
             openPicker(
                 T().labelSearchEng,
@@ -3895,7 +3577,6 @@
                 }
             );
         });
-
         $('#itemTheme').addEventListener('click', () => {
             const t = T();
             openPicker(
@@ -3914,7 +3595,6 @@
                 }
             );
         });
-
         $('#itemImportBm').addEventListener('click', () => {
             const t = T();
             const input = document.createElement('input');
@@ -3945,15 +3625,12 @@
                         renderBookmarks();
                         closeSheet();
                         flashMessage(t.importDone);
-                    } catch (e) {
-                        flashMessage(t.importError);
-                    }
+                    } catch (e) { flashMessage(t.importError); }
                 };
                 rd.readAsText(f);
             };
             input.click();
         });
-
         $('#itemClearBm').addEventListener('click', () => {
             const t = T();
             confirmSheet(t.clearBmConfirmTitle, t.clearBmConfirmText, t.confirmClear, () => {
@@ -3966,7 +3643,6 @@
                 flashMessage(t.cleared);
             });
         });
-
         $('#itemClearCookies').addEventListener('click', () => {
             const t = T();
             confirmSheet(t.clearCookiesConfirmTitle, t.clearCookiesConfirmText, t.confirmClear, () => {
@@ -3979,7 +3655,6 @@
                 flashMessage(t.cookiesCleared);
             });
         });
-
         $('#itemClearAll').addEventListener('click', () => {
             const t = T();
             confirmSheet(t.clearAllConfirmTitle, t.clearAllConfirmText, t.confirmClear, () => {
@@ -4002,7 +3677,6 @@
                 flashMessage(t.allCleared);
             });
         });
-
         $('#itemReset').addEventListener('click', () => {
             const t = T();
             confirmSheet(t.resetConfirmTitle, t.resetConfirmText, t.confirmReset, () => {
@@ -4027,7 +3701,7 @@
         });
 
         /* ============================================================
-           ПИКЕР И ПОДТВЕРЖДЕНИЕ
+           ПИКЕР
            ============================================================ */
         function openPicker(title, opts, onSelect) {
             sheetContent.innerHTML = `<div class="picker-title">${escapeHtml(title)}</div>` +
@@ -4048,7 +3722,6 @@
             scrim.classList.add('show');
             sheet.classList.add('show');
         }
-
         function confirmSheet(title, text, cLabel, onConfirm) {
             const t = T();
             sheetContent.innerHTML = `
@@ -4066,11 +3739,9 @@
         }
 
         /* ============================================================
-           ВКЛАДКИ
+           ВКЛАДКИ И МЕНЮ
            ============================================================ */
-        function updateTabCount() {
-            tabCount.textContent = state.tabs.length;
-        }
+        function updateTabCount() { tabCount.textContent = state.tabs.length; }
 
         function openSheet(type) {
             if (type === 'tabs') {
@@ -4165,16 +3836,14 @@
                 sheet.classList.add('show');
             }
         }
-
         function closeSheet() {
             scrim.classList.remove('show');
             sheet.classList.remove('show');
         }
-
         scrim.addEventListener('click', closeSheet);
 
         /* ============================================================
-           FLASH СООБЩЕНИЕ
+           FLASH
            ============================================================ */
         function flashMessage(text) {
             const el = document.createElement('div');
@@ -4220,4 +3889,4 @@
     </script>
 
 </body>
-                            </html>
+    </html>
