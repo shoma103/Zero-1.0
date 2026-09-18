@@ -1,4 +1,3 @@
-
 plugins { id 'com.android.application' }
 
 android {
@@ -13,8 +12,20 @@ android {
         versionName "1.0"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("../zero-release.jks")
+            storePassword "zeropassword"
+            keyAlias "zero-key"
+            keyPassword "zeropassword"
+        }
+    }
+
     buildTypes {
-        release { minifyEnabled false }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+        }
     }
 
     compileOptions {
