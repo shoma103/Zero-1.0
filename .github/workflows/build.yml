@@ -30,8 +30,6 @@ jobs:
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
           echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
-          echo "$ANDROID_SDK_ROOT/platform-tools" >> $GITHUB_PATH
 
       - name: Setup Gradle
         run: |
@@ -39,11 +37,36 @@ jobs:
           unzip -q gradle-8.7-bin.zip
           echo "$PWD/gradle-8.7/bin" >> $GITHUB_PATH
 
-      - name: Build Debug APK
-        run: gradle assembleDebug --no-daemon
+      - name: Prepare Keystore
+        run: |
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > zero-release.jks
+            echo "✅ Keystore загружен из секрета"
+          else
+            keytool -genkey -v -keystore zero-release.jks \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -alias zero-key \
+              -storepass zeropassword \
+              -keypass zeropassword \
+              -dname "CN=Zero, OU=Zero, O=Zero, C=RU"
+            base64 -w 0 zero-release.jks > keystore.base64.txt
+            echo "⚠️ Создан новый keystore — сохрани его!"
+          fi
+
+      - name: Build Release APK
+        run: gradle assembleRelease --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: zero-browser-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload keystore (только если создан впервые)
+        if: hashFiles('keystore.base64.txt') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: zero-keystore-ВАЖНО
+          path: |
+            zero-release.jks
+            keystore.base64.txt
