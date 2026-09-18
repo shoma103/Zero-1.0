@@ -22,13 +22,11 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Фон с градиентом
         FrameLayout root = new FrameLayout(this);
         root.setBackground(new GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
             new int[]{0xFF08080C, 0xFF0B0B11, 0xFF13131C}));
 
-        // Пульсирующее свечение за логотипом
         View glow = new View(this);
         GradientDrawable glowBg = new GradientDrawable();
         glowBg.setShape(GradientDrawable.OVAL);
@@ -45,7 +43,6 @@ public class SplashActivity extends Activity {
         glow.setScaleY(0.5f);
         root.addView(glow);
 
-        // Центральный контейнер
         LinearLayout center = new LinearLayout(this);
         center.setOrientation(LinearLayout.VERTICAL);
         center.setGravity(Gravity.CENTER);
@@ -53,7 +50,6 @@ public class SplashActivity extends Activity {
             FrameLayout.LayoutParams.MATCH_PARENT,
             FrameLayout.LayoutParams.MATCH_PARENT));
 
-        // Логотип "Zero"
         TextView logo = new TextView(this);
         logo.setText("Zero");
         logo.setTextSize(78);
@@ -62,9 +58,8 @@ public class SplashActivity extends Activity {
         logo.setLetterSpacing(-0.04f);
         logo.setGravity(Gravity.CENTER);
 
-        // Подзаголовок
         TextView tagline = new TextView(this);
-        tagline.setText("Минимализм. Скорость. Ничего лишнего.");
+        tagline.setText("Минимализм. Скорость. Приватность.");
         tagline.setTextSize(13);
         tagline.setTextColor(0xFF8B8B96);
         tagline.setGravity(Gravity.CENTER);
@@ -79,7 +74,6 @@ public class SplashActivity extends Activity {
         root.addView(center);
         setContentView(root);
 
-        // Градиентный шейдер по тексту + бегущий блеск
         logo.post(() -> {
             float w = Math.max(logo.getWidth(), 600);
             LinearGradient shader = new LinearGradient(
@@ -103,7 +97,6 @@ public class SplashActivity extends Activity {
             sweep.start();
         });
 
-        // Стартовые состояния
         logo.setAlpha(0f);
         logo.setScaleX(0.35f);
         logo.setScaleY(0.35f);
@@ -111,7 +104,6 @@ public class SplashActivity extends Activity {
         tagline.setAlpha(0f);
         tagline.setTranslationY(28f);
 
-        // Логотип влетает с пружинкой
         logo.animate()
             .alpha(1f)
             .scaleX(1f)
@@ -121,7 +113,6 @@ public class SplashActivity extends Activity {
             .setInterpolator(new OvershootInterpolator(1.6f))
             .start();
 
-        // Свечение пульсирует
         glow.animate()
             .alpha(1f)
             .scaleX(1.3f)
@@ -136,7 +127,6 @@ public class SplashActivity extends Activity {
                 .start())
             .start();
 
-        // Подзаголовок выезжает снизу
         tagline.animate()
             .alpha(1f)
             .translationY(0f)
@@ -144,7 +134,6 @@ public class SplashActivity extends Activity {
             .setDuration(550)
             .start();
 
-        // Через 1900мс — растворяемся и открываем браузер
         root.postDelayed(() -> root.animate()
             .alpha(0f)
             .setDuration(380)
@@ -159,4 +148,4 @@ public class SplashActivity extends Activity {
             })
             .start(), 1900);
     }
-                         }
+}
