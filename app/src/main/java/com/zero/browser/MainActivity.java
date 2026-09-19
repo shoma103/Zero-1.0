@@ -1,10 +1,16 @@
 package com.zero.browser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.webkit.*;
+import android.widget.FrameLayout;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -15,8 +21,13 @@ import java.util.Map;
 
 public class MainActivity extends Activity {
 
-    private WebView webView;
+    private WebView mainWV;
+    private WebView topWV;
+    private WebView botWV;
+
     private static final String HOME_URL = "file:///android_asset/index.html";
+    private static final String TOP_URL = "file:///android_asset/top.html";
+    private static final String BOTTOM_URL = "file:///android_asset/bottom.html";
 
     private static final String UA =
         "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 " +
@@ -26,29 +37,62 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        webView = new WebView(this);
-        WebSettings s = webView.getSettings();
+        FrameLayout root = new FrameLayout(this);
+        root.setBackgroundColor(0xFF08080C);
+
+        topWV = createWV();
+        topWV.addJavascriptInterface(new TopBridge(), "ZeroTop");
+        FrameLayout.LayoutParams topLp = new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, dp(58));
+        topLp.gravity = Gravity.TOP;
+        root.addView(topWV, topLp);
+
+        botWV = createWV();
+        botWV.addJavascriptInterface(new BottomBridge(), "ZeroBottom");
+        FrameLayout.LayoutParams botLp = new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, dp(58));
+        botLp.gravity = Gravity.BOTTOM;
+        root.addView(botWV, botLp);
+
+        mainWV = createWV();
+        mainWV.addJavascriptInterface(new MainBridge(), "ZeroMain");
+        FrameLayout.LayoutParams mainLp = new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mainLp.topMargin = dp(58);
+        mainLp.bottomMargin = dp(58);
+        root.addView(mainWV, mainLp);
+
+        setupClients();
+        setContentView(root);
+
+        topWV.loadUrl(TOP_URL);
+        botWV.loadUrl(BOTTOM_URL);
+        mainWV.loadUrl(HOME_URL);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private WebView createWV() {
+        WebView wv = new WebView(this);
+        WebSettings s = wv.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
         s.setDatabaseEnabled(true);
         s.setLoadWithOverviewMode(true);
         s.setUseWideViewPort(true);
-        s.setBuiltInZoomControls(true);
-        s.setDisplayZoomControls(false);
         s.setAllowFileAccess(true);
         s.setAllowContentAccess(true);
         s.setMediaPlaybackRequiresUserGesture(false);
         s.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         s.setJavaScriptCanOpenWindowsAutomatically(true);
         s.setUserAgentString(UA);
+        wv.setBackgroundColor(Color.TRANSPARENT);
+        wv.setVerticalScrollBarEnabled(false);
+        wv.setHorizontalScrollBarEnabled(false);
+        return wv;
+    }
 
-        CookieManager.getInstance().setAcceptCookie(true);
-        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
-
-        webView.addJavascriptInterface(new ZeroBridge(), "ZeroAndroid");
-        webView.setWebChromeClient(new WebChromeClient());
-
-        webView.setWebViewClient(new WebViewClient() {
+    private void setupClients() {
+        mainWV.setWebViewClient(new WebViewClient() {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
@@ -82,7 +126,7 @@ public class MainActivity extends Activity {
 
                     InputStream in = conn.getInputStream();
 
-                    if (mime.equals("text/html") && request.isForMainFrame()) {
+                    if (mime.equals("text/html")) {
                         ByteArrayOutputStream buf = new ByteArrayOutputStream();
                         byte[] chunk = new byte[8192];
                         int n;
@@ -111,76 +155,158 @@ public class MainActivity extends Activity {
                 if (url.startsWith("mailto:") || url.startsWith("tel:")
                     || url.startsWith("sms:") || url.startsWith("intent:")) {
                     try {
-                        view.getContext().startActivity(
-                            new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                     } catch (Exception ignored) {}
                     return true;
                 }
                 return false;
             }
+
+            @Override
+            public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                updateTopBar(url, view.getTitle(), view.canGoBack(), view.canGoForward());
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                updateTopBar(url, view.getTitle(), view.canGoBack(), view.canGoForward());
+            }
         });
 
-        Intent intent = getIntent();
-        if (intent != null && intent.getData() != null) {
-            webView.loadUrl(intent.getData().toString());
-        } else {
-            webView.loadUrl(HOME_URL);
-        }
-
-        setContentView(webView);
+        mainWV.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                updateTopBar(view.getUrl(), title, view.canGoBack(), view.canGoForward());
+            }
+        });
     }
 
-    private class ZeroBridge {
-        @android.webkit.JavascriptInterface
+    private void updateTopBar(String url, String title, boolean canBack, boolean canForward) {
+        String safeUrl = url == null ? "" : url.replace("\\", "\\\\").replace("'", "\\'");
+        String safeTitle = title == null ? "" : title.replace("\\", "\\\\").replace("'", "\\'");
+        String js = "if(window.setAddress) window.setAddress('" + safeUrl + "','" + safeTitle + "',"
+            + canBack + "," + canForward + ");";
+        topWV.post(() -> topWV.evaluateJavascript(js, null));
+    }
+
+    private int dp(int v) {
+        return (int)(v * getResources().getDisplayMetrics().density + 0.5f);
+    }
+
+    private class TopBridge {
+        @JavascriptInterface
         public void openUrl(final String url) {
             runOnUiThread(() -> {
-                if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
-                    webView.loadUrl(url);
+                if (url == null || url.isEmpty()) return;
+                if (url.startsWith("http://") || url.startsWith("https://")) {
+                    mainWV.loadUrl(url);
+                } else if (isUrlLike(url)) {
+                    mainWV.loadUrl("https://" + url);
+                } else {
+                    mainWV.loadUrl("https://duckduckgo.com/?q=" + Uri.encode(url));
                 }
             });
         }
 
-        @android.webkit.JavascriptInterface
+        @JavascriptInterface
         public void goBack() {
-            runOnUiThread(() -> { if (webView.canGoBack()) webView.goBack(); });
+            runOnUiThread(() -> { if (mainWV.canGoBack()) mainWV.goBack(); });
         }
 
-        @android.webkit.JavascriptInterface
+        @JavascriptInterface
+        public void goForward() {
+            runOnUiThread(() -> { if (mainWV.canGoForward()) mainWV.goForward(); });
+        }
+
+        @JavascriptInterface
+        public void reload() {
+            runOnUiThread(() -> mainWV.reload());
+        }
+
+        @JavascriptInterface
+        public void toggleBookmark() {
+            runOnUiThread(() -> mainWV.evaluateJavascript(
+                "window.onToggleBookmark && window.onToggleBookmark()", null));
+        }
+
+        private boolean isUrlLike(String s) {
+            if (s.contains(" ")) return false;
+            return s.matches("^([a-z]+://)?([\\w-]+\\.)+[a-z]{2,}(/.*)?$");
+        }
+    }
+
+    private class BottomBridge {
+        @JavascriptInterface
         public void goHome() {
-            runOnUiThread(() -> webView.loadUrl(HOME_URL));
+            runOnUiThread(() -> mainWV.loadUrl(HOME_URL));
+        }
+        @JavascriptInterface
+        public void showTabs() {
+            runOnUiThread(() -> mainWV.evaluateJavascript(
+                "window.onShowTabs && window.onShowTabs()", null));
+        }
+        @JavascriptInterface
+        public void showBookmarks() {
+            runOnUiThread(() -> mainWV.evaluateJavascript(
+                "window.onShowBookmarks && window.onShowBookmarks()", null));
+        }
+        @JavascriptInterface
+        public void showMenu() {
+            runOnUiThread(() -> mainWV.evaluateJavascript(
+                "window.onShowMenu && window.onShowMenu()", null));
+        }
+    }
+
+    private class MainBridge {
+        @JavascriptInterface
+        public void setStar(final boolean on) {
+            runOnUiThread(() -> topWV.evaluateJavascript(
+                "window.setStar && window.setStar(" + on + ")", null));
+        }
+
+        @JavascriptInterface
+        public void openUrl(final String url) {
+            runOnUiThread(() -> {
+                if (url == null || url.isEmpty()) return;
+                if (url.startsWith("http://") || url.startsWith("https://")) {
+                    mainWV.loadUrl(url);
+                }
+            });
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (webView.canGoBack()) webView.goBack();
+        if (mainWV.canGoBack()) mainWV.goBack();
         else super.onBackPressed();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (intent != null && intent.getData() != null) {
-            webView.loadUrl(intent.getData().toString());
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        webView.onPause();
+        mainWV.onPause();
         CookieManager.getInstance().flush();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        webView.onResume();
+        mainWV.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        webView.destroy();
+        mainWV.destroy();
+        topWV.destroy();
+        botWV.destroy();
         super.onDestroy();
     }
 }
