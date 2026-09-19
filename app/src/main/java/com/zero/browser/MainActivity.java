@@ -3,15 +3,26 @@ package com.zero.browser;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.*;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,99 +34,112 @@ import java.util.Map;
 
 public class MainActivity extends Activity {
 
-    private WebView mainWV;
-    private WebView topWV;
-    private WebView botWV;
+    private WebView webView;
+    private EditText addressInput;
+    private ImageButton btnBack;
+    private ImageButton btnForward;
+    private ImageButton btnStar;
+    private ImageButton btnReload;
 
     private static final String HOME_URL = "file:///android_asset/index.html";
-    private static final String TOP_URL = "file:///android_asset/top.html";
-    private static final String BOTTOM_URL = "file:///android_asset/bottom.html";
 
     private static final String UA =
         "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 " +
         "(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
 
-    private static final int BG_COLOR = 0xFF08080C;
-    private static final int TOP_H_DP = 58;
-    private static final int BOTTOM_H_DP = 58;
+    private static final int BG = 0xFF08080C;
+    private static final int BG2 = 0xFF0B0B11;
+    private static final int BG3 = 0xFF13131C;
+    private static final int TEXT = 0xFFF5F5F7;
+    private static final int MUTED = 0xFF8B8B96;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // ═══════════════════════════════════════════════════════════
-        // 1. ОТКЛЮЧАЕМ ЗЕЛЁНЫЙ ЗНАЧОК ОТЛАДКИ WEBVIEW
-        // ═══════════════════════════════════════════════════════════
         try {
             WebView.setWebContentsDebuggingEnabled(false);
         } catch (Exception ignored) {}
 
-        // Приложение рисует под системные бары (без чёрных полос)
         getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
-
-        // Цвет системных баров = фон приложения
-        getWindow().setStatusBarColor(BG_COLOR);
-        getWindow().setNavigationBarColor(BG_COLOR);
+        getWindow().setStatusBarColor(BG);
+        getWindow().setNavigationBarColor(BG);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            getWindow().setNavigationBarDividerColor(BG_COLOR);
+            getWindow().setNavigationBarDividerColor(BG);
         }
 
-        // ═══════════════════════════════════════════════════════════
-        // 2. КОРНЕВОЙ LAYOUT — ФОН ТЁМНЫЙ, БЕЗ ЗАЗОРОВ
-        // ═══════════════════════════════════════════════════════════
-        FrameLayout root = new FrameLayout(this);
-        root.setBackgroundColor(BG_COLOR);
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        root.setBackgroundColor(BG);
         root.setFitsSystemWindows(false);
 
-        int topH = dp(TOP_H_DP);
-        int botH = dp(BOTTOM_H_DP);
+        // ============ ВЕРХНЯЯ ПАНЕЛЬ ============
+        LinearLayout topbar = new LinearLayout(this);
+        topbar.setOrientation(LinearLayout.HORIZONTAL);
+        topbar.setGravity(Gravity.CENTER_VERTICAL);
+        topbar.setPadding(dp(6), dp(6), dp(6), dp(6));
+        topbar.setBackgroundColor(BG2);
 
-        // ═══════════════════════════════════════════════════════════
-        // 3. ВЕРХНЯЯ ПАНЕЛЬ
-        // ═══════════════════════════════════════════════════════════
-        topWV = createWV();
-        topWV.addJavascriptInterface(new TopBridge(), "ZeroTop");
-        FrameLayout.LayoutParams topLp = new FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, topH);
-        topLp.gravity = Gravity.TOP;
-        root.addView(topWV, topLp);
+        btnBack = makeIconBtn(android.R.drawable.ic_media_previous);
+        btnBack.setEnabled(false);
+        btnBack.setAlpha(0.3f);
+        btnBack.setOnClickListener(v -> { if (webView.canGoBack()) webView.goBack(); });
+        topbar.addView(btnBack, new LinearLayout.LayoutParams(dp(40), dp(40)));
 
-        // ═══════════════════════════════════════════════════════════
-        // 4. НИЖНЯЯ ПАНЕЛЬ — теперь не перекрывается навбаром
-        // ═══════════════════════════════════════════════════════════
-        botWV = createWV();
-        botWV.addJavascriptInterface(new BottomBridge(), "ZeroBottom");
-        FrameLayout.LayoutParams botLp = new FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, botH);
-        botLp.gravity = Gravity.BOTTOM;
-        root.addView(botWV, botLp);
+        btnForward = makeIconBtn(android.R.drawable.ic_media_next);
+        btnForward.setEnabled(false);
+        btnForward.setAlpha(0.3f);
+        btnForward.setOnClickListener(v -> { if (webView.canGoForward()) webView.goForward(); });
+        topbar.addView(btnForward, new LinearLayout.LayoutParams(dp(40), dp(40)));
 
-        // ═══════════════════════════════════════════════════════════
-        // 5. ЦЕНТРАЛЬНЫЙ КОНТЕНТ — между верхней и нижней панелью
-        // ═══════════════════════════════════════════════════════════
-        mainWV = createWV();
-        mainWV.addJavascriptInterface(new MainBridge(), "ZeroMain");
-        FrameLayout.LayoutParams mainLp = new FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mainLp.topMargin = topH;
-        mainLp.bottomMargin = botH;
-        root.addView(mainWV, mainLp);
+        addressInput = new EditText(this);
+        addressInput.setHint("Поиск или адрес");
+        addressInput.setSingleLine(true);
+        addressInput.setTextColor(TEXT);
+        addressInput.setHintTextColor(MUTED);
+        addressInput.setTextSize(14);
+        addressInput.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
+        addressInput.setImeOptions(EditorInfo.IME_ACTION_GO);
+        addressInput.setBackground(makeRoundedBg(BG3, dp(20)));
+        addressInput.setPadding(dp(16), 0, dp(16), 0);
+        addressInput.setOnEditorActionListener((v, actionId, event) -> {
+            boolean enter = actionId == EditorInfo.IME_ACTION_GO ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER
+                            && event.getAction() == KeyEvent.ACTION_DOWN);
+            if (enter) {
+                String q = addressInput.getText().toString().trim();
+                if (!q.isEmpty()) {
+                    navigate(q);
+                    addressInput.clearFocus();
+                    hideKeyboard();
+                }
+                return true;
+            }
+            return false;
+        });
 
-        setupClients();
-        setContentView(root);
+        LinearLayout.LayoutParams addrLp = new LinearLayout.LayoutParams(0, dp(40), 1);
+        addrLp.setMargins(dp(4), 0, dp(4), 0);
+        topbar.addView(addressInput, addrLp);
 
-        topWV.loadUrl(TOP_URL);
-        botWV.loadUrl(BOTTOM_URL);
-        mainWV.loadUrl(HOME_URL);
-    }
+        btnStar = makeIconBtn(android.R.drawable.btn_star_big_off);
+        btnStar.setOnClickListener(v -> toggleBookmark());
+        topbar.addView(btnStar, new LinearLayout.LayoutParams(dp(40), dp(40)));
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private WebView createWV() {
-        WebView wv = new WebView(this);
-        WebSettings s = wv.getSettings();
+        btnReload = makeIconBtn(android.R.drawable.ic_menu_rotate);
+        btnReload.setOnClickListener(v -> webView.reload());
+        topbar.addView(btnReload, new LinearLayout.LayoutParams(dp(40), dp(40)));
+
+        root.addView(topbar, new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, dp(56)));
+
+        // ============ ЦЕНТР — WebView ============
+        webView = new WebView(this);
+        WebSettings s = webView.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
         s.setDatabaseEnabled(true);
@@ -128,23 +152,20 @@ public class MainActivity extends Activity {
         s.setJavaScriptCanOpenWindowsAutomatically(true);
         s.setUserAgentString(UA);
 
-        // ═══════════════════════════════════════════════════════════
-        // КЛЮЧЕВЫЕ НАСТРОЙКИ — убирают чёрные полосы и скролл-бары
-        // ═══════════════════════════════════════════════════════════
-        wv.setBackgroundColor(BG_COLOR);
-        wv.setVerticalScrollBarEnabled(false);
-        wv.setHorizontalScrollBarEnabled(false);
-        wv.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
-        wv.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
-        wv.setFitsSystemWindows(false);
-        wv.setPadding(0, 0, 0, 0);
-        wv.setClipToPadding(false);
+        webView.setBackgroundColor(BG);
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+        webView.setFitsSystemWindows(false);
+        webView.setPadding(0, 0, 0, 0);
 
-        return wv;
-    }
+        CookieManager.getInstance().setAcceptCookie(true);
+        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
 
-    private void setupClients() {
-        mainWV.setWebViewClient(new WebViewClient() {
+        webView.addJavascriptInterface(new ZeroBridge(), "ZeroMain");
+        webView.setWebChromeClient(new WebChromeClient());
+
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
@@ -217,122 +238,191 @@ public class MainActivity extends Activity {
             @Override
             public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                updateTopBar(url, view.getTitle(), view.canGoBack(), view.canGoForward());
+                updateUI();
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                updateTopBar(url, view.getTitle(), view.canGoBack(), view.canGoForward());
+                updateUI();
             }
         });
 
-        mainWV.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
-                updateTopBar(view.getUrl(), title, view.canGoBack(), view.canGoForward());
-            }
-        });
+        LinearLayout.LayoutParams wvLp = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, 0, 1);
+        root.addView(webView, wvLp);
+
+        // ============ НИЖНЯЯ ПАНЕЛЬ ============
+        LinearLayout bottombar = new LinearLayout(this);
+        bottombar.setOrientation(LinearLayout.HORIZONTAL);
+        bottombar.setGravity(Gravity.CENTER);
+        bottombar.setBackgroundColor(BG2);
+        bottombar.setPadding(0, dp(4), 0, dp(4));
+
+        bottombar.addView(makeNavBtn("Главная", android.R.drawable.ic_menu_view, v -> {
+            webView.loadUrl(HOME_URL);
+        }), new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+        bottombar.addView(makeNavBtn("Вкладки", android.R.drawable.ic_menu_sort_by_size, v -> {
+            // заглушка
+        }), new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+        bottombar.addView(makeNavBtn("Закладки", android.R.drawable.btn_star_big_off, v -> {
+            webView.evaluateJavascript("window.onShowBookmarks && window.onShowBookmarks()", null);
+        }), new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+        bottombar.addView(makeNavBtn("Ещё", android.R.drawable.ic_menu_more, v -> {
+            webView.evaluateJavascript("window.onShowMenu && window.onShowMenu()", null);
+        }), new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+        root.addView(bottombar, new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, dp(56)));
+
+        setContentView(root);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.getData() != null) {
+            webView.loadUrl(intent.getData().toString());
+        } else {
+            webView.loadUrl(HOME_URL);
+        }
     }
 
-    private void updateTopBar(String url, String title, boolean canBack, boolean canForward) {
-        String safeUrl = url == null ? "" : url.replace("\\", "\\\\").replace("'", "\\'");
-        String safeTitle = title == null ? "" : title.replace("\\", "\\\\").replace("'", "\\'");
-        String js = "if(window.setAddress) window.setAddress('" + safeUrl + "','" + safeTitle + "',"
-            + canBack + "," + canForward + ");";
-        topWV.post(() -> topWV.evaluateJavascript(js, null));
+    private ImageButton makeIconBtn(int iconRes) {
+        ImageButton b = new ImageButton(this);
+        b.setImageResource(iconRes);
+        b.setBackgroundColor(Color.TRANSPARENT);
+        b.setColorFilter(TEXT);
+        b.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        b.setPadding(dp(8), dp(8), dp(8), dp(8));
+        return b;
+    }
+
+    private LinearLayout makeNavBtn(String label, int iconRes, View.OnClickListener click) {
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.setGravity(Gravity.CENTER);
+        ll.setClickable(true);
+        ll.setFocusable(true);
+        ll.setOnClickListener(click);
+
+        ImageView iv = new ImageView(this);
+        iv.setImageResource(iconRes);
+        iv.setColorFilter(MUTED);
+        LinearLayout.LayoutParams ivLp = new LinearLayout.LayoutParams(dp(22), dp(22));
+        ll.addView(iv, ivLp);
+
+        TextView tv = new TextView(this);
+        tv.setText(label);
+        tv.setTextSize(9.5f);
+        tv.setTextColor(MUTED);
+        tv.setGravity(Gravity.CENTER);
+        LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        tvLp.topMargin = dp(3);
+        ll.addView(tv, tvLp);
+
+        return ll;
+    }
+
+    private GradientDrawable makeRoundedBg(int color, int radius) {
+        GradientDrawable g = new GradientDrawable();
+        g.setColor(color);
+        g.setCornerRadius(radius);
+        return g;
     }
 
     private int dp(int v) {
         return (int)(v * getResources().getDisplayMetrics().density + 0.5f);
     }
 
-    private class TopBridge {
+    private void hideKeyboard() {
+        android.view.inputmethod.InputMethodManager imm =
+            (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null && getCurrentFocus() != null) {
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    private void navigate(String input) {
+        String q = input.trim();
+        if (q.isEmpty()) return;
+        boolean looksUrl = !q.contains(" ") &&
+                q.matches("^([a-z]+://)?([\\w-]+\\.)+[a-z]{2,}(/.*)?$");
+        if (looksUrl) {
+            if (!q.startsWith("http")) q = "https://" + q;
+            webView.loadUrl(q);
+        } else {
+            webView.loadUrl("https://duckduckgo.com/?q=" + Uri.encode(q));
+        }
+    }
+
+    private void updateUI() {
+        runOnUiThread(() -> {
+            boolean canBack = webView.canGoBack();
+            boolean canForward = webView.canGoForward();
+
+            btnBack.setEnabled(canBack);
+            btnBack.setAlpha(canBack ? 1f : 0.3f);
+            btnForward.setEnabled(canForward);
+            btnForward.setAlpha(canForward ? 1f : 0.3f);
+
+            String url = webView.getUrl();
+            if (url != null && !url.startsWith("file://") && !url.startsWith("about:")) {
+                if (!addressInput.hasFocus()) addressInput.setText(url);
+            } else {
+                if (!addressInput.hasFocus()) addressInput.setText("");
+            }
+        });
+    }
+
+    private void toggleBookmark() {
+        webView.evaluateJavascript(
+            "window.onToggleBookmark && window.onToggleBookmark()", null);
+    }
+
+    private class ZeroBridge {
         @android.webkit.JavascriptInterface
         public void openUrl(final String url) {
             runOnUiThread(() -> {
-                if (url == null || url.isEmpty()) return;
-                if (url.startsWith("http://") || url.startsWith("https://")) {
-                    mainWV.loadUrl(url);
-                } else if (isUrlLike(url)) {
-                    mainWV.loadUrl("https://" + url);
-                } else {
-                    mainWV.loadUrl("https://duckduckgo.com/?q=" + Uri.encode(url));
+                if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+                    webView.loadUrl(url);
                 }
             });
         }
 
         @android.webkit.JavascriptInterface
-        public void goBack() {
-            runOnUiThread(() -> { if (mainWV.canGoBack()) mainWV.goBack(); });
-        }
-
-        @android.webkit.JavascriptInterface
-        public void goForward() {
-            runOnUiThread(() -> { if (mainWV.canGoForward()) mainWV.goForward(); });
-        }
-
-        @android.webkit.JavascriptInterface
-        public void reload() {
-            runOnUiThread(() -> mainWV.reload());
-        }
-
-        @android.webkit.JavascriptInterface
-        public void toggleBookmark() {
-            runOnUiThread(() -> mainWV.evaluateJavascript(
-                "window.onToggleBookmark && window.onToggleBookmark()", null));
-        }
-
-        private boolean isUrlLike(String s) {
-            if (s.contains(" ")) return false;
-            return s.matches("^([a-z]+://)?([\\w-]+\\.)+[a-z]{2,}(/.*)?$");
-        }
-    }
-
-    private class BottomBridge {
-        @android.webkit.JavascriptInterface
-        public void goHome() {
-            runOnUiThread(() -> mainWV.loadUrl(HOME_URL));
-        }
-        @android.webkit.JavascriptInterface
-        public void showTabs() {
-            runOnUiThread(() -> mainWV.evaluateJavascript(
-                "window.onShowTabs && window.onShowTabs()", null));
-        }
-        @android.webkit.JavascriptInterface
-        public void showBookmarks() {
-            runOnUiThread(() -> mainWV.evaluateJavascript(
-                "window.onShowBookmarks && window.onShowBookmarks()", null));
-        }
-        @android.webkit.JavascriptInterface
-        public void showMenu() {
-            runOnUiThread(() -> mainWV.evaluateJavascript(
-                "window.onShowMenu && window.onShowMenu()", null));
-        }
-    }
-
-    private class MainBridge {
-        @android.webkit.JavascriptInterface
         public void setStar(final boolean on) {
-            runOnUiThread(() -> topWV.evaluateJavascript(
-                "window.setStar && window.setStar(" + on + ")", null));
+            runOnUiThread(() -> {
+                btnStar.setImageResource(on
+                    ? android.R.drawable.btn_star_big_on
+                    : android.R.drawable.btn_star_big_off);
+                btnStar.setColorFilter(on ? 0xFFFBBF24 : TEXT);
+            });
         }
 
         @android.webkit.JavascriptInterface
-        public void openUrl(final String url) {
+        public void clearCookies() {
             runOnUiThread(() -> {
-                if (url == null || url.isEmpty()) return;
-                if (url.startsWith("http://") || url.startsWith("https://")) {
-                    mainWV.loadUrl(url);
-                }
+                CookieManager.getInstance().removeAllCookies(null);
+                CookieManager.getInstance().flush();
+            });
+        }
+
+        @android.webkit.JavascriptInterface
+        public void clearData() {
+            runOnUiThread(() -> {
+                CookieManager.getInstance().removeAllCookies(null);
+                CookieManager.getInstance().flush();
+                webView.clearCache(true);
+                webView.clearHistory();
             });
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (mainWV.canGoBack()) mainWV.goBack();
+        if (webView.canGoBack()) webView.goBack();
         else super.onBackPressed();
     }
 
@@ -344,21 +434,19 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        mainWV.onPause();
+        webView.onPause();
         CookieManager.getInstance().flush();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mainWV.onResume();
+        webView.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        mainWV.destroy();
-        topWV.destroy();
-        botWV.destroy();
+        webView.destroy();
         super.onDestroy();
     }
 }
