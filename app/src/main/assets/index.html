@@ -3,18 +3,30 @@
 <head>
     <!-- ================================================================
          ZERO BROWSER
-         Минималистичный браузер с нативными панелями
-         Версия: 5.0.0
+         Минималистичный браузер с нативными панелями сверху и снизу
+         Версия: 5.1.0
          ================================================================
-         Особенности:
-         - Нативные панели сверху и снизу (top.html, bottom.html)
-         - Центральный контент: главная, поиск, история, закладки
-         - Мультипоиск через публичные SearXNG-серверы
+         АРХИТЕКТУРА:
+         ┌─────────────────────────────────────────┐
+         │  top.html (нативный WebView)            │  ← Верхняя панель
+         │  назад, вперёд, адрес, звезда, обновить │
+         ├─────────────────────────────────────────┤
+         │                                         │
+         │  index.html (ЭТОТ ФАЙЛ)                 │  ← Центр
+         │  главная, поиск, история, закладки      │
+         │                                         │
+         ├─────────────────────────────────────────┤
+         │  bottom.html (нативный WebView)         │  ← Нижняя панель
+         │  главная, вкладки, закладки, ещё        │
+         └─────────────────────────────────────────┘
+
+         ОСОБЕННОСТИ:
+         - 15 категорий сайтов (~120 сайтов)
+         - Мультипоиск через публичные SearXNG
          - YouTube через Piped API
          - Wikipedia через MediaWiki API
-         - 15 категорий сайтов (~120 сайтов)
-         - История с поиском и группировкой по дням
-         - Закладки с экспортом и импортом
+         - История с группировкой по дням
+         - Закладки с экспортом/импортом
          - Загрузки
          - Приватный режим
          - Переводчик на 9 языков
@@ -26,12 +38,13 @@
     <meta name="theme-color" content="#08080c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Zero — минималистичный браузер с нативными панелями">
+    <meta name="description" content="Zero — минималистичный браузер">
     <title>Zero</title>
 
     <style>
         /* ============================================================
            1. ПЕРЕМЕННЫЕ
+           Все цвета, тени, скругления и анимации собраны здесь.
            ============================================================ */
         :root {
             --bg: #08080c;
@@ -53,15 +66,9 @@
             --warning: #f59e0b;
             --danger: #f43f5e;
             --info: #06b6d4;
-            --radius-sm: 10px;
-            --radius-md: 14px;
-            --radius-lg: 18px;
-            --radius-xl: 21px;
-            --shadow-sm: 0 4px 12px -4px rgba(0, 0, 0, .5);
-            --shadow-md: 0 8px 22px -10px rgba(0, 0, 0, .7);
-            --shadow-lg: 0 14px 44px -14px rgba(124, 58, 237, .65);
         }
 
+        /* Светлая тема */
         body.light {
             --bg: #f4f4f8;
             --bg2: #ffffff;
@@ -99,7 +106,6 @@
             -webkit-font-smoothing: antialiased;
             user-select: none;
             transition: background .4s var(--ease), color .4s var(--ease);
-            position: relative;
         }
 
         input {
@@ -119,6 +125,7 @@
 
         /* ============================================================
            3. ФОНОВЫЕ ОРБЫ
+           Три больших размытых круга, медленно движутся.
            ============================================================ */
         .bg {
             position: fixed;
@@ -216,6 +223,7 @@
 
         /* ============================================================
            5. ВИДЫ
+           Все экраны накладываются друг на друга.
            ============================================================ */
         .view {
             position: absolute;
@@ -250,7 +258,7 @@
         }
 
         /* ============================================================
-           6. ГЛАВНАЯ
+           6. ГЛАВНАЯ — HERO
            ============================================================ */
         .hero {
             text-align: center;
@@ -291,11 +299,11 @@
            ============================================================ */
         .big-search {
             padding: 1.5px;
-            border-radius: var(--radius-xl);
+            border-radius: 21px;
             margin-bottom: 26px;
             background: var(--g3);
             background-size: 300% 100%;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 14px 44px -14px rgba(124, 58, 237, .65);
             animation: up .8s var(--ease) .1s both, shine 6s linear infinite;
         }
 
@@ -333,7 +341,7 @@
         }
 
         /* ============================================================
-           8. ПЛИТКИ
+           8. ПЛИТКИ БЫСТРОГО ДОСТУПА
            ============================================================ */
         .tiles {
             display: grid;
@@ -350,7 +358,7 @@
             align-items: center;
             gap: 8px;
             padding: 14px 5px;
-            border-radius: var(--radius-lg);
+            border-radius: 18px;
             background: var(--glass);
             border: 1px solid var(--line);
             transition: transform .45s var(--spring), background .3s;
@@ -364,14 +372,14 @@
         .tile-icon {
             width: 44px;
             height: 44px;
-            border-radius: var(--radius-md);
+            border-radius: 14px;
             display: grid;
             place-items: center;
             font-size: 14px;
             font-weight: 800;
             color: #fff;
             letter-spacing: -.5px;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .7);
         }
 
         .tile-label {
@@ -414,7 +422,7 @@
         }
 
         /* ============================================================
-           9. РЕЗУЛЬТАТЫ
+           9. РЕЗУЛЬТАТЫ ПОИСКА
            ============================================================ */
         .page-head {
             margin-bottom: 18px;
@@ -539,7 +547,7 @@
         }
 
         /* ============================================================
-           10. КАТЕГОРИИ
+           10. КАТЕГОРИИ САЙТОВ
            ============================================================ */
         .cat-block {
             margin-bottom: 20px;
@@ -589,7 +597,7 @@
             position: relative;
             overflow: hidden;
             padding: 12px 14px;
-            border-radius: var(--radius-md);
+            border-radius: 14px;
             background: var(--glass);
             border: 1px solid var(--line);
             color: var(--text);
@@ -631,7 +639,7 @@
             display: flex;
             gap: 13px;
             padding: 14px;
-            border-radius: var(--radius-lg);
+            border-radius: 18px;
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 11px;
@@ -655,7 +663,7 @@
             font-weight: 800;
             font-size: 17px;
             color: #fff;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 8px 22px -10px rgba(0, 0, 0, .8);
             overflow: hidden;
         }
 
@@ -669,6 +677,7 @@
         .result-body {
             flex: 1;
             min-width: 0;
+            padding-top: 2px;
         }
 
         .result-title {
@@ -831,7 +840,7 @@
             align-items: center;
             gap: 13px;
             padding: 14px;
-            border-radius: var(--radius-lg);
+            border-radius: 18px;
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 11px;
@@ -841,7 +850,7 @@
         .dl-icon {
             width: 46px;
             height: 46px;
-            border-radius: var(--radius-md);
+            border-radius: 14px;
             flex: 0 0 auto;
             display: grid;
             place-items: center;
@@ -880,7 +889,7 @@
             align-items: center;
             gap: 13px;
             padding: 14px;
-            border-radius: var(--radius-lg);
+            border-radius: 18px;
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 11px;
@@ -895,7 +904,7 @@
         .bm-thumb {
             width: 46px;
             height: 46px;
-            border-radius: var(--radius-md);
+            border-radius: 14px;
             flex: 0 0 auto;
             display: grid;
             place-items: center;
@@ -965,7 +974,7 @@
            ============================================================ */
         .search-box {
             padding: 12px 16px;
-            border-radius: var(--radius-md);
+            border-radius: 14px;
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 16px;
@@ -1018,7 +1027,7 @@
             align-items: center;
             gap: 14px;
             padding: 15px 16px;
-            border-radius: var(--radius-lg);
+            border-radius: 18px;
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 10px;
@@ -1073,7 +1082,7 @@
         }
 
         /* ============================================================
-           18. ПИКЕР
+           18. ПИКЕР (выбор из списка)
            ============================================================ */
         .picker-title {
             font-size: 16px;
@@ -1343,6 +1352,25 @@
             transform: translateX(20px);
         }
 
+        .new-tab-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 17px;
+            border: none;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            background-size: 200% 100%;
+            color: #fff;
+            font-size: 14.5px;
+            font-weight: 700;
+            box-shadow: 0 12px 32px -12px rgba(124, 58, 237, .9);
+            transition: transform .45s var(--spring);
+            animation: shine 6s linear infinite;
+        }
+
+        .new-tab-btn:active {
+            transform: scale(.96);
+        }
+
         /* ============================================================
            21. ПЕРЕВОДЧИК
            ============================================================ */
@@ -1391,7 +1419,7 @@
 
         .selection-box {
             padding: 14px;
-            border-radius: var(--radius-md);
+            border-radius: 14px;
             background: var(--glass);
             border: 1px solid var(--line);
             font-size: 13px;
@@ -1414,7 +1442,7 @@
         .selection-result {
             margin-top: 14px;
             padding: 14px;
-            border-radius: var(--radius-md);
+            border-radius: 14px;
             background: linear-gradient(135deg, rgba(6, 182, 212, .12), rgba(59, 130, 246, .12));
             border: 1px solid rgba(6, 182, 212, .25);
             font-size: 14px;
@@ -1440,7 +1468,7 @@
         .translate-actions button {
             flex: 1;
             padding: 13px;
-            border-radius: var(--radius-md);
+            border-radius: 14px;
             border: none;
             font-size: 13.5px;
             font-weight: 700;
@@ -1459,7 +1487,7 @@
         }
 
         /* ============================================================
-           22. RIPPLE
+           22. RIPPLE-ЭФФЕКТ
            ============================================================ */
         .ripple {
             position: absolute;
@@ -1477,90 +1505,35 @@
                 opacity: 0;
             }
         }
-
-        /* ============================================================
-           23. УТИЛИТЫ
-           ============================================================ */
-        .hidden {
-            display: none !important;
-        }
-
-        .text-muted {
-            color: var(--muted);
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .flex-col {
-            flex-direction: column;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .justify-between {
-            justify-content: space-between;
-        }
-
-        .gap-2 {
-            gap: 8px;
-        }
-
-        .gap-3 {
-            gap: 12px;
-        }
-
-        .mt-2 {
-            margin-top: 8px;
-        }
-
-        .mt-3 {
-            margin-top: 12px;
-        }
-
-        .mb-2 {
-            margin-bottom: 8px;
-        }
-
-        .mb-3 {
-            margin-bottom: 12px;
-        }
     </style>
 </head>
 
 <body>
 
-    <!-- ============================================================
+    <!-- ================================================================
          ФОНОВЫЕ ОРБЫ
-         ============================================================ -->
+         ================================================================ -->
     <div class="bg">
         <div class="orb a"></div>
         <div class="orb b"></div>
         <div class="orb c"></div>
     </div>
 
-    <!-- ============================================================
+    <!-- ================================================================
          ПРИЛОЖЕНИЕ
-         ============================================================ -->
+         ================================================================ -->
     <div class="app">
 
         <main class="content">
 
-            <!-- ======================================================
+            <!-- ========================================================
                  ЭКРАН 1: ГЛАВНАЯ
-                 ====================================================== -->
+                 ======================================================== -->
             <section class="view" id="homeView">
 
                 <div class="hero">
                     <div class="logo">Zero</div>
-                    <div class="tagline">Минимализм. Скорость. Приватность.</div>
+                    <div class="tagline" id="taglineEl">Минимализм. Скорость. Приватность.</div>
                 </div>
 
                 <div class="big-search">
@@ -1619,9 +1592,9 @@
 
             </section>
 
-            <!-- ======================================================
+            <!-- ========================================================
                  ЭКРАН 2: РЕЗУЛЬТАТЫ ПОИСКА
-                 ====================================================== -->
+                 ======================================================== -->
             <section class="view hidden" id="pageView">
 
                 <div class="page-head">
@@ -1636,9 +1609,9 @@
 
             </section>
 
-            <!-- ======================================================
-                 ЭКРАН 3: ИСТОРИЯ ПОСЕЩЕНИЙ
-                 ====================================================== -->
+            <!-- ========================================================
+                 ЭКРАН 3: ИСТОРИЯ
+                 ======================================================== -->
             <section class="view hidden" id="historyView">
 
                 <div class="page-head">
@@ -1671,9 +1644,9 @@
 
             </section>
 
-            <!-- ======================================================
+            <!-- ========================================================
                  ЭКРАН 4: ЗАГРУЗКИ
-                 ====================================================== -->
+                 ======================================================== -->
             <section class="view hidden" id="downloadsView">
 
                 <div class="page-head">
@@ -1697,9 +1670,9 @@
 
             </section>
 
-            <!-- ======================================================
+            <!-- ========================================================
                  ЭКРАН 5: ЗАКЛАДКИ
-                 ====================================================== -->
+                 ======================================================== -->
             <section class="view hidden" id="bookmarksView">
 
                 <div class="page-head">
@@ -1723,9 +1696,9 @@
 
             </section>
 
-            <!-- ======================================================
+            <!-- ========================================================
                  ЭКРАН 6: НАСТРОЙКИ
-                 ====================================================== -->
+                 ======================================================== -->
             <section class="view hidden" id="settingsView">
 
                 <div class="page-head" style="margin-bottom:18px">
@@ -1853,7 +1826,7 @@
                     <div class="settings-group-title">О приложении</div>
                     <div class="about-box">
                         <div class="about-logo">Zero</div>
-                        <div class="about-ver">Версия 5.0.0</div>
+                        <div class="about-ver">Версия 5.1.0</div>
                         <div class="about-desc">
                             Приватный браузер с нативными панелями.
                             Никаких аккаунтов, никакой аналитики.
@@ -1867,9 +1840,9 @@
         </main>
     </div>
 
-    <!-- ============================================================
+    <!-- ================================================================
          ШТОРКА
-         ============================================================ -->
+         ================================================================ -->
     <div class="scrim" id="scrim"></div>
     <div class="sheet" id="sheet">
         <div class="sheet-handle"></div>
@@ -1878,7 +1851,7 @@
 
     <script>
         /* ================================================================
-           ZERO BROWSER — JAVASCRIPT v5.0.0
+           ZERO BROWSER — JAVASCRIPT v5.1.0
            ================================================================ */
 
         /* ============================================================
@@ -1900,6 +1873,7 @@
 
         /* ============================================================
            КАТЕГОРИИ САЙТОВ
+           15 категорий, ~120 сайтов.
            ============================================================ */
         const CATEGORIES = [
             {
@@ -2086,9 +2060,7 @@
         const LANG_PACKS = {
             ru: {
                 tagline: 'Минимализм. Скорость. Приватность.',
-                navHome: 'Главная',
-                navBm: 'Закладки',
-                navSettings: 'Ещё',
+                bigSearchPlaceholder: 'Спросите Zero или введите адрес',
                 bookmarksTitle: 'Мои закладки',
                 bookmarksCount: ['закладка', 'закладки', 'закладок'],
                 searchInProgress: 'Ищем в интернете...',
@@ -2114,13 +2086,14 @@
                 cleared: 'Закладки очищены',
                 allCleared: 'Все данные очищены',
                 resetDone: 'Настройки сброшены',
-                webFallback: 'Открыть поиск напрямую:'
+                cookiesCleared: 'Cookies очищены',
+                webFallback: 'Открыть поиск напрямую:',
+                labelLang: 'Язык интерфейса',
+                labelTheme: 'Тема оформления'
             },
             en: {
                 tagline: 'Minimalism. Speed. Privacy.',
-                navHome: 'Home',
-                navBm: 'Bookmarks',
-                navSettings: 'More',
+                bigSearchPlaceholder: 'Ask Zero or enter address',
                 bookmarksTitle: 'My bookmarks',
                 bookmarksCount: ['bookmark', 'bookmarks', 'bookmarks'],
                 searchInProgress: 'Searching...',
@@ -2146,7 +2119,10 @@
                 cleared: 'Bookmarks cleared',
                 allCleared: 'All data cleared',
                 resetDone: 'Settings reset',
-                webFallback: 'Open search directly:'
+                cookiesCleared: 'Cookies cleared',
+                webFallback: 'Open search directly:',
+                labelLang: 'Interface language',
+                labelTheme: 'Theme'
             }
         };
 
@@ -2184,7 +2160,7 @@
         ];
 
         /* ============================================================
-           ЗАГРУЗКА НАСТРОЕК
+           НАСТРОЙКИ
            ============================================================ */
         function loadSettings() {
             try {
@@ -2213,6 +2189,35 @@
                 m = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
             }
             document.body.classList.toggle('light', m === 'light');
+        }
+
+        function applyLangAll() {
+            const t = T();
+            document.documentElement.lang = settings.lang;
+
+            const tagline = document.querySelector('.tagline');
+            if (tagline) tagline.textContent = t.tagline;
+
+            const bs = $('#bigSearch');
+            if (bs) bs.placeholder = t.bigSearchPlaceholder;
+
+            const valLang = $('#valueLang');
+            if (valLang) valLang.textContent = LANG_NAMES[settings.lang].name;
+
+            const valTheme = $('#valueTheme');
+            if (valTheme) {
+                valTheme.textContent = settings.theme === 'dark' ? t.themeDark
+                    : settings.theme === 'light' ? t.themeLight : t.themeAuto;
+            }
+
+            const bmTitleEl = $('#bmTitle');
+            if (bmTitleEl) {
+                bmTitleEl.innerHTML = t.bookmarksTitle.replace(' ', ' <em>') + '</em>';
+            }
+
+            updateBmCount();
+            updateHistoryCount();
+            updateDownloadsCount();
         }
 
         /* ============================================================
@@ -2267,6 +2272,14 @@
             if (window.ZeroMain && window.ZeroMain.setStar) {
                 window.ZeroMain.setStar(isBookmarked(state.currentUrl));
             }
+        }
+
+        function updateBmCount() {
+            const el = $('#bookmarksCount');
+            if (!el) return;
+            el.textContent = state.bookmarks.length === 0
+                ? '—'
+                : state.bookmarks.length + ' ' + pluralN(state.bookmarks.length, T().bookmarksCount);
         }
 
         /* ============================================================
@@ -2345,7 +2358,7 @@
            ============================================================ */
         document.addEventListener('pointerdown', e => {
             const el = e.target.closest(
-                '.icon-btn, .nav-btn, .tile, .tab-item, .bm-del, .hist-del, .dl-del, .head-action, .lang-btn, .cat-link, .translate-actions button, .settings-item, .picker-option'
+                '.icon-btn, .nav-btn, .tile, .tab-item, .bm-del, .hist-del, .dl-del, .head-action, .lang-btn, .cat-link, .translate-actions button, .settings-item, .picker-option, .new-tab-btn'
             );
             if (!el) return;
             const r = el.getBoundingClientRect();
@@ -2442,7 +2455,7 @@
         }
 
         /* ============================================================
-           ОТКРЫТИЕ URL — ЧЕРЕЗ НАТИВНЫЙ МОСТ
+           ОТКРЫТИЕ URL
            ============================================================ */
         function openExternal(url) {
             if (!url) return;
@@ -2516,7 +2529,7 @@
         }
 
         /* ============================================================
-           ПОИСК: DUCKDUCKGO INSTANT ANSWER
+           ПОИСК: DDG INSTANT
            ============================================================ */
         async function searchDDGInstant(q) {
             try {
@@ -2560,7 +2573,7 @@
         }
 
         /* ============================================================
-           ПОИСК: DUCKDUCKGO HTML
+           ПОИСК: DDG HTML
            ============================================================ */
         async function searchDDGHTML(q) {
             try {
@@ -2600,7 +2613,7 @@
         }
 
         /* ============================================================
-           ПОИСК: BING HTML
+           ПОИСК: BING
            ============================================================ */
         async function searchBingHTML(q) {
             try {
@@ -2633,7 +2646,7 @@
         }
 
         /* ============================================================
-           ПОИСК: MOJEEK HTML
+           ПОИСК: MOJEEK
            ============================================================ */
         async function searchMojeekHTML(q) {
             try {
@@ -2664,7 +2677,7 @@
         }
 
         /* ============================================================
-           ПОИСК: BRAVE HTML
+           ПОИСК: BRAVE
            ============================================================ */
         async function searchBraveHTML(q) {
             try {
@@ -2695,7 +2708,7 @@
         }
 
         /* ============================================================
-           ПОИСК: GOOGLE HTML
+           ПОИСК: GOOGLE
            ============================================================ */
         async function searchGoogleHTML(q) {
             try {
@@ -2731,7 +2744,7 @@
         }
 
         /* ============================================================
-           ПОИСК: ЯНДЕКС HTML
+           ПОИСК: ЯНДЕКС
            ============================================================ */
         async function searchYandexHTML(q) {
             try {
@@ -2806,7 +2819,7 @@
         }
 
         /* ============================================================
-           ПОИСК: YOUTUBE через Piped
+           ПОИСК: YOUTUBE (Piped API)
            ============================================================ */
         const PIPED = [
             'https://pipedapi.kavin.rocks',
@@ -3012,24 +3025,25 @@
         });
 
         /* ============================================================
-           ЗАКЛАДКИ — ОТОБРАЖЕНИЕ
+           ЗАКЛАДКИ — ЭКРАН
            ============================================================ */
         function showBookmarks() {
             showView('bookmarks');
+            renderBookmarks();
+        }
+
+        function renderBookmarks() {
             const list = $('#bookmarksList');
             const empty = $('#bookmarksEmpty');
-            const el = $('#bookmarksCount');
-            if (el) {
-                el.textContent = state.bookmarks.length === 0
-                    ? '—'
-                    : state.bookmarks.length + ' ' + pluralCount(state.bookmarks.length);
-            }
+            updateBmCount();
+
             list.innerHTML = '';
             if (state.bookmarks.length === 0) {
                 empty.style.display = '';
                 return;
             }
             empty.style.display = 'none';
+
             const grads = ['g-a', 'g-b', 'g-c', 'g-e', 'g-f', 'g-g', 'g-h'];
             state.bookmarks.forEach((b, i) => {
                 const h = hostOf(b.url);
@@ -3059,7 +3073,7 @@
                         state.bookmarks.splice(idx, 1);
                         saveBookmarks();
                         syncStar();
-                        showBookmarks();
+                        renderBookmarks();
                         flashMessage(T().removeBookmark);
                     }
                 });
@@ -3068,14 +3082,19 @@
         }
 
         /* ============================================================
-           ИСТОРИЯ — ОТОБРАЖЕНИЕ
+           ИСТОРИЯ — ЭКРАН
            ============================================================ */
         function showHistory() {
             showView('history');
+            renderHistory();
+        }
+
+        function renderHistory() {
             updateHistoryCount();
             const list = $('#historyList');
             const empty = $('#historyEmpty');
             list.innerHTML = '';
+
             const q = ($('#historySearch').value || '').toLowerCase().trim();
             let items = state.browsingHistory;
             if (q) {
@@ -3084,53 +3103,83 @@
                     (i.url || '').toLowerCase().includes(q)
                 );
             }
+
             if (items.length === 0) {
                 empty.style.display = '';
                 return;
             }
             empty.style.display = 'none';
-            items.slice(0, 100).forEach(item => {
+
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            const yesterday = today - 86400000;
+
+            const groups = {};
+            items.forEach(item => {
                 const d = new Date(item.visited);
-                const time = d.getHours().toString().padStart(2, '0') + ':' +
-                    d.getMinutes().toString().padStart(2, '0');
-                const el = document.createElement('div');
-                el.className = 'hist-item';
-                el.innerHTML = `
-                    <div class="hist-time">${time}</div>
-                    <div class="hist-body">
-                        <div class="hist-title">${escapeHtml(item.title)}</div>
-                        <div class="hist-url">${escapeHtml(hostOf(item.url))}</div>
-                    </div>
-                    <button class="hist-del">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 6L6 18M6 6l12 12"/>
-                        </svg>
-                    </button>
-                `;
-                el.querySelector('.hist-body').parentElement.addEventListener('click', e => {
-                    if (e.target.closest('.hist-del')) return;
-                    openExternal(item.url);
+                const day = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+                let key = day === today ? T().today
+                    : day === yesterday ? T().yesterday
+                    : d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(item);
+            });
+
+            let idx = 0;
+            Object.entries(groups).forEach(([date, its]) => {
+                const g = document.createElement('div');
+                g.className = 'hist-group';
+                g.style.animationDelay = (idx * 0.04) + 's';
+                g.innerHTML = `<div class="hist-date">${escapeHtml(date)}</div>`;
+                its.slice(0, 50).forEach(item => {
+                    const d = new Date(item.visited);
+                    const time = d.getHours().toString().padStart(2, '0') + ':' +
+                        d.getMinutes().toString().padStart(2, '0');
+                    const el = document.createElement('div');
+                    el.className = 'hist-item';
+                    el.innerHTML = `
+                        <div class="hist-time">${time}</div>
+                        <div class="hist-body">
+                            <div class="hist-title">${escapeHtml(item.title)}</div>
+                            <div class="hist-url">${escapeHtml(hostOf(item.url))}</div>
+                        </div>
+                        <button class="hist-del">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 6L6 18M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    `;
+                    el.querySelector('.hist-body').parentElement.addEventListener('click', e => {
+                        if (e.target.closest('.hist-del')) return;
+                        openExternal(item.url);
+                    });
+                    el.querySelector('.hist-del').addEventListener('click', e => {
+                        e.stopPropagation();
+                        const i = state.browsingHistory.findIndex(x =>
+                            x.url === item.url && x.visited === item.visited
+                        );
+                        if (i >= 0) {
+                            state.browsingHistory.splice(i, 1);
+                            saveBrowsingHistory();
+                            renderHistory();
+                        }
+                    });
+                    g.appendChild(el);
                 });
-                el.querySelector('.hist-del').addEventListener('click', e => {
-                    e.stopPropagation();
-                    const i = state.browsingHistory.findIndex(x =>
-                        x.url === item.url && x.visited === item.visited
-                    );
-                    if (i >= 0) {
-                        state.browsingHistory.splice(i, 1);
-                        saveBrowsingHistory();
-                        showHistory();
-                    }
-                });
-                list.appendChild(el);
+                list.appendChild(g);
+                idx++;
             });
         }
 
         /* ============================================================
-           ЗАГРУЗКИ — ОТОБРАЖЕНИЕ
+           ЗАГРУЗКИ — ЭКРАН
            ============================================================ */
         function showDownloads() {
             showView('downloads');
+            renderDownloads();
+        }
+
+        function renderDownloads() {
             updateDownloadsCount();
             const list = $('#downloadsList');
             const empty = $('#downloadsEmpty');
@@ -3140,9 +3189,10 @@
                 return;
             }
             empty.style.display = 'none';
-            state.downloads.forEach(d => {
+            state.downloads.forEach((d, i) => {
                 const el = document.createElement('div');
                 el.className = 'dl-item';
+                el.style.animationDelay = (i * 0.04) + 's';
                 el.innerHTML = `
                     <div class="dl-icon g-a">${(d.name[0]||'?').toUpperCase()}</div>
                     <div class="dl-body">
@@ -3155,76 +3205,51 @@
         }
 
         /* ============================================================
-           НАСТРОЙКИ — ОТОБРАЖЕНИЕ
+           НАСТРОЙКИ — ЭКРАН
            ============================================================ */
         function showSettings() {
             showView('settings');
         }
 
         /* ============================================================
-           ОБРАБОТЧИКИ
+           ОБРАБОТЧИКИ НАСТРОЕК
            ============================================================ */
-        $('#historySearch').addEventListener('input', showHistory);
-
-        $('#clearHistoryBtn').addEventListener('click', () => {
-            state.browsingHistory = [];
-            saveBrowsingHistory();
-            showHistory();
+        $('#itemLang').addEventListener('click', () => {
+            openPicker(
+                T().labelLang,
+                Object.keys(LANG_PACKS).map(c => ({
+                    value: c,
+                    flag: LANG_NAMES[c].flag,
+                    name: LANG_NAMES[c].name,
+                    selected: settings.lang === c
+                })),
+                v => {
+                    settings.lang = v;
+                    saveSettings();
+                    applyLangAll();
+                    closeSheet();
+                    flashMessage('OK');
+                }
+            );
         });
 
-        $('#clearDownloadsBtn').addEventListener('click', () => {
-            state.downloads = [];
-            saveDownloads();
-            showDownloads();
-        });
-
-        $('#itemClearBm').addEventListener('click', () => {
-            state.bookmarks = [];
-            saveBookmarks();
-            syncStar();
-            flashMessage(T().cleared);
-        });
-
-        $('#itemClearAll').addEventListener('click', () => {
-            state.bookmarks = [];
-            state.browsingHistory = [];
-            state.downloads = [];
-            saveBookmarks();
-            saveBrowsingHistory();
-            saveDownloads();
-            syncStar();
-            flashMessage(T().allCleared);
-        });
-
-        $('#itemReset').addEventListener('click', () => {
-            try {
-                localStorage.clear();
-            } catch (e) {}
-            settings = { lang: 'ru', theme: 'dark' };
-            state.bookmarks = [];
-            state.browsingHistory = [];
-            state.downloads = [];
-            applyTheme();
-            syncStar();
-            flashMessage(T().resetDone);
-        });
-
-        $('#bmExportBtn').addEventListener('click', () => {
-            try {
-                const data = JSON.stringify({
-                    version: 1,
-                    exported: new Date().toISOString(),
-                    bookmarks: state.bookmarks
-                }, null, 2);
-                const blob = new Blob([data], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'zero-bookmarks.json';
-                a.click();
-                setTimeout(() => URL.revokeObjectURL(url), 1000);
-                flashMessage(T().exportDone);
-            } catch (e) {}
+        $('#itemTheme').addEventListener('click', () => {
+            const t = T();
+            openPicker(
+                t.labelTheme,
+                [
+                    { value: 'dark', flag: '🌙', name: t.themeDark, selected: settings.theme === 'dark' },
+                    { value: 'light', flag: '☀️', name: t.themeLight, selected: settings.theme === 'light' },
+                    { value: 'auto', flag: '⚙️', name: t.themeAuto, selected: settings.theme === 'auto' }
+                ],
+                v => {
+                    settings.theme = v;
+                    saveSettings();
+                    applyTheme();
+                    applyLangAll();
+                    closeSheet();
+                }
+            );
         });
 
         $('#itemImportBm').addEventListener('click', () => {
@@ -3252,6 +3277,7 @@
                         });
                         saveBookmarks();
                         syncStar();
+                        updateBmCount();
                         flashMessage(T().importDone);
                     } catch (e) {
                         flashMessage(T().importError);
@@ -3262,23 +3288,177 @@
             input.click();
         });
 
-        $('#itemLang').addEventListener('click', () => {
-            // Пока только RU, но заготовка есть
+        $('#itemClearBm').addEventListener('click', () => {
+            state.bookmarks = [];
+            saveBookmarks();
+            syncStar();
+            updateBmCount();
+            flashMessage(T().cleared);
         });
 
-        $('#itemTheme').addEventListener('click', () => {
-            const order = ['dark', 'light', 'auto'];
-            const i = order.indexOf(settings.theme);
-            settings.theme = order[(i + 1) % order.length];
-            saveSettings();
-            applyTheme();
-            const el = $('#valueTheme');
-            if (el) {
-                el.textContent = settings.theme === 'dark'
-                    ? T().themeDark
-                    : settings.theme === 'light' ? T().themeLight : T().themeAuto;
-            }
+        $('#itemClearCookies').addEventListener('click', () => {
+            try {
+                if (window.ZeroMain && window.ZeroMain.clearCookies) {
+                    window.ZeroMain.clearCookies();
+                }
+            } catch (e) {}
+            flashMessage(T().cookiesCleared);
         });
+
+        $('#itemClearAll').addEventListener('click', () => {
+            state.bookmarks = [];
+            state.browsingHistory = [];
+            state.downloads = [];
+            saveBookmarks();
+            saveBrowsingHistory();
+            saveDownloads();
+            try {
+                if (window.ZeroMain && window.ZeroMain.clearData) {
+                    window.ZeroMain.clearData();
+                }
+            } catch (e) {}
+            syncStar();
+            updateBmCount();
+            updateHistoryCount();
+            updateDownloadsCount();
+            flashMessage(T().allCleared);
+        });
+
+        $('#itemReset').addEventListener('click', () => {
+            try {
+                localStorage.removeItem(SETTINGS_KEY);
+                localStorage.removeItem('zero_bookmarks');
+                localStorage.removeItem('zero_history');
+                localStorage.removeItem('zero_downloads');
+            } catch (e) {}
+            settings = { lang: 'ru', theme: 'dark' };
+            state.bookmarks = [];
+            state.browsingHistory = [];
+            state.downloads = [];
+            applyTheme();
+            applyLangAll();
+            syncStar();
+            flashMessage(T().resetDone);
+        });
+
+        $('#clearHistoryBtn').addEventListener('click', () => {
+            state.browsingHistory = [];
+            saveBrowsingHistory();
+            renderHistory();
+        });
+
+        $('#clearDownloadsBtn').addEventListener('click', () => {
+            state.downloads = [];
+            saveDownloads();
+            renderDownloads();
+        });
+
+        $('#historySearch').addEventListener('input', renderHistory);
+
+        $('#bmExportBtn').addEventListener('click', () => {
+            try {
+                const data = JSON.stringify({
+                    version: 1,
+                    exported: new Date().toISOString(),
+                    bookmarks: state.bookmarks
+                }, null, 2);
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'zero-bookmarks.json';
+                a.click();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                flashMessage(T().exportDone);
+            } catch (e) {}
+        });
+
+        /* ============================================================
+           ПИКЕР (выбор из списка)
+           ============================================================ */
+        function openPicker(title, opts, onSelect) {
+            sheetContent.innerHTML = `<div class="picker-title">${escapeHtml(title)}</div>` +
+                opts.map(o => `
+                    <button class="picker-option ${o.selected?'selected':''}" data-value="${escapeHtml(o.value)}">
+                        <span class="picker-flag">${o.flag||'●'}</span>
+                        <span class="picker-name">${escapeHtml(o.name)}</span>
+                        <span class="picker-check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                        </span>
+                    </button>
+                `).join('');
+            sheetContent.querySelectorAll('.picker-option').forEach(b => {
+                b.addEventListener('click', () => onSelect(b.dataset.value));
+            });
+            scrim.classList.add('show');
+            sheet.classList.add('show');
+        }
+
+        /* ============================================================
+           ШТОРКА
+           ============================================================ */
+        function closeSheet() {
+            scrim.classList.remove('show');
+            sheet.classList.remove('show');
+        }
+
+        scrim.addEventListener('click', closeSheet);
+
+        /* ============================================================
+           ХУКИ ДЛЯ НАТИВНОЙ ЧАСТИ
+           ============================================================ */
+        window.onToggleBookmark = function() {
+            toggleBookmark();
+        };
+
+        window.onShowTabs = function() {
+            // Показываем шторку с вкладками
+            sheetContent.innerHTML = `
+                <div class="sheet-title">Вкладки</div>
+                <div class="tab-item" data-id="1">
+                    <div class="tab-fav g-e">Z</div>
+                    <div class="tab-meta">
+                        <div class="tab-title">Новая вкладка</div>
+                        <div class="tab-url">zero://home</div>
+                    </div>
+                </div>
+                <button class="new-tab-btn" id="newTabBtn">+ Новая вкладка</button>
+            `;
+            sheetContent.querySelectorAll('.tab-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    closeSheet();
+                    if (window.ZeroMain && window.ZeroMain.openUrl) {
+                        window.ZeroMain.openUrl('file:///android_asset/index.html');
+                    }
+                });
+            });
+            const nb = $('#newTabBtn');
+            if (nb) nb.addEventListener('click', () => {
+                closeSheet();
+                if (window.ZeroMain && window.ZeroMain.openUrl) {
+                    window.ZeroMain.openUrl('file:///android_asset/index.html');
+                }
+            });
+            scrim.classList.add('show');
+            sheet.classList.add('show');
+        };
+
+        window.onShowBookmarks = function() {
+            showBookmarks();
+        };
+
+        window.onShowMenu = function() {
+            showSettings();
+        };
+
+        window.onNativeUrlChange = function(url, title) {
+            state.currentUrl = url;
+            state.currentTitle = title || hostOf(url);
+            addToHistory(url, state.currentTitle);
+            syncStar();
+        };
 
         /* ============================================================
            FLASH-СООБЩЕНИЕ
@@ -3310,41 +3490,11 @@
         });
 
         /* ============================================================
-           ХУКИ ДЛЯ НАТИВНОЙ ЧАСТИ
-           ============================================================ */
-        window.onToggleBookmark = function() {
-            toggleBookmark();
-        };
-
-        window.onShowTabs = function() {
-            // Вкладки реализуем позже, пока просто главная
-            if (window.ZeroBottom && window.ZeroBottom.goHome) {
-                window.ZeroBottom.goHome();
-            }
-        };
-
-        window.onShowBookmarks = function() {
-            showBookmarks();
-        };
-
-        window.onShowMenu = function() {
-            showSettings();
-        };
-
-        window.onNativeUrlChange = function(url, title) {
-            state.currentUrl = url;
-            state.currentTitle = title || hostOf(url);
-            addToHistory(url, state.currentTitle);
-            syncStar();
-        };
-
-        /* ============================================================
            СТАРТ
            ============================================================ */
         loadSettings();
         applyTheme();
-        updateHistoryCount();
-        updateDownloadsCount();
+        applyLangAll();
 
         window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
             if (settings.theme === 'auto') applyTheme();
