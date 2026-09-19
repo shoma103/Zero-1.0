@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.*;
 import android.widget.FrameLayout;
 
@@ -33,33 +35,73 @@ public class MainActivity extends Activity {
         "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 " +
         "(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
 
+    private static final int BG_COLOR = 0xFF08080C;
+    private static final int TOP_H_DP = 58;
+    private static final int BOTTOM_H_DP = 58;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FrameLayout root = new FrameLayout(this);
-        root.setBackgroundColor(0xFF08080C);
+        // ═══════════════════════════════════════════════════════════
+        // 1. ОТКЛЮЧАЕМ ЗЕЛЁНЫЙ ЗНАЧОК ОТЛАДКИ WEBVIEW
+        // ═══════════════════════════════════════════════════════════
+        try {
+            WebView.setWebContentsDebuggingEnabled(false);
+        } catch (Exception ignored) {}
 
+        // Приложение рисует под системные бары (без чёрных полос)
+        getWindow().setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
+
+        // Цвет системных баров = фон приложения
+        getWindow().setStatusBarColor(BG_COLOR);
+        getWindow().setNavigationBarColor(BG_COLOR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            getWindow().setNavigationBarDividerColor(BG_COLOR);
+        }
+
+        // ═══════════════════════════════════════════════════════════
+        // 2. КОРНЕВОЙ LAYOUT — ФОН ТЁМНЫЙ, БЕЗ ЗАЗОРОВ
+        // ═══════════════════════════════════════════════════════════
+        FrameLayout root = new FrameLayout(this);
+        root.setBackgroundColor(BG_COLOR);
+        root.setFitsSystemWindows(false);
+
+        int topH = dp(TOP_H_DP);
+        int botH = dp(BOTTOM_H_DP);
+
+        // ═══════════════════════════════════════════════════════════
+        // 3. ВЕРХНЯЯ ПАНЕЛЬ
+        // ═══════════════════════════════════════════════════════════
         topWV = createWV();
         topWV.addJavascriptInterface(new TopBridge(), "ZeroTop");
         FrameLayout.LayoutParams topLp = new FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, dp(58));
+            ViewGroup.LayoutParams.MATCH_PARENT, topH);
         topLp.gravity = Gravity.TOP;
         root.addView(topWV, topLp);
 
+        // ═══════════════════════════════════════════════════════════
+        // 4. НИЖНЯЯ ПАНЕЛЬ — теперь не перекрывается навбаром
+        // ═══════════════════════════════════════════════════════════
         botWV = createWV();
         botWV.addJavascriptInterface(new BottomBridge(), "ZeroBottom");
         FrameLayout.LayoutParams botLp = new FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, dp(58));
+            ViewGroup.LayoutParams.MATCH_PARENT, botH);
         botLp.gravity = Gravity.BOTTOM;
         root.addView(botWV, botLp);
 
+        // ═══════════════════════════════════════════════════════════
+        // 5. ЦЕНТРАЛЬНЫЙ КОНТЕНТ — между верхней и нижней панелью
+        // ═══════════════════════════════════════════════════════════
         mainWV = createWV();
         mainWV.addJavascriptInterface(new MainBridge(), "ZeroMain");
         FrameLayout.LayoutParams mainLp = new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mainLp.topMargin = dp(58);
-        mainLp.bottomMargin = dp(58);
+        mainLp.topMargin = topH;
+        mainLp.bottomMargin = botH;
         root.addView(mainWV, mainLp);
 
         setupClients();
@@ -85,9 +127,19 @@ public class MainActivity extends Activity {
         s.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         s.setJavaScriptCanOpenWindowsAutomatically(true);
         s.setUserAgentString(UA);
-        wv.setBackgroundColor(Color.TRANSPARENT);
+
+        // ═══════════════════════════════════════════════════════════
+        // КЛЮЧЕВЫЕ НАСТРОЙКИ — убирают чёрные полосы и скролл-бары
+        // ═══════════════════════════════════════════════════════════
+        wv.setBackgroundColor(BG_COLOR);
         wv.setVerticalScrollBarEnabled(false);
         wv.setHorizontalScrollBarEnabled(false);
+        wv.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+        wv.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
+        wv.setFitsSystemWindows(false);
+        wv.setPadding(0, 0, 0, 0);
+        wv.setClipToPadding(false);
+
         return wv;
     }
 
@@ -197,7 +249,7 @@ public class MainActivity extends Activity {
     }
 
     private class TopBridge {
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void openUrl(final String url) {
             runOnUiThread(() -> {
                 if (url == null || url.isEmpty()) return;
@@ -211,22 +263,22 @@ public class MainActivity extends Activity {
             });
         }
 
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void goBack() {
             runOnUiThread(() -> { if (mainWV.canGoBack()) mainWV.goBack(); });
         }
 
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void goForward() {
             runOnUiThread(() -> { if (mainWV.canGoForward()) mainWV.goForward(); });
         }
 
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void reload() {
             runOnUiThread(() -> mainWV.reload());
         }
 
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void toggleBookmark() {
             runOnUiThread(() -> mainWV.evaluateJavascript(
                 "window.onToggleBookmark && window.onToggleBookmark()", null));
@@ -239,21 +291,21 @@ public class MainActivity extends Activity {
     }
 
     private class BottomBridge {
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void goHome() {
             runOnUiThread(() -> mainWV.loadUrl(HOME_URL));
         }
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void showTabs() {
             runOnUiThread(() -> mainWV.evaluateJavascript(
                 "window.onShowTabs && window.onShowTabs()", null));
         }
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void showBookmarks() {
             runOnUiThread(() -> mainWV.evaluateJavascript(
                 "window.onShowBookmarks && window.onShowBookmarks()", null));
         }
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void showMenu() {
             runOnUiThread(() -> mainWV.evaluateJavascript(
                 "window.onShowMenu && window.onShowMenu()", null));
@@ -261,13 +313,13 @@ public class MainActivity extends Activity {
     }
 
     private class MainBridge {
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void setStar(final boolean on) {
             runOnUiThread(() -> topWV.evaluateJavascript(
                 "window.setStar && window.setStar(" + on + ")", null));
         }
 
-        @JavascriptInterface
+        @android.webkit.JavascriptInterface
         public void openUrl(final String url) {
             runOnUiThread(() -> {
                 if (url == null || url.isEmpty()) return;
