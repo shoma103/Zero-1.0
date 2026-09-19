@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; overflow:hidden; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(180deg, #08080c, #0b0b11);
+  color: #f5f5f7;
+  user-select: none;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.topbar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 10px; height: 100%;
+}
+.icon-btn {
+  width: 38px; height: 38px; flex: 0 0 auto;
+  display: grid; place-items: center;
+  border: none; border-radius: 12px; background: transparent; color: #f5f5f7;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .2s;
+}
+.icon-btn svg { width: 19px; height: 19px; }
+.icon-btn:active { transform: scale(.85); background: rgba(255,255,255,.1); }
+.icon-btn.off { opacity: .25; pointer-events: none; }
+.address-wrap {
+  flex: 1; min-width: 0; height: 40px; padding: 1.5px; border-radius: 20px;
+  background: rgba(255,255,255,.08);
+  transition: background .3s, box-shadow .3s;
+}
+.address-wrap.focused {
+  background: linear-gradient(135deg,#7c3aed,#ec4899,#f59e0b,#06b6d4,#7c3aed);
+  background-size: 300% 100%;
+  animation: shine 5s linear infinite;
+  box-shadow: 0 0 0 3px rgba(124,58,237,.15), 0 8px 24px -8px rgba(236,72,153,.55);
+}
+@keyframes shine { to { background-position: 200% 50%; } }
+.address-inner {
+  height: 100%; border-radius: 18.5px; background: #0b0b11;
+  display: flex; align-items: center; gap: 6px; padding: 0 6px 0 12px;
+}
+.address-wrap.focused .address-inner { background: #0a0a10; }
+.address-inner svg.lock { width: 12px; height: 12px; flex: 0 0 auto; color: #8b8b96; }
+.address-wrap.focused .address-inner svg.lock { color: #a78bfa; }
+.address {
+  flex: 1; min-width: 0; border: none; outline: none; background: transparent;
+  color: #f5f5f7; font-size: 13px; font-weight: 500; padding-right: 4px;
+}
+.address::placeholder { color: #8b8b96; font-weight: 400; }
+.star-btn {
+  width: 30px; height: 30px; flex: 0 0 auto; border: none; background: transparent;
+  border-radius: 9px; display: grid; place-items: center; color: #8b8b96;
+  transition: transform .3s;
+}
+.star-btn svg { width: 15px; height: 15px; transition: fill .25s, stroke .25s; }
+.star-btn:active { transform: scale(.82); }
+.star-btn.on { color: #fbbf24; }
+.star-btn.on svg { fill: #fbbf24; stroke: #fbbf24; filter: drop-shadow(0 0 5px rgba(251,191,36,.5)); }
+.address-wrap.focused .star-btn { opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="icon-btn off" id="btnBack">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  </button>
+  <button class="icon-btn off" id="btnFwd">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18l6-6-6-6"/>
+    </svg>
+  </button>
+  <div class="address-wrap" id="addrWrap">
+    <div class="address-inner">
+      <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="11" width="16" height="10" rx="2.5"/>
+        <path d="M8 11V7a4 4 0 018 0v4"/>
+      </svg>
+      <input id="address" class="address" placeholder="Поиск или адрес" autocomplete="off" spellcheck="false" enterkeyhint="go">
+      <button class="star-btn" id="btnStar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <button class="icon-btn" id="btnReload">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12a9 9 0 11-3-6.7"/>
+      <path d="M21 4v5h-5"/>
+    </svg>
+  </button>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+
+function setAddress(url, title, canBack, canForward) {
+    const a = $('#address');
+    const isHome = !url || url.indexOf('file:///android_asset/') === 0 || url.indexOf('about:') === 0;
+    if (isHome) {
+        a.value = '';
+        a.placeholder = 'Поиск или адрес';
+    } else {
+        a.value = url;
+    }
+    $('#btnBack').classList.toggle('off', !canBack);
+    $('#btnFwd').classList.toggle('off', !canForward);
+}
+
+function setStar(on) {
+    $('#btnStar').classList.toggle('on', on);
+}
+
+$('#address').addEventListener('focus', () => $('#addrWrap').classList.add('focused'));
+$('#address').addEventListener('blur', () => $('#addrWrap').classList.remove('focused'));
+$('#address').addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+        const q = $('#address').value.trim();
+        if (q) {
+            if (window.ZeroTop) window.ZeroTop.openUrl(q);
+            $('#address').blur();
+        }
+    }
+});
+
+$('#btnBack').addEventListener('click', () => { if (window.ZeroTop) window.ZeroTop.goBack(); });
+$('#btnFwd').addEventListener('click', () => { if (window.ZeroTop) window.ZeroTop.goForward(); });
+$('#btnReload').addEventListener('click', () => { if (window.ZeroTop) window.ZeroTop.reload(); });
+$('#btnStar').addEventListener('click', () => { if (window.ZeroTop) window.ZeroTop.toggleBookmark(); });
+
+window.setAddress = setAddress;
+window.setStar = setStar;
+</script>
+</body>
+</html>
