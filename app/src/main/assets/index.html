@@ -3,79 +3,76 @@
 <head>
     <!-- ================================================================
          ZERO BROWSER
-         Минималистичный браузер на Chromium
-         Версия: 2.0.0
+         Минималистичный браузер с нативными панелями
+         Версия: 5.0.0
          ================================================================
-         СОДЕРЖАНИЕ:
-         1. Мета-теги
-         2. CSS-переменные
-         3. Сброс стилей
-         4. Фоновые орбы
-         5. Каркас приложения
-         6. Верхняя панель
-         7. Адресная строка
-         8. Приватный режим
-         9. Контент и виды
-         10. Главная
-         11. Большой поиск
-         12. Плитки
-         13. Результаты поиска
-         14. Категории
-         15. История
-         16. Загрузки
-         17. Закладки
-         18. Настройки
-         19. Пикер
-         20. Веб-фрейм
-         21. Плавающие кнопки
-         22. Нижняя панель
-         23. Ripple
-         24. Шторка
-         25. Переводчик
+         Особенности:
+         - Нативные панели сверху и снизу (top.html, bottom.html)
+         - Центральный контент: главная, поиск, история, закладки
+         - Мультипоиск через публичные SearXNG-серверы
+         - YouTube через Piped API
+         - Wikipedia через MediaWiki API
+         - 15 категорий сайтов (~120 сайтов)
+         - История с поиском и группировкой по дням
+         - Закладки с экспортом и импортом
+         - Загрузки
+         - Приватный режим
+         - Переводчик на 9 языков
+         - Тёмная/светлая/системная тема
+         - 2 языка интерфейса (RU/EN)
          ================================================================ -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
     <meta name="theme-color" content="#08080c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Zero — минималистичный браузер с умным поиском">
+    <meta name="description" content="Zero — минималистичный браузер с нативными панелями">
     <title>Zero</title>
 
     <style>
         /* ============================================================
-           1. CSS-ПЕРЕМЕННЫЕ
+           1. ПЕРЕМЕННЫЕ
            ============================================================ */
         :root {
-            /* Тёмная тема — основная */
             --bg: #08080c;
             --bg2: #0b0b11;
+            --bg3: #13131c;
             --text: #f5f5f7;
             --muted: #8b8b96;
+            --muted2: #6b6b78;
             --line: rgba(255, 255, 255, .08);
+            --line2: rgba(255, 255, 255, .12);
             --glass: rgba(255, 255, 255, .05);
-
-            /* Главный градиент */
+            --glass2: rgba(255, 255, 255, .08);
             --g1: linear-gradient(135deg, #7c3aed, #ec4899, #f59e0b);
-
-            /* Кривые анимаций */
+            --g2: linear-gradient(135deg, #06b6d4, #3b82f6);
+            --g3: linear-gradient(120deg, #a78bfa, #ec4899, #f59e0b, #06b6d4, #a78bfa);
             --ease: cubic-bezier(.22, 1, .36, 1);
             --spring: cubic-bezier(.34, 1.56, .64, 1);
-
-            /* Цвета статусов */
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #f43f5e;
             --info: #06b6d4;
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 18px;
+            --radius-xl: 21px;
+            --shadow-sm: 0 4px 12px -4px rgba(0, 0, 0, .5);
+            --shadow-md: 0 8px 22px -10px rgba(0, 0, 0, .7);
+            --shadow-lg: 0 14px 44px -14px rgba(124, 58, 237, .65);
         }
 
-        /* Светлая тема */
         body.light {
             --bg: #f4f4f8;
             --bg2: #ffffff;
+            --bg3: #eef0f5;
             --text: #0a0a12;
             --muted: #6b6b78;
+            --muted2: #8b8b96;
             --line: rgba(0, 0, 0, .08);
+            --line2: rgba(0, 0, 0, .12);
             --glass: rgba(0, 0, 0, .04);
+            --glass2: rgba(0, 0, 0, .06);
         }
 
         /* ============================================================
@@ -88,9 +85,11 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
             overflow: hidden;
+            width: 100%;
         }
 
         body {
@@ -100,6 +99,7 @@
             -webkit-font-smoothing: antialiased;
             user-select: none;
             transition: background .4s var(--ease), color .4s var(--ease);
+            position: relative;
         }
 
         input {
@@ -110,6 +110,11 @@
         button {
             font-family: inherit;
             cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
         /* ============================================================
@@ -137,7 +142,7 @@
             background: linear-gradient(135deg, #7c3aed, #ec4899);
             top: -180px;
             left: -140px;
-            animation: f1 22s ease-in-out infinite;
+            animation: orbFloat1 22s ease-in-out infinite;
         }
 
         .orb.b {
@@ -146,7 +151,7 @@
             background: linear-gradient(135deg, #06b6d4, #3b82f6);
             bottom: -160px;
             right: -140px;
-            animation: f2 26s ease-in-out infinite;
+            animation: orbFloat2 26s ease-in-out infinite;
         }
 
         .orb.c {
@@ -156,19 +161,25 @@
             top: 38%;
             left: 55%;
             opacity: .25;
-            animation: f3 30s ease-in-out infinite;
+            animation: orbFloat3 30s ease-in-out infinite;
         }
 
-        @keyframes f1 {
-            50% { transform: translate(120px, 80px) scale(1.15); }
+        @keyframes orbFloat1 {
+            50% {
+                transform: translate(120px, 80px) scale(1.15);
+            }
         }
 
-        @keyframes f2 {
-            50% { transform: translate(-100px, -90px) scale(1.2); }
+        @keyframes orbFloat2 {
+            50% {
+                transform: translate(-100px, -90px) scale(1.2);
+            }
         }
 
-        @keyframes f3 {
-            50% { transform: translate(-140px, 60px) scale(.85); }
+        @keyframes orbFloat3 {
+            50% {
+                transform: translate(-140px, 60px) scale(.85);
+            }
         }
 
         body.light .orb {
@@ -187,7 +198,7 @@
         }
 
         /* ============================================================
-           4. КАРКАС ПРИЛОЖЕНИЯ
+           4. КАРКАС
            ============================================================ */
         .app {
             position: fixed;
@@ -195,220 +206,17 @@
             z-index: 1;
             display: flex;
             flex-direction: column;
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* ============================================================
-           5. ВЕРХНЯЯ ПАНЕЛЬ
-           ============================================================ */
-        .topbar {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 12px;
-            background: linear-gradient(180deg, rgba(8, 8, 12, .9), rgba(8, 8, 12, .35));
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid var(--line);
-            position: relative;
-            z-index: 5;
-        }
-
-        body.light .topbar {
-            background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .6));
-        }
-
-        .icon-btn {
-            position: relative;
-            overflow: hidden;
-            width: 40px;
-            height: 40px;
-            flex: 0 0 auto;
-            display: grid;
-            place-items: center;
-            border: none;
-            border-radius: 13px;
-            background: transparent;
-            color: var(--text);
-            transition: transform .45s var(--spring), background .25s var(--ease), opacity .3s;
-        }
-
-        .icon-btn svg {
-            width: 20px;
-            height: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .icon-btn:active {
-            transform: scale(.86);
-            background: rgba(255, 255, 255, .11);
-        }
-
-        .icon-btn.off {
-            opacity: .25;
-            pointer-events: none;
-        }
-
-        /* ============================================================
-           6. АДРЕСНАЯ СТРОКА
-           ============================================================ */
-        .address-wrap {
-            flex: 1;
-            min-width: 0;
-            height: 42px;
-            padding: 1.5px;
-            border-radius: 21px;
-            background: rgba(255, 255, 255, .08);
-            transition: background .45s var(--ease), box-shadow .45s var(--ease);
-        }
-
-        body.light .address-wrap {
-            background: rgba(0, 0, 0, .06);
-        }
-
-        .address-wrap.focused {
-            background: linear-gradient(135deg, #7c3aed, #ec4899, #f59e0b, #06b6d4, #7c3aed);
-            background-size: 300% 100%;
-            animation: shine 5s linear infinite;
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, .14), 0 10px 34px -10px rgba(236, 72, 153, .55);
-        }
-
-        .address-inner {
-            height: 100%;
-            border-radius: 19.5px;
-            background: var(--bg2);
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            padding: 0 6px 0 14px;
-            transition: background .35s var(--ease);
-        }
-
-        .address-inner svg.lock {
-            width: 13px;
-            height: 13px;
-            flex: 0 0 auto;
-            color: var(--muted);
-            transition: color .3s;
-        }
-
-        .address-wrap.focused .address-inner svg.lock {
-            color: #a78bfa;
-        }
-
-        .address {
-            flex: 1;
-            min-width: 0;
-            border: none;
-            outline: none;
-            background: transparent;
-            color: var(--text);
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: -.1px;
-            padding-right: 4px;
-        }
-
-        .address::placeholder {
-            color: var(--muted);
-            font-weight: 400;
-        }
-
-        .star-btn {
-            width: 32px;
-            height: 32px;
-            flex: 0 0 auto;
-            border: none;
-            background: transparent;
-            border-radius: 10px;
-            display: grid;
-            place-items: center;
-            color: var(--muted);
-            transition: transform .4s var(--spring), color .25s, background .25s, opacity .25s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .star-btn svg {
-            width: 17px;
-            height: 17px;
-            transition: transform .5s var(--spring), fill .25s, stroke .25s;
-        }
-
-        .star-btn:active {
-            transform: scale(.82);
-        }
-
-        .star-btn.on {
-            color: #fbbf24;
-        }
-
-        .star-btn.on svg {
-            fill: #fbbf24;
-            stroke: #fbbf24;
-            filter: drop-shadow(0 0 6px rgba(251, 191, 36, .5));
-        }
-
-        .star-btn.bounce svg {
-            animation: starPop .55s var(--spring);
-        }
-
-        @keyframes starPop {
-            0% { transform: scale(1); }
-            45% { transform: scale(1.5) rotate(20deg); }
-            100% { transform: scale(1); }
-        }
-
-        .address-wrap.focused .star-btn {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        @keyframes shine {
-            to { background-position: 200% 50%; }
-        }
-
-        /* ============================================================
-           7. ПРИВАТНЫЙ РЕЖИМ
-           ============================================================ */
-        body.private .topbar {
-            background: linear-gradient(180deg, rgba(20, 10, 30, .95), rgba(20, 10, 30, .5));
-        }
-
-        body.private .bottombar {
-            background: linear-gradient(0deg, rgba(20, 10, 30, .96), rgba(20, 10, 30, .5));
-        }
-
-        body.private::before {
-            content: '🕶 Приватный режим';
-            position: fixed;
-            top: calc(env(safe-area-inset-top) + 60px);
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            padding: 6px 14px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #7c3aed, #ec4899);
-            color: #fff;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: .3px;
-            box-shadow: 0 8px 24px -8px rgba(124, 58, 237, .8);
-            animation: up .4s var(--ease) both;
-            pointer-events: none;
-        }
-
-        /* ============================================================
-           8. КОНТЕНТ И ВИДЫ
-           ============================================================ */
         .content {
             flex: 1;
             position: relative;
             overflow: hidden;
         }
 
+        /* ============================================================
+           5. ВИДЫ
+           ============================================================ */
         .view {
             position: absolute;
             inset: 0;
@@ -430,23 +238,19 @@
             pointer-events: none;
         }
 
-        .view.web {
-            padding: 0;
-            background: #fff;
-            transform: none;
-        }
-
-        .view.web.hidden {
-            transform: none;
-        }
-
         @keyframes up {
-            from { opacity: 0; transform: translateY(26px); }
-            to { opacity: 1; transform: none; }
+            from {
+                opacity: 0;
+                transform: translateY(26px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
         }
 
         /* ============================================================
-           9. ГЛАВНАЯ — HERO
+           6. ГЛАВНАЯ
            ============================================================ */
         .hero {
             text-align: center;
@@ -459,7 +263,7 @@
             font-weight: 800;
             letter-spacing: -3.5px;
             line-height: 1;
-            background: linear-gradient(120deg, #a78bfa, #ec4899, #f59e0b, #06b6d4, #a78bfa);
+            background: var(--g3);
             background-size: 200% 100%;
             -webkit-background-clip: text;
             background-clip: text;
@@ -476,16 +280,22 @@
             letter-spacing: .2px;
         }
 
+        @keyframes shine {
+            to {
+                background-position: 200% 50%;
+            }
+        }
+
         /* ============================================================
-           10. БОЛЬШОЙ ПОИСК
+           7. БОЛЬШОЙ ПОИСК
            ============================================================ */
         .big-search {
             padding: 1.5px;
-            border-radius: 21px;
+            border-radius: var(--radius-xl);
             margin-bottom: 26px;
-            background: linear-gradient(135deg, #7c3aed, #ec4899, #f59e0b, #06b6d4, #7c3aed);
+            background: var(--g3);
             background-size: 300% 100%;
-            box-shadow: 0 14px 44px -14px rgba(124, 58, 237, .65);
+            box-shadow: var(--shadow-lg);
             animation: up .8s var(--ease) .1s both, shine 6s linear infinite;
         }
 
@@ -523,7 +333,7 @@
         }
 
         /* ============================================================
-           11. ПЛИТКИ
+           8. ПЛИТКИ
            ============================================================ */
         .tiles {
             display: grid;
@@ -540,31 +350,28 @@
             align-items: center;
             gap: 8px;
             padding: 14px 5px;
-            border-radius: 18px;
+            border-radius: var(--radius-lg);
             background: var(--glass);
             border: 1px solid var(--line);
-            transition: transform .45s var(--spring), background .3s var(--ease), border-color .3s;
+            transition: transform .45s var(--spring), background .3s;
         }
 
         .tile:active {
             transform: scale(.9);
-            background: rgba(255, 255, 255, .09);
-            border-color: rgba(255, 255, 255, .16);
+            background: var(--glass2);
         }
 
         .tile-icon {
             width: 44px;
             height: 44px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             display: grid;
             place-items: center;
             font-size: 14px;
             font-weight: 800;
             color: #fff;
             letter-spacing: -.5px;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .7);
+            box-shadow: var(--shadow-md);
         }
 
         .tile-label {
@@ -574,17 +381,40 @@
             letter-spacing: .1px;
         }
 
-        .g-a { background: linear-gradient(135deg, #ff2d55, #ff6b35); }
-        .g-b { background: linear-gradient(135deg, #229ed9, #37bbfe); }
-        .g-c { background: linear-gradient(135deg, #0077ff, #4a9eff); }
-        .g-d { background: linear-gradient(135deg, #4b5563, #8b95a5); }
-        .g-e { background: linear-gradient(135deg, #7c3aed, #ec4899); }
-        .g-f { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
-        .g-g { background: linear-gradient(135deg, #f59e0b, #f43f5e); }
-        .g-h { background: linear-gradient(135deg, #10b981, #06b6d4); }
+        .g-a {
+            background: linear-gradient(135deg, #ff2d55, #ff6b35);
+        }
+
+        .g-b {
+            background: linear-gradient(135deg, #229ed9, #37bbfe);
+        }
+
+        .g-c {
+            background: linear-gradient(135deg, #0077ff, #4a9eff);
+        }
+
+        .g-d {
+            background: linear-gradient(135deg, #4b5563, #8b95a5);
+        }
+
+        .g-e {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+        }
+
+        .g-f {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+        }
+
+        .g-g {
+            background: linear-gradient(135deg, #f59e0b, #f43f5e);
+        }
+
+        .g-h {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+        }
 
         /* ============================================================
-           12. РЕЗУЛЬТАТЫ ПОИСКА
+           9. РЕЗУЛЬТАТЫ
            ============================================================ */
         .page-head {
             margin-bottom: 18px;
@@ -633,7 +463,7 @@
 
         .head-action:active {
             transform: scale(.94);
-            background: rgba(255, 255, 255, .1);
+            background: var(--glass2);
         }
 
         .head-action.danger {
@@ -662,8 +492,12 @@
         }
 
         @keyframes load {
-            0% { transform: translateX(-110%); }
-            100% { transform: translateX(400%); }
+            0% {
+                transform: translateX(-110%);
+            }
+            100% {
+                transform: translateX(400%);
+            }
         }
 
         #pageView:not(.loading) .load-bar {
@@ -705,7 +539,7 @@
         }
 
         /* ============================================================
-           13. КАТЕГОРИИ
+           10. КАТЕГОРИИ
            ============================================================ */
         .cat-block {
             margin-bottom: 20px;
@@ -720,7 +554,6 @@
             font-size: 13.5px;
             font-weight: 800;
             color: var(--text);
-            letter-spacing: -.2px;
         }
 
         .cat-emoji {
@@ -756,7 +589,7 @@
             position: relative;
             overflow: hidden;
             padding: 12px 14px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             background: var(--glass);
             border: 1px solid var(--line);
             color: var(--text);
@@ -766,12 +599,12 @@
             display: flex;
             align-items: center;
             gap: 9px;
-            transition: transform .4s var(--spring), background .3s, border-color .3s;
+            transition: transform .4s var(--spring), background .3s;
         }
 
         .cat-link:active {
             transform: scale(.95);
-            background: rgba(255, 255, 255, .08);
+            background: var(--glass2);
         }
 
         .cat-link-dot {
@@ -792,13 +625,13 @@
         }
 
         /* ============================================================
-           14. КАРТОЧКА РЕЗУЛЬТАТА
+           11. КАРТОЧКА РЕЗУЛЬТАТА
            ============================================================ */
         .result {
             display: flex;
             gap: 13px;
             padding: 14px;
-            border-radius: 18px;
+            border-radius: var(--radius-lg);
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 11px;
@@ -809,7 +642,7 @@
 
         .result:active {
             transform: scale(.975);
-            background: rgba(255, 255, 255, .075);
+            background: var(--glass2);
         }
 
         .result-thumb {
@@ -822,7 +655,7 @@
             font-weight: 800;
             font-size: 17px;
             color: #fff;
-            box-shadow: 0 8px 22px -10px rgba(0, 0, 0, .8);
+            box-shadow: var(--shadow-md);
             overflow: hidden;
         }
 
@@ -836,7 +669,6 @@
         .result-body {
             flex: 1;
             min-width: 0;
-            padding-top: 2px;
         }
 
         .result-title {
@@ -878,18 +710,28 @@
             border-radius: 8px;
             font-size: 9.5px;
             font-weight: 800;
-            letter-spacing: .3px;
             background: rgba(124, 58, 237, .25);
             color: #c4b5fd;
             text-transform: uppercase;
         }
 
-        .result-badge.yt { background: rgba(255, 45, 85, .22); color: #ff8fa8; }
-        .result-badge.wiki { background: rgba(124, 58, 237, .22); color: #c4b5fd; }
-        .result-badge.web { background: rgba(6, 182, 212, .2); color: #67e8f9; }
+        .result-badge.yt {
+            background: rgba(255, 45, 85, .22);
+            color: #ff8fa8;
+        }
+
+        .result-badge.wiki {
+            background: rgba(124, 58, 237, .22);
+            color: #c4b5fd;
+        }
+
+        .result-badge.web {
+            background: rgba(6, 182, 212, .2);
+            color: #67e8f9;
+        }
 
         /* ============================================================
-           15. ИСТОРИЯ
+           12. ИСТОРИЯ
            ============================================================ */
         .hist-group {
             margin-bottom: 18px;
@@ -903,7 +745,6 @@
             text-transform: uppercase;
             color: #a78bfa;
             margin: 0 4px 8px;
-            padding-left: 2px;
         }
 
         .hist-item {
@@ -916,13 +757,11 @@
             border: 1px solid var(--line);
             margin-bottom: 8px;
             transition: transform .4s var(--spring), background .3s;
-            position: relative;
-            overflow: hidden;
         }
 
         .hist-item:active {
             transform: scale(.975);
-            background: rgba(255, 255, 255, .08);
+            background: var(--glass2);
         }
 
         .hist-time {
@@ -966,7 +805,7 @@
             color: var(--muted);
             display: grid;
             place-items: center;
-            transition: transform .4s var(--spring), color .25s, background .25s;
+            transition: transform .4s var(--spring), color .25s;
         }
 
         .hist-del svg,
@@ -985,33 +824,30 @@
         }
 
         /* ============================================================
-           16. ЗАГРУЗКИ
+           13. ЗАГРУЗКИ
            ============================================================ */
         .dl-item {
             display: flex;
             align-items: center;
             gap: 13px;
             padding: 14px;
-            border-radius: 18px;
+            border-radius: var(--radius-lg);
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 11px;
             animation: up .55s var(--ease) both;
-            position: relative;
-            overflow: hidden;
         }
 
         .dl-icon {
             width: 46px;
             height: 46px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             flex: 0 0 auto;
             display: grid;
             place-items: center;
             font-weight: 800;
             font-size: 15px;
             color: #fff;
-            box-shadow: 0 8px 22px -10px rgba(0, 0, 0, .8);
         }
 
         .dl-body {
@@ -1037,31 +873,29 @@
         }
 
         /* ============================================================
-           17. ЗАКЛАДКИ
+           14. ЗАКЛАДКИ
            ============================================================ */
         .bm-item {
             display: flex;
             align-items: center;
             gap: 13px;
             padding: 14px;
-            border-radius: 18px;
+            border-radius: var(--radius-lg);
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 11px;
             animation: up .55s var(--ease) both;
-            position: relative;
-            overflow: hidden;
         }
 
         .bm-item:active {
             transform: scale(.975);
-            background: rgba(255, 255, 255, .08);
+            background: var(--glass2);
         }
 
         .bm-thumb {
             width: 46px;
             height: 46px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             flex: 0 0 auto;
             display: grid;
             place-items: center;
@@ -1093,7 +927,7 @@
         }
 
         /* ============================================================
-           18. ПУСТЫЕ СОСТОЯНИЯ
+           15. ПУСТЫЕ СОСТОЯНИЯ
            ============================================================ */
         .empty-state {
             text-align: center;
@@ -1127,11 +961,11 @@
         }
 
         /* ============================================================
-           19. ПОИСК ВНУТРИ РАЗДЕЛА
+           16. ПОИСК ВНУТРИ РАЗДЕЛА
            ============================================================ */
         .search-box {
             padding: 12px 16px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 16px;
@@ -1162,7 +996,7 @@
         }
 
         /* ============================================================
-           20. НАСТРОЙКИ
+           17. НАСТРОЙКИ
            ============================================================ */
         .settings-group {
             margin-bottom: 24px;
@@ -1175,7 +1009,6 @@
             text-transform: uppercase;
             color: #a78bfa;
             margin: 0 4px 10px;
-            padding-left: 2px;
         }
 
         .settings-item {
@@ -1185,7 +1018,7 @@
             align-items: center;
             gap: 14px;
             padding: 15px 16px;
-            border-radius: 18px;
+            border-radius: var(--radius-lg);
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 10px;
@@ -1194,7 +1027,7 @@
 
         .settings-item:active {
             transform: scale(.98);
-            background: rgba(255, 255, 255, .08);
+            background: var(--glass2);
         }
 
         .settings-icon {
@@ -1240,7 +1073,7 @@
         }
 
         /* ============================================================
-           21. ПИКЕР
+           18. ПИКЕР
            ============================================================ */
         .picker-title {
             font-size: 16px;
@@ -1313,7 +1146,7 @@
         }
 
         /* ============================================================
-           22. О ПРИЛОЖЕНИИ
+           19. О ПРИЛОЖЕНИИ
            ============================================================ */
         .about-box {
             padding: 20px;
@@ -1328,7 +1161,7 @@
             font-size: 44px;
             font-weight: 800;
             letter-spacing: -2px;
-            background: linear-gradient(120deg, #a78bfa, #ec4899, #f59e0b, #06b6d4, #a78bfa);
+            background: var(--g3);
             background-size: 200% 100%;
             -webkit-background-clip: text;
             background-clip: text;
@@ -1351,227 +1184,7 @@
         }
 
         /* ============================================================
-           23. ВЕБ-ФРЕЙМ
-           ============================================================ */
-        .webframe {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: #fff;
-            opacity: 0;
-            transition: opacity .5s;
-        }
-
-        .view.web.loaded .webframe {
-            opacity: 1;
-        }
-
-        .web-loading {
-            position: absolute;
-            inset: 0;
-            display: grid;
-            place-items: center;
-            background: var(--bg);
-            z-index: 2;
-        }
-
-        .view.web.loaded .web-loading {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .spinner {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, .1);
-            border-top-color: #a78bfa;
-            animation: spin .9s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* ============================================================
-           24. ПЛАВАЮЩИЕ КНОПКИ
-           ============================================================ */
-        .fab {
-            position: absolute;
-            bottom: 20px;
-            z-index: 10;
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            border: none;
-            color: #fff;
-            display: grid;
-            place-items: center;
-            transition: transform .45s var(--spring);
-        }
-
-        .fab:active {
-            transform: scale(.88);
-        }
-
-        .fab svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .fab-external {
-            right: 16px;
-            background: linear-gradient(135deg, #7c3aed, #ec4899);
-            background-size: 200% 100%;
-            animation: shine 6s linear infinite;
-        }
-
-        .fab-translate {
-            left: 16px;
-            background: linear-gradient(135deg, #06b6d4, #3b82f6);
-            background-size: 200% 100%;
-            animation: shine 6s linear infinite;
-        }
-
-        .web-blocked {
-            position: absolute;
-            inset: 0;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            padding: 32px;
-            text-align: center;
-            background: var(--bg);
-            z-index: 3;
-        }
-
-        .web-blocked.show {
-            display: flex;
-        }
-
-        .web-blocked h3 {
-            font-size: 20px;
-            font-weight: 800;
-            background: var(--g1);
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 5s linear infinite;
-        }
-
-        .web-blocked p {
-            font-size: 13.5px;
-            color: var(--muted);
-            line-height: 1.55;
-            max-width: 320px;
-        }
-
-        .web-blocked button {
-            padding: 14px 22px;
-            border-radius: 15px;
-            border: none;
-            background: linear-gradient(135deg, #7c3aed, #ec4899);
-            color: #fff;
-            font-weight: 700;
-            font-size: 14.5px;
-        }
-
-        /* ============================================================
-           25. НИЖНЯЯ ПАНЕЛЬ
-           ============================================================ */
-        .bottombar {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding: 6px 10px 8px;
-            background: linear-gradient(0deg, rgba(8, 8, 12, .94), rgba(8, 8, 12, .4));
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-top: 1px solid var(--line);
-            position: relative;
-            z-index: 5;
-        }
-
-        body.light .bottombar {
-            background: linear-gradient(0deg, rgba(255, 255, 255, .96), rgba(255, 255, 255, .6));
-        }
-
-        .nav-btn {
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            padding: 7px 15px;
-            border: none;
-            border-radius: 15px;
-            background: transparent;
-            color: var(--muted);
-            font-size: 9.5px;
-            font-weight: 700;
-            transition: transform .45s var(--spring), color .3s var(--ease), background .3s;
-        }
-
-        .nav-btn svg {
-            width: 22px;
-            height: 22px;
-            transition: filter .35s;
-        }
-
-        .nav-btn:active {
-            transform: scale(.86);
-        }
-
-        .nav-btn.active {
-            color: var(--text);
-        }
-
-        .nav-btn.active svg {
-            filter: drop-shadow(0 0 10px rgba(124, 58, 237, .95));
-        }
-
-        .tab-badge {
-            position: absolute;
-            top: 3px;
-            right: 9px;
-            z-index: 2;
-            min-width: 16px;
-            height: 16px;
-            padding: 0 4px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #7c3aed, #ec4899);
-            color: #fff;
-            font-size: 9px;
-            font-weight: 800;
-            display: grid;
-            place-items: center;
-        }
-
-        /* ============================================================
-           26. RIPPLE
-           ============================================================ */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            background: radial-gradient(circle, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0) 70%);
-            transform: scale(0);
-            animation: rip .75s var(--ease) forwards;
-        }
-
-        @keyframes rip {
-            to { transform: scale(1); opacity: 0; }
-        }
-
-        /* ============================================================
-           27. ШТОРКА
+           20. ШТОРКА
            ============================================================ */
         .scrim {
             position: fixed;
@@ -1600,17 +1213,22 @@
             border-top-left-radius: 30px;
             border-top-right-radius: 30px;
             border-top: 1px solid var(--line);
-            padding: 12px 16px calc(22px + env(safe-area-inset-bottom));
+            padding: 12px 16px 22px;
             transform: translateY(110%);
             transition: transform .6s var(--ease);
             max-height: 72vh;
             overflow-y: auto;
             scrollbar-width: none;
+            box-shadow: 0 -24px 70px -24px rgba(124, 58, 237, .6);
         }
 
-        .sheet::-webkit-scrollbar { display: none; }
+        .sheet::-webkit-scrollbar {
+            display: none;
+        }
 
-        .sheet.show { transform: none; }
+        .sheet.show {
+            transform: none;
+        }
 
         .sheet-handle {
             width: 42px;
@@ -1646,11 +1264,13 @@
             position: relative;
             overflow: hidden;
             color: var(--text);
+            width: 100%;
+            text-align: left;
         }
 
         .tab-item:active {
             transform: scale(.97);
-            background: rgba(255, 255, 255, .09);
+            background: var(--glass2);
         }
 
         .tab-fav {
@@ -1702,10 +1322,6 @@
             transition: background .3s;
         }
 
-        body.light .toggle {
-            background: rgba(0, 0, 0, .1);
-        }
-
         .toggle::after {
             content: '';
             position: absolute;
@@ -1728,7 +1344,7 @@
         }
 
         /* ============================================================
-           28. ПЕРЕВОДЧИК
+           21. ПЕРЕВОДЧИК
            ============================================================ */
         .lang-grid {
             display: grid;
@@ -1750,17 +1366,22 @@
             flex-direction: column;
             align-items: center;
             gap: 6px;
-            transition: transform .45s var(--spring), background .3s, border-color .3s;
+            transition: transform .45s var(--spring), background .3s;
         }
 
-        .lang-btn:active { transform: scale(.94); }
+        .lang-btn:active {
+            transform: scale(.94);
+        }
 
         .lang-btn.current {
             background: linear-gradient(135deg, rgba(6, 182, 212, .35), rgba(59, 130, 246, .35));
             border-color: rgba(103, 232, 249, .5);
         }
 
-        .lang-flag { font-size: 24px; line-height: 1; }
+        .lang-flag {
+            font-size: 24px;
+            line-height: 1;
+        }
 
         .lang-name {
             font-size: 11px;
@@ -1770,7 +1391,7 @@
 
         .selection-box {
             padding: 14px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             background: var(--glass);
             border: 1px solid var(--line);
             font-size: 13px;
@@ -1793,7 +1414,7 @@
         .selection-result {
             margin-top: 14px;
             padding: 14px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             background: linear-gradient(135deg, rgba(6, 182, 212, .12), rgba(59, 130, 246, .12));
             border: 1px solid rgba(6, 182, 212, .25);
             font-size: 14px;
@@ -1819,7 +1440,7 @@
         .translate-actions button {
             flex: 1;
             padding: 13px;
-            border-radius: 14px;
+            border-radius: var(--radius-md);
             border: none;
             font-size: 13.5px;
             font-weight: 700;
@@ -1836,69 +1457,112 @@
             border: 1px solid var(--line);
             color: var(--text);
         }
+
+        /* ============================================================
+           22. RIPPLE
+           ============================================================ */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0) 70%);
+            transform: scale(0);
+            animation: rip .75s var(--ease) forwards;
+        }
+
+        @keyframes rip {
+            to {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ============================================================
+           23. УТИЛИТЫ
+           ============================================================ */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-muted {
+            color: var(--muted);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 8px;
+        }
+
+        .gap-3 {
+            gap: 12px;
+        }
+
+        .mt-2 {
+            margin-top: 8px;
+        }
+
+        .mt-3 {
+            margin-top: 12px;
+        }
+
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+
+        .mb-3 {
+            margin-bottom: 12px;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- ФОНОВЫЕ ОРБЫ -->
+    <!-- ============================================================
+         ФОНОВЫЕ ОРБЫ
+         ============================================================ -->
     <div class="bg">
         <div class="orb a"></div>
         <div class="orb b"></div>
         <div class="orb c"></div>
     </div>
 
-    <!-- ОСНОВНОЙ КАРКАС -->
+    <!-- ============================================================
+         ПРИЛОЖЕНИЕ
+         ============================================================ -->
     <div class="app">
 
-        <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
-        <header class="topbar">
-
-            <button class="icon-btn off" id="btnBack">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M15 18l-6-6 6-6"/>
-                </svg>
-            </button>
-
-            <button class="icon-btn off" id="btnFwd">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 18l6-6-6-6"/>
-                </svg>
-            </button>
-
-            <div class="address-wrap" id="addrWrap">
-                <div class="address-inner">
-                    <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="4" y="11" width="16" height="10" rx="2.5"/>
-                        <path d="M8 11V7a4 4 0 018 0v4"/>
-                    </svg>
-                    <input id="address" class="address" placeholder="Поиск или адрес" autocomplete="off" spellcheck="false" enterkeyhint="go">
-                    <button class="star-btn" id="btnStar">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <button class="icon-btn" id="btnReload">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 12a9 9 0 11-3-6.7"/>
-                    <path d="M21 4v5h-5"/>
-                </svg>
-            </button>
-
-        </header>
-
-        <!-- КОНТЕНТ -->
         <main class="content">
 
-            <!-- ГЛАВНАЯ -->
+            <!-- ======================================================
+                 ЭКРАН 1: ГЛАВНАЯ
+                 ====================================================== -->
             <section class="view" id="homeView">
+
                 <div class="hero">
                     <div class="logo">Zero</div>
-                    <div class="tagline" id="taglineText">Минимализм. Скорость. Приватность.</div>
+                    <div class="tagline">Минимализм. Скорость. Приватность.</div>
                 </div>
+
                 <div class="big-search">
                     <div class="big-search-inner">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
@@ -1908,32 +1572,75 @@
                         <input id="bigSearch" placeholder="Спросите Zero или введите адрес">
                     </div>
                 </div>
+
                 <div class="tiles" id="tiles">
-                    <div class="tile" data-url="https://m.youtube.com"><div class="tile-icon g-a">YT</div><div class="tile-label">YouTube</div></div>
-                    <div class="tile" data-url="https://telegram.org"><div class="tile-icon g-b">TG</div><div class="tile-label">Telegram</div></div>
-                    <div class="tile" data-url="https://m.vk.com"><div class="tile-icon g-c">VK</div><div class="tile-label">ВКонтакте</div></div>
-                    <div class="tile" data-url="https://github.com"><div class="tile-icon g-d">GH</div><div class="tile-label">GitHub</div></div>
-                    <div class="tile" data-url="https://ru.m.wikipedia.org"><div class="tile-icon g-e">W</div><div class="tile-label">Википедия</div></div>
-                    <div class="tile" data-url="https://www.reddit.com"><div class="tile-icon g-f">R</div><div class="tile-label">Reddit</div></div>
-                    <div class="tile" data-url="https://music.yandex.ru"><div class="tile-icon g-g">M</div><div class="tile-label">Музыка</div></div>
-                    <div class="tile" data-url="https://lenta.ru"><div class="tile-icon g-h">N</div><div class="tile-label">Новости</div></div>
+
+                    <div class="tile" data-url="https://m.youtube.com">
+                        <div class="tile-icon g-a">YT</div>
+                        <div class="tile-label">YouTube</div>
+                    </div>
+
+                    <div class="tile" data-url="https://telegram.org">
+                        <div class="tile-icon g-b">TG</div>
+                        <div class="tile-label">Telegram</div>
+                    </div>
+
+                    <div class="tile" data-url="https://m.vk.com">
+                        <div class="tile-icon g-c">VK</div>
+                        <div class="tile-label">ВКонтакте</div>
+                    </div>
+
+                    <div class="tile" data-url="https://github.com">
+                        <div class="tile-icon g-d">GH</div>
+                        <div class="tile-label">GitHub</div>
+                    </div>
+
+                    <div class="tile" data-url="https://ru.m.wikipedia.org">
+                        <div class="tile-icon g-e">W</div>
+                        <div class="tile-label">Википедия</div>
+                    </div>
+
+                    <div class="tile" data-url="https://www.reddit.com">
+                        <div class="tile-icon g-f">R</div>
+                        <div class="tile-label">Reddit</div>
+                    </div>
+
+                    <div class="tile" data-url="https://music.yandex.ru">
+                        <div class="tile-icon g-g">M</div>
+                        <div class="tile-label">Музыка</div>
+                    </div>
+
+                    <div class="tile" data-url="https://lenta.ru">
+                        <div class="tile-icon g-h">N</div>
+                        <div class="tile-label">Новости</div>
+                    </div>
+
                 </div>
+
             </section>
 
-            <!-- РЕЗУЛЬТАТЫ -->
+            <!-- ======================================================
+                 ЭКРАН 2: РЕЗУЛЬТАТЫ ПОИСКА
+                 ====================================================== -->
             <section class="view hidden" id="pageView">
+
                 <div class="page-head">
                     <div>
                         <div class="page-q">Результаты по <em id="pageQuery">запросу</em></div>
                         <div class="page-sub" id="pageSub"></div>
                     </div>
                 </div>
+
                 <div class="load-bar"></div>
                 <div id="results"></div>
+
             </section>
 
-            <!-- ИСТОРИЯ -->
+            <!-- ======================================================
+                 ЭКРАН 3: ИСТОРИЯ ПОСЕЩЕНИЙ
+                 ====================================================== -->
             <section class="view hidden" id="historyView">
+
                 <div class="page-head">
                     <div>
                         <div class="page-q">История <em>посещений</em></div>
@@ -1941,6 +1648,7 @@
                     </div>
                     <button class="head-action danger" id="clearHistoryBtn">Очистить</button>
                 </div>
+
                 <div class="search-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
                         <circle cx="11" cy="11" r="7"/>
@@ -1948,7 +1656,9 @@
                     </svg>
                     <input id="historySearch" placeholder="Поиск по истории" autocomplete="off">
                 </div>
+
                 <div id="historyList"></div>
+
                 <div class="empty-state" id="historyEmpty" style="display:none">
                     <div class="empty-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1958,10 +1668,14 @@
                     </div>
                     <p>История пуста. Все посещённые страницы появятся здесь.</p>
                 </div>
+
             </section>
 
-            <!-- ЗАГРУЗКИ -->
+            <!-- ======================================================
+                 ЭКРАН 4: ЗАГРУЗКИ
+                 ====================================================== -->
             <section class="view hidden" id="downloadsView">
+
                 <div class="page-head">
                     <div>
                         <div class="page-q">Мои <em>загрузки</em></div>
@@ -1969,7 +1683,9 @@
                     </div>
                     <button class="head-action danger" id="clearDownloadsBtn">Очистить</button>
                 </div>
+
                 <div id="downloadsList"></div>
+
                 <div class="empty-state" id="downloadsEmpty" style="display:none">
                     <div class="empty-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1978,10 +1694,14 @@
                     </div>
                     <p>Загрузок пока нет. Скачанные файлы появятся здесь.</p>
                 </div>
+
             </section>
 
-            <!-- ЗАКЛАДКИ -->
+            <!-- ======================================================
+                 ЭКРАН 5: ЗАКЛАДКИ
+                 ====================================================== -->
             <section class="view hidden" id="bookmarksView">
+
                 <div class="page-head">
                     <div>
                         <div class="page-q" id="bmTitle">Мои <em>закладки</em></div>
@@ -1989,28 +1709,34 @@
                     </div>
                     <button class="head-action" id="bmExportBtn">Экспорт</button>
                 </div>
+
                 <div id="bookmarksList"></div>
+
                 <div class="empty-state" id="bookmarksEmpty" style="display:none">
                     <div class="empty-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
                     </div>
-                    <p id="bmEmptyText">Пока пусто. Нажмите ⭐ в адресной строке.</p>
+                    <p>Пока пусто. Нажмите ⭐ в адресной строке.</p>
                 </div>
+
             </section>
 
-            <!-- НАСТРОЙКИ -->
+            <!-- ======================================================
+                 ЭКРАН 6: НАСТРОЙКИ
+                 ====================================================== -->
             <section class="view hidden" id="settingsView">
+
                 <div class="page-head" style="margin-bottom:18px">
                     <div>
-                        <div class="page-q" id="settingsTitle">Настройки</div>
-                        <div class="page-sub" id="settingsSub">Язык, тема, данные</div>
+                        <div class="page-q">Настройки</div>
+                        <div class="page-sub">Язык, тема, данные</div>
                     </div>
                 </div>
 
                 <div class="settings-group">
-                    <div class="settings-group-title" id="labelLangGroup">Язык</div>
+                    <div class="settings-group-title">Язык</div>
                     <div class="settings-item" id="itemLang">
                         <div class="settings-icon g-e">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2019,23 +1745,8 @@
                             </svg>
                         </div>
                         <div class="settings-body">
-                            <div class="settings-label" id="labelLang">Язык интерфейса</div>
+                            <div class="settings-label">Язык интерфейса</div>
                             <div class="settings-value" id="valueLang">Русский</div>
-                        </div>
-                        <svg class="settings-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 18l6-6-6-6"/>
-                        </svg>
-                    </div>
-                    <div class="settings-item" id="itemSearch">
-                        <div class="settings-icon g-c">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
-                                <circle cx="11" cy="11" r="7"/>
-                                <path d="M20 20l-3.5-3.5"/>
-                            </svg>
-                        </div>
-                        <div class="settings-body">
-                            <div class="settings-label" id="labelSearchEng">Поисковик по умолчанию</div>
-                            <div class="settings-value" id="valueSearchEng">DuckDuckGo</div>
                         </div>
                         <svg class="settings-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M9 18l6-6-6-6"/>
@@ -2044,7 +1755,7 @@
                 </div>
 
                 <div class="settings-group">
-                    <div class="settings-group-title" id="labelThemeGroup">Оформление</div>
+                    <div class="settings-group-title">Оформление</div>
                     <div class="settings-item" id="itemTheme">
                         <div class="settings-icon g-f">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2053,7 +1764,7 @@
                             </svg>
                         </div>
                         <div class="settings-body">
-                            <div class="settings-label" id="labelTheme">Тема оформления</div>
+                            <div class="settings-label">Тема оформления</div>
                             <div class="settings-value" id="valueTheme">Тёмная</div>
                         </div>
                         <svg class="settings-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -2063,7 +1774,7 @@
                 </div>
 
                 <div class="settings-group">
-                    <div class="settings-group-title" id="labelDataGroup">Данные</div>
+                    <div class="settings-group-title">Данные</div>
                     <div class="settings-item" id="itemImportBm">
                         <div class="settings-icon g-d">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2071,7 +1782,7 @@
                             </svg>
                         </div>
                         <div class="settings-body">
-                            <div class="settings-label" id="labelImportBm">Импорт закладок</div>
+                            <div class="settings-label">Импорт закладок</div>
                             <div class="settings-value">Загрузить из JSON</div>
                         </div>
                         <svg class="settings-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -2085,8 +1796,8 @@
                             </svg>
                         </div>
                         <div class="settings-body">
-                            <div class="settings-label" id="labelClearBm">Очистить закладки</div>
-                            <div class="settings-value" id="valueClearBm">Удалить все сохранённые страницы</div>
+                            <div class="settings-label">Очистить закладки</div>
+                            <div class="settings-value">Удалить все сохранённые страницы</div>
                         </div>
                         <svg class="settings-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M9 18l6-6-6-6"/>
@@ -2100,7 +1811,7 @@
                             </svg>
                         </div>
                         <div class="settings-body">
-                            <div class="settings-label" id="labelClearCookies">Очистить cookies</div>
+                            <div class="settings-label">Очистить cookies</div>
                             <div class="settings-value">Выйти из всех сайтов</div>
                         </div>
                         <svg class="settings-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -2115,7 +1826,7 @@
                             </svg>
                         </div>
                         <div class="settings-body">
-                            <div class="settings-label" id="labelClearAll">Очистить всё</div>
+                            <div class="settings-label">Очистить всё</div>
                             <div class="settings-value">История, закладки, загрузки, cookies</div>
                         </div>
                         <svg class="settings-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -2129,8 +1840,8 @@
                             </svg>
                         </div>
                         <div class="settings-body">
-                            <div class="settings-label" id="labelReset">Сбросить всё</div>
-                            <div class="settings-value" id="valueReset">Вернуть настройки по умолчанию</div>
+                            <div class="settings-label">Сбросить всё</div>
+                            <div class="settings-value">Вернуть настройки по умолчанию</div>
                         </div>
                         <svg class="settings-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M9 18l6-6-6-6"/>
@@ -2139,77 +1850,26 @@
                 </div>
 
                 <div class="settings-group">
-                    <div class="settings-group-title" id="labelAboutGroup">О приложении</div>
+                    <div class="settings-group-title">О приложении</div>
                     <div class="about-box">
                         <div class="about-logo">Zero</div>
-                        <div class="about-ver">Версия 2.0.0</div>
-                        <div class="about-desc" id="aboutDesc">Приватный браузер без регистрации и сбора данных. Мультипоиск по 7 движкам: Google, Яндекс, DuckDuckGo, Bing, Mojeek, Brave и DDG Lite.</div>
+                        <div class="about-ver">Версия 5.0.0</div>
+                        <div class="about-desc">
+                            Приватный браузер с нативными панелями.
+                            Никаких аккаунтов, никакой аналитики.
+                            Все данные хранятся только на устройстве.
+                        </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- ВЕБ -->
-            <section class="view web hidden" id="webView">
-                <div class="web-loading">
-                    <div class="spinner"></div>
-                </div>
-                <iframe id="webframe" class="webframe" referrerpolicy="no-referrer"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation-by-user-activation">
-                </iframe>
-                <button class="fab fab-translate" id="btnTranslate" title="Перевести">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 5h10M8 3v2c0 5-3 8-5 9M5 9c0 3 3 5 5 6"/>
-                        <path d="M12 21l5-12 5 12M14 17h6"/>
-                    </svg>
-                </button>
-                <button class="fab fab-external" id="openExternal" title="Открыть в браузере">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
-                        <path d="M15 3h6v6"/>
-                        <path d="M10 14L21 3"/>
-                    </svg>
-                </button>
-                <div class="web-blocked" id="webBlocked">
-                    <h3 id="blockedTitle">Сайт не разрешает встраивание</h3>
-                    <p id="blockedDesc">Откройте ссылку во внешнем браузере.</p>
-                    <button id="openExternalFromBlocked">Открыть в браузере</button>
-                </div>
             </section>
 
         </main>
-
-        <!-- НИЖНЯЯ ПАНЕЛЬ -->
-        <nav class="bottombar">
-            <button class="nav-btn active" data-act="home">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 10l9-7 9 7v10a2 2 0 01-2 2h-4v-6H9v6H5a2 2 0 01-2-2z"/>
-                </svg>
-                <span id="navHome">Главная</span>
-            </button>
-            <button class="nav-btn" data-act="tabs">
-                <span class="tab-badge" id="tabCount">1</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="4"/>
-                    <path d="M3 9h18"/>
-                </svg>
-                <span id="navTabs">Вкладки</span>
-            </button>
-            <button class="nav-btn" data-act="bookmarks">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <span id="navBm">Закладки</span>
-            </button>
-            <button class="nav-btn" data-act="settings">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 21v-6M4 11V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 15h4M10 8h4M18 16h4"/>
-                </svg>
-                <span id="navSettings">Ещё</span>
-            </button>
-        </nav>
     </div>
 
-    <!-- ШТОРКА -->
+    <!-- ============================================================
+         ШТОРКА
+         ============================================================ -->
     <div class="scrim" id="scrim"></div>
     <div class="sheet" id="sheet">
         <div class="sheet-handle"></div>
@@ -2218,8 +1878,7 @@
 
     <script>
         /* ================================================================
-           ZERO BROWSER — JAVASCRIPT
-           Версия: 2.0.0
+           ZERO BROWSER — JAVASCRIPT v5.0.0
            ================================================================ */
 
         /* ============================================================
@@ -2230,157 +1889,194 @@
 
         const homeView = $('#homeView');
         const pageView = $('#pageView');
-        const webView = $('#webView');
-        const bookmarksView = $('#bookmarksView');
-        const settingsView = $('#settingsView');
         const historyView = $('#historyView');
         const downloadsView = $('#downloadsView');
-        const address = $('#address');
-        const addrWrap = $('#addrWrap');
+        const bookmarksView = $('#bookmarksView');
+        const settingsView = $('#settingsView');
         const bigSearch = $('#bigSearch');
         const scrim = $('#scrim');
         const sheet = $('#sheet');
         const sheetContent = $('#sheetContent');
-        const tabCount = $('#tabCount');
-        const btnBack = $('#btnBack');
-        const btnFwd = $('#btnFwd');
-        const btnReload = $('#btnReload');
-        const btnStar = $('#btnStar');
-        const btnTranslate = $('#btnTranslate');
-        const webframe = $('#webframe');
-        const webBlocked = $('#webBlocked');
 
         /* ============================================================
-           КАТЕГОРИИ САЙТОВ — 15 штук
+           КАТЕГОРИИ САЙТОВ
            ============================================================ */
         const CATEGORIES = [
-            { emoji: '🎬', name: 'Кино и сериалы', sites: [
-                { name: 'Kinopoisk', url: 'https://www.kinopoisk.ru/index.php?kp_query=' },
-                { name: 'Filmix', url: 'https://filmix.my/search/' },
-                { name: 'HDrezka', url: 'https://rezka.ag/search/?q=' },
-                { name: 'LordFilm', url: 'https://lordfilm.la/index.php?do=search&story=' },
-                { name: 'KinoGo', url: 'https://kinoogo.zone/?s=' },
-                { name: 'Кинопоиск HD', url: 'https://hd.kinopoisk.ru/search?query=' },
-                { name: 'Иви', url: 'https://www.ivi.ru/search/?q=' },
-                { name: 'Okko', url: 'https://okko.tv/search/' },
-                { name: 'Wink', url: 'https://wink.ru/search?query=' },
-                { name: 'Premier', url: 'https://premier.one/search?query=' }
-            ]},
-            { emoji: '🌸', name: 'Аниме', sites: [
-                { name: 'Anilibria', url: 'https://anilibria.tv/public/search.php?search=' },
-                { name: 'AnimeGo', url: 'https://animego.org/search/anime?q=' },
-                { name: 'Shikimori', url: 'https://shikimori.one/animes?search=' },
-                { name: 'YummyAnime', url: 'https://yummyanime.tv/search/' },
-                { name: 'Anime-Online', url: 'https://anime-online.ru/search?q=' },
-                { name: 'AnimeVost', url: 'https://animevost.org/?s=' }
-            ]},
-            { emoji: '⚽', name: 'Спорт', sites: [
-                { name: 'Sports.ru', url: 'https://www.sports.ru/search/?q=' },
-                { name: 'Championat', url: 'https://www.championat.com/search/?q=' },
-                { name: 'Soccer.ru', url: 'https://www.soccer.ru/search?q=' },
-                { name: 'Sportbox', url: 'https://news.sportbox.ru/search?q=' },
-                { name: 'Матч ТВ', url: 'https://matchtv.ru/search/?query=' },
-                { name: 'СЭ', url: 'https://www.sport-express.ru/search/?q=' }
-            ]},
-            { emoji: '🎮', name: 'Игры', sites: [
-                { name: 'Steam', url: 'https://store.steampowered.com/search/?term=' },
-                { name: 'StopGame', url: 'https://stopgame.ru/search?q=' },
-                { name: 'Игромания', url: 'https://www.igromania.ru/search/?q=' },
-                { name: 'PlayGround', url: 'https://playground.ru/search/?q=' },
-                { name: 'DTF', url: 'https://dtf.ru/search/v2/content?q=' },
-                { name: 'VGTimes', url: 'https://vgtimes.ru/search/?q=' }
-            ]},
-            { emoji: '💰', name: 'Криптовалюта', sites: [
-                { name: 'CoinMarketCap', url: 'https://coinmarketcap.com/search/?q=' },
-                { name: 'CoinGecko', url: 'https://www.coingecko.com/en/search?query=' },
-                { name: 'Binance', url: 'https://www.binance.com/ru/search?q=' },
-                { name: 'РБК Крипто', url: 'https://www.rbc.ru/search/?query=' },
-                { name: 'CoinDesk', url: 'https://www.coindesk.com/search?s=' },
-                { name: 'ForkLog', url: 'https://forklog.com/?s=' }
-            ]},
-            { emoji: '💡', name: 'Лайфхаки', sites: [
-                { name: 'Лайфхакер', url: 'https://lifehacker.ru/?s=' },
-                { name: 'AdMe', url: 'https://adme.media/search/?q=' },
-                { name: 'Пикабу', url: 'https://pikabu.ru/search.php?q=' },
-                { name: 'Лайфхак', url: 'https://lifehacki.ru/?s=' },
-                { name: 'Wonderzine', url: 'https://www.wonderzine.com/wonderzine/search?q=' }
-            ]},
-            { emoji: '🎵', name: 'Музыка', sites: [
-                { name: 'Яндекс.Музыка', url: 'https://music.yandex.ru/search?text=' },
-                { name: 'Spotify', url: 'https://open.spotify.com/search/' },
-                { name: 'SoundCloud', url: 'https://soundcloud.com/search?q=' },
-                { name: 'VK Музыка', url: 'https://vk.com/audio?q=' },
-                { name: 'Apple Music', url: 'https://music.apple.com/ru/search?term=' },
-                { name: 'Deezer', url: 'https://www.deezer.com/search/' }
-            ]},
-            { emoji: '📚', name: 'Книги и обучение', sites: [
-                { name: 'Литрес', url: 'https://www.litres.ru/search/?q=' },
-                { name: 'Флибуста', url: 'https://flibusta.is/booksearch?ask=' },
-                { name: 'КиберЛенинка', url: 'https://cyberleninka.ru/search?q=' },
-                { name: 'Хабр', url: 'https://habr.com/ru/search/?q=' },
-                { name: 'Coursera', url: 'https://www.coursera.org/search?query=' },
-                { name: 'Инфоурок', url: 'https://infourok.ru/search?search=' }
-            ]},
-            { emoji: '📰', name: 'Новости', sites: [
-                { name: 'Яндекс.Новости', url: 'https://yandex.ru/news/search?text=' },
-                { name: 'Lenta.ru', url: 'https://lenta.ru/search?query=' },
-                { name: 'РБК', url: 'https://www.rbc.ru/search/?query=' },
-                { name: 'РИА', url: 'https://ria.ru/search/?query=' },
-                { name: 'ТАСС', url: 'https://tass.ru/search?searchStr=' },
-                { name: 'Meduza', url: 'https://meduza.io/search?query=' }
-            ]},
-            { emoji: '🍳', name: 'Рецепты', sites: [
-                { name: 'Поварёшка', url: 'https://povareshka.ru/?s=' },
-                { name: 'ЕдимДома', url: 'https://www.edimdoma.ru/search?q=' },
-                { name: 'Кулинарный', url: 'https://www.koolinar.ru/search?q=' },
-                { name: 'Гастрономъ', url: 'https://www.gastronom.ru/search?query=' },
-                { name: 'Повар.ру', url: 'https://povar.ru/search.html?q=' }
-            ]},
-            { emoji: '💼', name: 'Работа', sites: [
-                { name: 'hh.ru', url: 'https://hh.ru/search/vacancy?text=' },
-                { name: 'SuperJob', url: 'https://www.superjob.ru/vacancy/search/?keywords=' },
-                { name: 'Работа.ру', url: 'https://www.rabota.ru/vacancies?query=' },
-                { name: 'LinkedIn', url: 'https://www.linkedin.com/jobs/search/?keywords=' },
-                { name: 'Avito Работа', url: 'https://www.avito.ru/rossiya/vakansii?q=' }
-            ]},
-            { emoji: '🩺', name: 'Здоровье', sites: [
-                { name: 'Rlsnet', url: 'https://www.rlsnet.ru/search?query=' },
-                { name: 'Здоровье Mail', url: 'https://health.mail.ru/search/?q=' },
-                { name: 'MedAboutMe', url: 'https://medaboutme.ru/search/?q=' },
-                { name: 'WebMD', url: 'https://www.webmd.com/search/search_results/default.aspx?query=' }
-            ]},
-            { emoji: '🚗', name: 'Авто', sites: [
-                { name: 'Drive2', url: 'https://www.drive2.ru/search/?text=' },
-                { name: 'Drom', url: 'https://www.drom.ru/search/?q=' },
-                { name: 'Auto.ru', url: 'https://auto.ru/search/?query=' },
-                { name: 'За рулём', url: 'https://www.zr.ru/search/?q=' }
-            ]},
-            { emoji: '✈️', name: 'Путешествия', sites: [
-                { name: 'Aviasales', url: 'https://www.aviasales.ru/search?q=' },
-                { name: 'Ostrovok', url: 'https://ostrovok.ru/search/?q=' },
-                { name: 'Туту.ру', url: 'https://www.tutu.ru/search/?q=' },
-                { name: 'Booking', url: 'https://www.booking.com/searchresults.ru.html?ss=' }
-            ]},
-            { emoji: '🛒', name: 'Покупки', sites: [
-                { name: 'Ozon', url: 'https://www.ozon.ru/search/?text=' },
-                { name: 'Wildberries', url: 'https://www.wildberries.ru/catalog/0/search.aspx?search=' },
-                { name: 'Яндекс.Маркет', url: 'https://market.yandex.ru/search?text=' },
-                { name: 'AliExpress', url: 'https://aliexpress.ru/wholesale?SearchText=' },
-                { name: 'Avito', url: 'https://www.avito.ru/all?q=' }
-            ]}
+            {
+                emoji: '🎬',
+                name: 'Кино и сериалы',
+                sites: [
+                    { name: 'Kinopoisk', url: 'https://www.kinopoisk.ru/index.php?kp_query=' },
+                    { name: 'Filmix', url: 'https://filmix.my/search/' },
+                    { name: 'HDrezka', url: 'https://rezka.ag/search/?q=' },
+                    { name: 'LordFilm', url: 'https://lordfilm.la/index.php?do=search&story=' },
+                    { name: 'KinoGo', url: 'https://kinoogo.zone/?s=' },
+                    { name: 'Кинопоиск HD', url: 'https://hd.kinopoisk.ru/search?query=' },
+                    { name: 'Иви', url: 'https://www.ivi.ru/search/?q=' },
+                    { name: 'Okko', url: 'https://okko.tv/search/' },
+                    { name: 'Wink', url: 'https://wink.ru/search?query=' },
+                    { name: 'Premier', url: 'https://premier.one/search?query=' }
+                ]
+            },
+            {
+                emoji: '🌸',
+                name: 'Аниме',
+                sites: [
+                    { name: 'Anilibria', url: 'https://anilibria.tv/public/search.php?search=' },
+                    { name: 'AnimeGo', url: 'https://animego.org/search/anime?q=' },
+                    { name: 'Shikimori', url: 'https://shikimori.one/animes?search=' },
+                    { name: 'YummyAnime', url: 'https://yummyanime.tv/search/' },
+                    { name: 'Anime-Online', url: 'https://anime-online.ru/search?q=' },
+                    { name: 'AnimeVost', url: 'https://animevost.org/?s=' }
+                ]
+            },
+            {
+                emoji: '⚽',
+                name: 'Спорт',
+                sites: [
+                    { name: 'Sports.ru', url: 'https://www.sports.ru/search/?q=' },
+                    { name: 'Championat', url: 'https://www.championat.com/search/?q=' },
+                    { name: 'Soccer.ru', url: 'https://www.soccer.ru/search?q=' },
+                    { name: 'Sportbox', url: 'https://news.sportbox.ru/search?q=' },
+                    { name: 'Матч ТВ', url: 'https://matchtv.ru/search/?query=' },
+                    { name: 'СЭ', url: 'https://www.sport-express.ru/search/?q=' }
+                ]
+            },
+            {
+                emoji: '🎮',
+                name: 'Игры',
+                sites: [
+                    { name: 'Steam', url: 'https://store.steampowered.com/search/?term=' },
+                    { name: 'StopGame', url: 'https://stopgame.ru/search?q=' },
+                    { name: 'Игромания', url: 'https://www.igromania.ru/search/?q=' },
+                    { name: 'PlayGround', url: 'https://playground.ru/search/?q=' },
+                    { name: 'DTF', url: 'https://dtf.ru/search/v2/content?q=' },
+                    { name: 'VGTimes', url: 'https://vgtimes.ru/search/?q=' }
+                ]
+            },
+            {
+                emoji: '💰',
+                name: 'Криптовалюта',
+                sites: [
+                    { name: 'CoinMarketCap', url: 'https://coinmarketcap.com/search/?q=' },
+                    { name: 'CoinGecko', url: 'https://www.coingecko.com/en/search?query=' },
+                    { name: 'Binance', url: 'https://www.binance.com/ru/search?q=' },
+                    { name: 'РБК Крипто', url: 'https://www.rbc.ru/search/?query=' },
+                    { name: 'CoinDesk', url: 'https://www.coindesk.com/search?s=' },
+                    { name: 'ForkLog', url: 'https://forklog.com/?s=' }
+                ]
+            },
+            {
+                emoji: '💡',
+                name: 'Лайфхаки',
+                sites: [
+                    { name: 'Лайфхакер', url: 'https://lifehacker.ru/?s=' },
+                    { name: 'AdMe', url: 'https://adme.media/search/?q=' },
+                    { name: 'Пикабу', url: 'https://pikabu.ru/search.php?q=' },
+                    { name: 'Лайфхак', url: 'https://lifehacki.ru/?s=' },
+                    { name: 'Wonderzine', url: 'https://www.wonderzine.com/wonderzine/search?q=' }
+                ]
+            },
+            {
+                emoji: '🎵',
+                name: 'Музыка',
+                sites: [
+                    { name: 'Яндекс.Музыка', url: 'https://music.yandex.ru/search?text=' },
+                    { name: 'Spotify', url: 'https://open.spotify.com/search/' },
+                    { name: 'SoundCloud', url: 'https://soundcloud.com/search?q=' },
+                    { name: 'VK Музыка', url: 'https://vk.com/audio?q=' },
+                    { name: 'Apple Music', url: 'https://music.apple.com/ru/search?term=' },
+                    { name: 'Deezer', url: 'https://www.deezer.com/search/' }
+                ]
+            },
+            {
+                emoji: '📚',
+                name: 'Книги и обучение',
+                sites: [
+                    { name: 'Литрес', url: 'https://www.litres.ru/search/?q=' },
+                    { name: 'Флибуста', url: 'https://flibusta.is/booksearch?ask=' },
+                    { name: 'КиберЛенинка', url: 'https://cyberleninka.ru/search?q=' },
+                    { name: 'Хабр', url: 'https://habr.com/ru/search/?q=' },
+                    { name: 'Coursera', url: 'https://www.coursera.org/search?query=' },
+                    { name: 'Инфоурок', url: 'https://infourok.ru/search?search=' }
+                ]
+            },
+            {
+                emoji: '📰',
+                name: 'Новости',
+                sites: [
+                    { name: 'Яндекс.Новости', url: 'https://yandex.ru/news/search?text=' },
+                    { name: 'Lenta.ru', url: 'https://lenta.ru/search?query=' },
+                    { name: 'РБК', url: 'https://www.rbc.ru/search/?query=' },
+                    { name: 'РИА', url: 'https://ria.ru/search/?query=' },
+                    { name: 'ТАСС', url: 'https://tass.ru/search?searchStr=' },
+                    { name: 'Meduza', url: 'https://meduza.io/search?query=' }
+                ]
+            },
+            {
+                emoji: '🍳',
+                name: 'Рецепты',
+                sites: [
+                    { name: 'Поварёшка', url: 'https://povareshka.ru/?s=' },
+                    { name: 'ЕдимДома', url: 'https://www.edimdoma.ru/search?q=' },
+                    { name: 'Кулинарный', url: 'https://www.koolinar.ru/search?q=' },
+                    { name: 'Гастрономъ', url: 'https://www.gastronom.ru/search?query=' },
+                    { name: 'Повар.ру', url: 'https://povar.ru/search.html?q=' }
+                ]
+            },
+            {
+                emoji: '💼',
+                name: 'Работа',
+                sites: [
+                    { name: 'hh.ru', url: 'https://hh.ru/search/vacancy?text=' },
+                    { name: 'SuperJob', url: 'https://www.superjob.ru/vacancy/search/?keywords=' },
+                    { name: 'Работа.ру', url: 'https://www.rabota.ru/vacancies?query=' },
+                    { name: 'LinkedIn', url: 'https://www.linkedin.com/jobs/search/?keywords=' },
+                    { name: 'Avito Работа', url: 'https://www.avito.ru/rossiya/vakansii?q=' }
+                ]
+            },
+            {
+                emoji: '🩺',
+                name: 'Здоровье',
+                sites: [
+                    { name: 'Rlsnet', url: 'https://www.rlsnet.ru/search?query=' },
+                    { name: 'Здоровье Mail', url: 'https://health.mail.ru/search/?q=' },
+                    { name: 'MedAboutMe', url: 'https://medaboutme.ru/search/?q=' },
+                    { name: 'WebMD', url: 'https://www.webmd.com/search/search_results/default.aspx?query=' }
+                ]
+            },
+            {
+                emoji: '🚗',
+                name: 'Авто',
+                sites: [
+                    { name: 'Drive2', url: 'https://www.drive2.ru/search/?text=' },
+                    { name: 'Drom', url: 'https://www.drom.ru/search/?q=' },
+                    { name: 'Auto.ru', url: 'https://auto.ru/search/?query=' },
+                    { name: 'За рулём', url: 'https://www.zr.ru/search/?q=' }
+                ]
+            },
+            {
+                emoji: '✈️',
+                name: 'Путешествия',
+                sites: [
+                    { name: 'Aviasales', url: 'https://www.aviasales.ru/search?q=' },
+                    { name: 'Ostrovok', url: 'https://ostrovok.ru/search/?q=' },
+                    { name: 'Туту.ру', url: 'https://www.tutu.ru/search/?q=' },
+                    { name: 'Booking', url: 'https://www.booking.com/searchresults.ru.html?ss=' }
+                ]
+            },
+            {
+                emoji: '🛒',
+                name: 'Покупки',
+                sites: [
+                    { name: 'Ozon', url: 'https://www.ozon.ru/search/?text=' },
+                    { name: 'Wildberries', url: 'https://www.wildberries.ru/catalog/0/search.aspx?search=' },
+                    { name: 'Яндекс.Маркет', url: 'https://market.yandex.ru/search?text=' },
+                    { name: 'AliExpress', url: 'https://aliexpress.ru/wholesale?SearchText=' },
+                    { name: 'Avito', url: 'https://www.avito.ru/all?q=' }
+                ]
+            }
         ];
-
-        /* ============================================================
-           ПОИСКОВЫЕ ДВИЖКИ
-           ============================================================ */
-        const SEARCH_ENGINES = {
-            ddg: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
-            google: { name: 'Google', url: 'https://www.google.com/search?q=' },
-            yandex: { name: 'Яндекс', url: 'https://yandex.ru/search/?text=' },
-            bing: { name: 'Bing', url: 'https://www.bing.com/search?q=' },
-            mojeek: { name: 'Mojeek', url: 'https://www.mojeek.com/search?q=' },
-            brave: { name: 'Brave', url: 'https://search.brave.com/search?q=' }
-        };
 
         /* ============================================================
            ЯЗЫКОВЫЕ ПАКЕТЫ
@@ -2390,78 +2086,24 @@
         const LANG_PACKS = {
             ru: {
                 tagline: 'Минимализм. Скорость. Приватность.',
-                searchPlaceholder: 'Поиск или адрес',
-                bigSearchPlaceholder: 'Спросите Zero или введите адрес',
                 navHome: 'Главная',
-                navTabs: 'Вкладки',
                 navBm: 'Закладки',
                 navSettings: 'Ещё',
                 bookmarksTitle: 'Мои закладки',
-                bookmarksEmpty: 'Пока пусто. Нажмите ⭐ в адресной строке.',
                 bookmarksCount: ['закладка', 'закладки', 'закладок'],
                 searchInProgress: 'Ищем в интернете...',
                 categoriesTitle: 'Поиск по категориям',
                 ytTitle: 'Видео на YouTube',
                 webTitle: 'Веб-результаты',
                 wikiTitle: 'Из Википедии',
-                nothingFound: 'Ничего не найдено',
-                tryChange: 'Попробуйте другой запрос.',
                 found: 'Найдено',
                 results: 'результатов',
                 sitesFound: 'сайтов',
-                blockedTitle: 'Сайт не разрешает встраивание',
-                blockedDesc: 'Откройте ссылку во внешнем браузере.',
-                openInBrowser: 'Открыть в браузере',
                 addBookmark: 'Добавлено в закладки',
                 removeBookmark: 'Удалено из закладок',
-                settingsTitle: 'Настройки',
-                settingsSub: 'Язык, тема, данные',
-                labelLangGroup: 'Язык',
-                labelLang: 'Язык интерфейса',
-                labelSearchEng: 'Поисковик по умолчанию',
-                labelThemeGroup: 'Оформление',
-                labelTheme: 'Тема оформления',
-                labelDataGroup: 'Данные',
-                labelImportBm: 'Импорт закладок',
-                labelClearBm: 'Очистить закладки',
-                valueClearBm: 'Удалить все сохранённые страницы',
-                labelClearCookies: 'Очистить cookies',
-                labelClearAll: 'Очистить всё',
-                labelReset: 'Сбросить всё',
-                valueReset: 'Вернуть настройки по умолчанию',
-                labelAboutGroup: 'О приложении',
-                aboutDesc: 'Приватный браузер без регистрации и сбора данных.',
                 themeDark: 'Тёмная',
                 themeLight: 'Светлая',
                 themeAuto: 'Системная',
-                clearBmConfirmTitle: 'Очистить закладки?',
-                clearBmConfirmText: 'Все страницы будут удалены.',
-                clearHistoryConfirmTitle: 'Очистить историю?',
-                clearHistoryConfirmText: 'Все записи будут удалены.',
-                clearDownloadsConfirmTitle: 'Очистить загрузки?',
-                clearDownloadsConfirmText: 'Список загрузок будет очищен.',
-                clearCookiesConfirmTitle: 'Очистить cookies?',
-                clearCookiesConfirmText: 'Вы выйдете из всех сайтов.',
-                clearAllConfirmTitle: 'Очистить всё?',
-                clearAllConfirmText: 'История, закладки, загрузки и cookies будут удалены.',
-                resetConfirmTitle: 'Сбросить всё?',
-                resetConfirmText: 'Настройки и закладки будут очищены.',
-                cancel: 'Отмена',
-                confirmClear: 'Очистить',
-                confirmReset: 'Сбросить',
-                cleared: 'Закладки очищены',
-                resetDone: 'Настройки сброшены',
-                historyCleared: 'История очищена',
-                downloadsCleared: 'Загрузки очищены',
-                cookiesCleared: 'Cookies очищены',
-                allCleared: 'Все данные очищены',
-                menuHistory: 'История',
-                menuDownloads: 'Загрузки',
-                menuPrivate: 'Приватный режим',
-                menuTranslator: 'Переводчик',
-                menuSettings: 'Все настройки',
-                privateOn: 'Приватный режим включён',
-                privateOff: 'Приватный режим выключен',
                 historyCount: ['запись', 'записи', 'записей'],
                 today: 'Сегодня',
                 yesterday: 'Вчера',
@@ -2469,82 +2111,31 @@
                 exportDone: 'Закладки экспортированы',
                 importDone: 'Закладки импортированы',
                 importError: 'Ошибка импорта',
-                webFallback: 'Не удалось загрузить веб-результаты. Откройте поиск напрямую:'
+                cleared: 'Закладки очищены',
+                allCleared: 'Все данные очищены',
+                resetDone: 'Настройки сброшены',
+                webFallback: 'Открыть поиск напрямую:'
             },
             en: {
                 tagline: 'Minimalism. Speed. Privacy.',
-                searchPlaceholder: 'Search or address',
-                bigSearchPlaceholder: 'Ask Zero or enter address',
                 navHome: 'Home',
-                navTabs: 'Tabs',
                 navBm: 'Bookmarks',
                 navSettings: 'More',
                 bookmarksTitle: 'My bookmarks',
-                bookmarksEmpty: 'Empty. Tap ⭐ in the address bar.',
                 bookmarksCount: ['bookmark', 'bookmarks', 'bookmarks'],
                 searchInProgress: 'Searching...',
                 categoriesTitle: 'Search by category',
                 ytTitle: 'YouTube videos',
                 webTitle: 'Web results',
                 wikiTitle: 'From Wikipedia',
-                nothingFound: 'Nothing found',
-                tryChange: 'Try another query.',
                 found: 'Found',
                 results: 'results',
                 sitesFound: 'sites',
-                blockedTitle: 'Site blocks embedding',
-                blockedDesc: 'Open the link in external browser.',
-                openInBrowser: 'Open in browser',
                 addBookmark: 'Added to bookmarks',
                 removeBookmark: 'Removed from bookmarks',
-                settingsTitle: 'Settings',
-                settingsSub: 'Language, theme, data',
-                labelLangGroup: 'Language',
-                labelLang: 'Interface language',
-                labelSearchEng: 'Default search engine',
-                labelThemeGroup: 'Appearance',
-                labelTheme: 'Theme',
-                labelDataGroup: 'Data',
-                labelImportBm: 'Import bookmarks',
-                labelClearBm: 'Clear bookmarks',
-                valueClearBm: 'Delete all saved pages',
-                labelClearCookies: 'Clear cookies',
-                labelClearAll: 'Clear all',
-                labelReset: 'Reset all',
-                valueReset: 'Restore defaults',
-                labelAboutGroup: 'About',
-                aboutDesc: 'Private browser without registration or data collection.',
                 themeDark: 'Dark',
                 themeLight: 'Light',
                 themeAuto: 'System',
-                clearBmConfirmTitle: 'Clear bookmarks?',
-                clearBmConfirmText: 'All pages will be removed.',
-                clearHistoryConfirmTitle: 'Clear history?',
-                clearHistoryConfirmText: 'All entries will be removed.',
-                clearDownloadsConfirmTitle: 'Clear downloads?',
-                clearDownloadsConfirmText: 'Downloads list will be cleared.',
-                clearCookiesConfirmTitle: 'Clear cookies?',
-                clearCookiesConfirmText: 'You will be signed out of all sites.',
-                clearAllConfirmTitle: 'Clear all?',
-                clearAllConfirmText: 'History, bookmarks, downloads and cookies will be removed.',
-                resetConfirmTitle: 'Reset all?',
-                resetConfirmText: 'Settings and bookmarks will be cleared.',
-                cancel: 'Cancel',
-                confirmClear: 'Clear',
-                confirmReset: 'Reset',
-                cleared: 'Bookmarks cleared',
-                resetDone: 'Settings reset',
-                historyCleared: 'History cleared',
-                downloadsCleared: 'Downloads cleared',
-                cookiesCleared: 'Cookies cleared',
-                allCleared: 'All data cleared',
-                menuHistory: 'History',
-                menuDownloads: 'Downloads',
-                menuPrivate: 'Private mode',
-                menuTranslator: 'Translator',
-                menuSettings: 'All settings',
-                privateOn: 'Private mode ON',
-                privateOff: 'Private mode OFF',
                 historyCount: ['entry', 'entries', 'entries'],
                 today: 'Today',
                 yesterday: 'Yesterday',
@@ -2552,7 +2143,10 @@
                 exportDone: 'Bookmarks exported',
                 importDone: 'Bookmarks imported',
                 importError: 'Import error',
-                webFallback: 'Could not load web results. Open search directly:'
+                cleared: 'Bookmarks cleared',
+                allCleared: 'All data cleared',
+                resetDone: 'Settings reset',
+                webFallback: 'Open search directly:'
             }
         };
 
@@ -2563,22 +2157,12 @@
 
         const THEMES = ['dark', 'light', 'auto'];
 
-        /* ============================================================
-           НАСТРОЙКИ И СОСТОЯНИЕ
-           ============================================================ */
         let settings = {
             lang: 'ru',
-            theme: 'dark',
-            searchEngine: 'ddg'
+            theme: 'dark'
         };
 
         const state = {
-            view: 'home',
-            tabs: [{ id: 1, title: 'Zero', url: 'zero://home', grad: 'g-e', letter: 'Z' }],
-            activeTab: 1,
-            nextId: 2,
-            history: [{ type: 'home' }],
-            histIndex: 0,
             currentUrl: null,
             currentTitle: '',
             bookmarks: [],
@@ -2589,14 +2173,18 @@
             private: false
         };
 
+        /* ============================================================
+           CORS-ПРОКСИ
+           ============================================================ */
         const CORS_PROXIES = [
             'https://api.allorigins.win/raw?url=',
+            'https://api.codetabs.com/v1/proxy?quest=',
             'https://corsproxy.io/?url=',
             'https://cors.eu.org/'
         ];
 
         /* ============================================================
-           НАСТРОЙКИ — ФУНКЦИИ
+           ЗАГРУЗКА НАСТРОЕК
            ============================================================ */
         function loadSettings() {
             try {
@@ -2605,7 +2193,6 @@
                     const p = JSON.parse(r);
                     if (p.lang && LANG_PACKS[p.lang]) settings.lang = p.lang;
                     if (p.theme && THEMES.includes(p.theme)) settings.theme = p.theme;
-                    if (p.searchEngine && SEARCH_ENGINES[p.searchEngine]) settings.searchEngine = p.searchEngine;
                 }
             } catch (e) {}
         }
@@ -2626,72 +2213,6 @@
                 m = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
             }
             document.body.classList.toggle('light', m === 'light');
-            const meta = document.querySelector('meta[name="theme-color"]');
-            if (meta) meta.setAttribute('content', m === 'light' ? '#f4f4f8' : '#08080c');
-        }
-
-        function applyLanguage() {
-            const t = T();
-            document.documentElement.lang = settings.lang;
-
-            $('#taglineText').textContent = t.tagline;
-            $('#address').placeholder = t.searchPlaceholder;
-            $('#bigSearch').placeholder = t.bigSearchPlaceholder;
-            $('#navHome').textContent = t.navHome;
-            $('#navTabs').textContent = t.navTabs;
-            $('#navBm').textContent = t.navBm;
-            $('#navSettings').textContent = t.navSettings;
-            $('#bmEmptyText').textContent = t.bookmarksEmpty;
-            $('#settingsTitle').textContent = t.settingsTitle;
-            $('#settingsSub').textContent = t.settingsSub;
-            $('#labelLangGroup').textContent = t.labelLangGroup;
-            $('#labelLang').textContent = t.labelLang;
-            $('#labelSearchEng').textContent = t.labelSearchEng;
-            $('#labelThemeGroup').textContent = t.labelThemeGroup;
-            $('#labelTheme').textContent = t.labelTheme;
-            $('#labelDataGroup').textContent = t.labelDataGroup;
-            $('#labelImportBm').textContent = t.labelImportBm;
-            $('#labelClearBm').textContent = t.labelClearBm;
-            $('#valueClearBm').textContent = t.valueClearBm;
-            $('#labelClearCookies').textContent = t.labelClearCookies;
-            $('#labelClearAll').textContent = t.labelClearAll;
-            $('#labelReset').textContent = t.labelReset;
-            $('#valueReset').textContent = t.valueReset;
-            $('#labelAboutGroup').textContent = t.labelAboutGroup;
-            $('#aboutDesc').textContent = t.aboutDesc;
-            $('#blockedTitle').textContent = t.blockedTitle;
-            $('#blockedDesc').textContent = t.blockedDesc;
-            $('#openExternalFromBlocked').textContent = t.openInBrowser;
-            $('#valueLang').textContent = LANG_NAMES[settings.lang].name;
-            $('#valueSearchEng').textContent = SEARCH_ENGINES[settings.searchEngine].name;
-            $('#valueTheme').textContent = settings.theme === 'dark' ? t.themeDark
-                : settings.theme === 'light' ? t.themeLight : t.themeAuto;
-
-            const bmTitleEl = $('#bmTitle');
-            if (bmTitleEl) bmTitleEl.innerHTML = t.bookmarksTitle.replace(' ', ' <em>') + '</em>';
-
-            updateBmCount();
-            updateHistoryCount();
-            updateDownloadsCount();
-        }
-
-        /* ============================================================
-           CORS-ПРОКСИ
-           ============================================================ */
-        async function fetchViaProxy(u) {
-            let lastErr = null;
-            for (const p of CORS_PROXIES) {
-                try {
-                    const c = new AbortController();
-                    const timer = setTimeout(() => c.abort(), 12000);
-                    const r = await fetch(p + encodeURIComponent(u), { signal: c.signal });
-                    clearTimeout(timer);
-                    if (r.ok) return await r.text();
-                } catch (e) {
-                    lastErr = e;
-                }
-            }
-            throw lastErr || new Error('failed');
         }
 
         /* ============================================================
@@ -2701,11 +2222,17 @@
             try {
                 const r = localStorage.getItem('zero_bookmarks');
                 state.bookmarks = r ? JSON.parse(r) : [];
-            } catch (e) { state.bookmarks = []; }
+            } catch (e) {
+                state.bookmarks = [];
+            }
         }
+
         function saveBookmarks() {
-            try { localStorage.setItem('zero_bookmarks', JSON.stringify(state.bookmarks)); } catch (e) {}
+            try {
+                localStorage.setItem('zero_bookmarks', JSON.stringify(state.bookmarks));
+            } catch (e) {}
         }
+
         loadBookmarks();
 
         function isBookmarked(url) {
@@ -2713,48 +2240,53 @@
             const n = normalizeUrl(url);
             return state.bookmarks.some(b => normalizeUrl(b.url) === n);
         }
-        function toggleBookmark(url, title) {
-            if (!url) return false;
-            const n = normalizeUrl(url);
+
+        function toggleBookmark() {
+            if (!state.currentUrl) return false;
+            const n = normalizeUrl(state.currentUrl);
             const i = state.bookmarks.findIndex(b => normalizeUrl(b.url) === n);
             if (i >= 0) {
                 state.bookmarks.splice(i, 1);
                 saveBookmarks();
-                updateStar();
+                syncStar();
+                flashMessage(T().removeBookmark);
                 return false;
             }
-            state.bookmarks.unshift({ url: n, title: title || hostOf(n), added: Date.now() });
+            state.bookmarks.unshift({
+                url: n,
+                title: state.currentTitle || hostOf(n),
+                added: Date.now()
+            });
             saveBookmarks();
-            updateStar();
-            btnStar.classList.add('bounce');
-            setTimeout(() => btnStar.classList.remove('bounce'), 600);
+            syncStar();
+            flashMessage(T().addBookmark);
             return true;
         }
-        function updateStar() {
-            const on = isBookmarked(state.currentUrl);
-            btnStar.classList.toggle('on', on);
-            btnStar.style.opacity = state.currentUrl ? '' : '0';
-            btnStar.style.pointerEvents = state.currentUrl ? '' : 'none';
+
+        function syncStar() {
+            if (window.ZeroMain && window.ZeroMain.setStar) {
+                window.ZeroMain.setStar(isBookmarked(state.currentUrl));
+            }
         }
-        btnStar.addEventListener('click', e => {
-            e.stopPropagation();
-            if (!state.currentUrl) return;
-            const added = toggleBookmark(state.currentUrl, state.currentTitle);
-            flashMessage(added ? T().addBookmark : T().removeBookmark);
-        });
 
         /* ============================================================
-           ИСТОРИЯ ПОСЕЩЕНИЙ
+           ИСТОРИЯ
            ============================================================ */
         function loadBrowsingHistory() {
             try {
                 const r = localStorage.getItem('zero_history');
                 state.browsingHistory = r ? JSON.parse(r) : [];
-            } catch (e) { state.browsingHistory = []; }
+            } catch (e) {
+                state.browsingHistory = [];
+            }
         }
+
         function saveBrowsingHistory() {
-            try { localStorage.setItem('zero_history', JSON.stringify(state.browsingHistory.slice(0, 500))); } catch (e) {}
+            try {
+                localStorage.setItem('zero_history', JSON.stringify(state.browsingHistory.slice(0, 500)));
+            } catch (e) {}
         }
+
         loadBrowsingHistory();
 
         function addToHistory(url, title) {
@@ -2763,97 +2295,22 @@
             const norm = normalizeUrl(url);
             const last = state.browsingHistory[0];
             if (last && normalizeUrl(last.url) === norm && (Date.now() - last.visited) < 300000) return;
-            state.browsingHistory.unshift({ url: norm, title: title || hostOf(norm), visited: Date.now() });
+            state.browsingHistory.unshift({
+                url: norm,
+                title: title || hostOf(norm),
+                visited: Date.now()
+            });
             if (state.browsingHistory.length > 500) state.browsingHistory.length = 500;
             saveBrowsingHistory();
         }
+
         function updateHistoryCount() {
             const el = $('#historyCount');
             if (!el) return;
             el.textContent = state.browsingHistory.length === 0
-                ? '—' : state.browsingHistory.length + ' ' + pluralN(state.browsingHistory.length, T().historyCount);
+                ? '—'
+                : state.browsingHistory.length + ' ' + pluralN(state.browsingHistory.length, T().historyCount);
         }
-        function showHistory() { showView('history'); renderHistory(); }
-        function renderHistory() {
-            const list = $('#historyList');
-            const empty = $('#historyEmpty');
-            updateHistoryCount();
-            list.innerHTML = '';
-            const q = ($('#historySearch').value || '').toLowerCase().trim();
-            let items = state.browsingHistory;
-            if (q) items = items.filter(i =>
-                (i.title || '').toLowerCase().includes(q) ||
-                (i.url || '').toLowerCase().includes(q)
-            );
-            if (items.length === 0) { empty.style.display = ''; return; }
-            empty.style.display = 'none';
-            const groups = {};
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-            const yesterday = today - 86400000;
-            items.forEach(item => {
-                const d = new Date(item.visited);
-                const day = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-                let key = day === today ? T().today
-                    : day === yesterday ? T().yesterday
-                    : d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
-                if (!groups[key]) groups[key] = [];
-                groups[key].push(item);
-            });
-            let idx = 0;
-            Object.entries(groups).forEach(([date, its]) => {
-                const g = document.createElement('div');
-                g.className = 'hist-group';
-                g.style.animationDelay = (idx * 0.04) + 's';
-                g.innerHTML = `<div class="hist-date">${escapeHtml(date)}</div>`;
-                its.forEach(item => {
-                    const d = new Date(item.visited);
-                    const time = d.getHours().toString().padStart(2, '0') + ':' +
-                        d.getMinutes().toString().padStart(2, '0');
-                    const el = document.createElement('div');
-                    el.className = 'hist-item';
-                    el.innerHTML = `
-                        <div class="hist-time">${time}</div>
-                        <div class="hist-body">
-                            <div class="hist-title">${escapeHtml(item.title)}</div>
-                            <div class="hist-url">${escapeHtml(hostOf(item.url))}</div>
-                        </div>
-                        <button class="hist-del">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M18 6L6 18M6 6l12 12"/>
-                            </svg>
-                        </button>
-                    `;
-                    el.querySelector('.hist-body').parentElement.addEventListener('click', e => {
-                        if (e.target.closest('.hist-del')) return;
-                        renderEntry({ type: 'url', url: item.url });
-                    });
-                    el.querySelector('.hist-del').addEventListener('click', e => {
-                        e.stopPropagation();
-                        const i = state.browsingHistory.findIndex(x => x.url === item.url && x.visited === item.visited);
-                        if (i >= 0) {
-                            state.browsingHistory.splice(i, 1);
-                            saveBrowsingHistory();
-                            renderHistory();
-                        }
-                    });
-                    g.appendChild(el);
-                });
-                list.appendChild(g);
-                idx++;
-            });
-        }
-        $('#historySearch').addEventListener('input', renderHistory);
-        $('#clearHistoryBtn').addEventListener('click', () => {
-            const t = T();
-            confirmSheet(t.clearHistoryConfirmTitle, t.clearHistoryConfirmText, t.confirmClear, () => {
-                state.browsingHistory = [];
-                saveBrowsingHistory();
-                renderHistory();
-                closeSheet();
-                flashMessage(t.historyCleared);
-            });
-        });
 
         /* ============================================================
            ЗАГРУЗКИ
@@ -2862,73 +2319,25 @@
             try {
                 const r = localStorage.getItem('zero_downloads');
                 state.downloads = r ? JSON.parse(r) : [];
-            } catch (e) { state.downloads = []; }
+            } catch (e) {
+                state.downloads = [];
+            }
         }
+
         function saveDownloads() {
-            try { localStorage.setItem('zero_downloads', JSON.stringify(state.downloads.slice(0, 200))); } catch (e) {}
+            try {
+                localStorage.setItem('zero_downloads', JSON.stringify(state.downloads.slice(0, 200)));
+            } catch (e) {}
         }
+
         loadDownloads();
+
         function updateDownloadsCount() {
             const el = $('#downloadsCount');
             if (!el) return;
             el.textContent = state.downloads.length === 0
-                ? '—' : state.downloads.length + ' ' + pluralN(state.downloads.length, T().downloadsCount);
-        }
-        function showDownloads() { showView('downloads'); renderDownloads(); }
-        function renderDownloads() {
-            const list = $('#downloadsList');
-            const empty = $('#downloadsEmpty');
-            updateDownloadsCount();
-            list.innerHTML = '';
-            if (state.downloads.length === 0) { empty.style.display = ''; return; }
-            empty.style.display = 'none';
-            const grads = ['g-a', 'g-b', 'g-c', 'g-e', 'g-f', 'g-g', 'g-h'];
-            state.downloads.forEach((d, i) => {
-                const el = document.createElement('div');
-                el.className = 'dl-item';
-                el.style.animationDelay = (i * 0.04) + 's';
-                el.innerHTML = `
-                    <div class="dl-icon ${grads[i%grads.length]}">${(d.name[0] || '?').toUpperCase()}</div>
-                    <div class="dl-body">
-                        <div class="dl-name">${escapeHtml(d.name)}</div>
-                        <div class="dl-meta">${new Date(d.date).toLocaleString('ru-RU')}</div>
-                    </div>
-                    <button class="dl-del">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-                        </svg>
-                    </button>
-                `;
-                el.querySelector('.dl-del').addEventListener('click', e => {
-                    e.stopPropagation();
-                    const idx = state.downloads.findIndex(x => x.url === d.url && x.date === d.date);
-                    if (idx >= 0) {
-                        state.downloads.splice(idx, 1);
-                        saveDownloads();
-                        renderDownloads();
-                    }
-                });
-                list.appendChild(el);
-            });
-        }
-        $('#clearDownloadsBtn').addEventListener('click', () => {
-            const t = T();
-            confirmSheet(t.clearDownloadsConfirmTitle, t.clearDownloadsConfirmText, t.confirmClear, () => {
-                state.downloads = [];
-                saveDownloads();
-                renderDownloads();
-                closeSheet();
-                flashMessage(t.downloadsCleared);
-            });
-        });
-
-        /* ============================================================
-           ПРИВАТНЫЙ РЕЖИМ
-           ============================================================ */
-        function togglePrivate() {
-            state.private = !state.private;
-            document.body.classList.toggle('private', state.private);
-            flashMessage(state.private ? T().privateOn : T().privateOff);
+                ? '—'
+                : state.downloads.length + ' ' + pluralN(state.downloads.length, T().downloadsCount);
         }
 
         /* ============================================================
@@ -2936,7 +2345,7 @@
            ============================================================ */
         document.addEventListener('pointerdown', e => {
             const el = e.target.closest(
-                '.icon-btn, .nav-btn, .tile, .tab-item, .fab, .web-blocked button, .star-btn, .bm-del, .hist-del, .dl-del, .head-action, .lang-btn, .cat-link, .translate-actions button, .settings-item, .picker-option'
+                '.icon-btn, .nav-btn, .tile, .tab-item, .bm-del, .hist-del, .dl-del, .head-action, .lang-btn, .cat-link, .translate-actions button, .settings-item, .picker-option'
             );
             if (!el) return;
             const r = el.getBoundingClientRect();
@@ -2957,22 +2366,37 @@
             let s = String(input).trim();
             if (!s) return '';
             if (!/^https?:\/\//i.test(s)) s = 'https://' + s;
-            try { return new URL(s).href; } catch (e) { return s; }
+            try {
+                return new URL(s).href;
+            } catch (e) {
+                return s;
+            }
         }
+
         function isUrl(input) {
             const s = String(input).trim();
             if (/\s/.test(s)) return false;
             return /^([a-z]+:\/\/)?([\w-]+\.)+[a-z]{2,}(\/.*)?$/i.test(s);
         }
+
         function hostOf(url) {
-            try { return new URL(url).hostname.replace(/^www\./, ''); }
-            catch (e) { return String(url); }
+            try {
+                return new URL(url).hostname.replace(/^www\./, '');
+            } catch (e) {
+                return String(url);
+            }
         }
+
         function escapeHtml(s) {
             return String(s).replace(/[&<>"']/g, c => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
             } [c]));
         }
+
         function pluralN(n, forms) {
             const a = Math.abs(n) % 100;
             const b = a % 10;
@@ -2981,395 +2405,56 @@
             if (b === 1) return forms[0];
             return forms[2];
         }
-        function pluralCount(n) { return pluralN(n, T().bookmarksCount); }
 
-        /* ============================================================
-           НАВИГАЦИЯ
-           ============================================================ */
-        function pushHistory(e) {
-            state.history = state.history.slice(0, state.histIndex + 1);
-            state.history.push(e);
-            state.histIndex = state.history.length - 1;
-            updateNavButtons();
-        }
-        function updateNavButtons() {
-            btnBack.classList.toggle('off', state.histIndex <= 0);
-            btnFwd.classList.toggle('off', state.histIndex >= state.history.length - 1);
-        }
-        function goBack() {
-            if (state.histIndex <= 0) return;
-            state.histIndex--;
-            renderEntry(state.history[state.histIndex], false);
-            updateNavButtons();
-        }
-        function goForward() {
-            if (state.histIndex >= state.history.length - 1) return;
-            state.histIndex++;
-            renderEntry(state.history[state.histIndex], false);
-            updateNavButtons();
+        function pluralCount(n) {
+            return pluralN(n, T().bookmarksCount);
         }
 
-        function showView(name) {
-            state.view = name;
-            homeView.classList.toggle('hidden', name !== 'home');
-            pageView.classList.toggle('hidden', name !== 'page');
-            webView.classList.toggle('hidden', name !== 'web');
-            bookmarksView.classList.toggle('hidden', name !== 'bookmarks');
-            settingsView.classList.toggle('hidden', name !== 'settings');
-            historyView.classList.toggle('hidden', name !== 'history');
-            downloadsView.classList.toggle('hidden', name !== 'downloads');
-            $$('.nav-btn').forEach(b => {
-                const h = b.dataset.act === 'home' && name === 'home';
-                const bm = b.dataset.act === 'bookmarks' && name === 'bookmarks';
-                const s = b.dataset.act === 'settings' && name === 'settings';
-                b.classList.toggle('active', h || bm || s);
-            });
-            updateStar();
-        }
-        function renderEntry(e, push = true) {
-            if (push) pushHistory(e);
-            if (e.type === 'home') {
-                showView('home');
-                address.value = '';
-                state.currentUrl = null;
-                state.currentTitle = '';
-                webframe.src = 'about:blank';
-                updateStar();
-                return;
-            }
-            if (e.type === 'search') { runSearch(e.q, false); return; }
-            if (e.type === 'url') { loadUrl(e.url, false); return; }
-        }
-
-        /* ============================================================
-           ПОИСК: DUCKDUCKGO HTML
-           ============================================================ */
-        async function searchDDG(q) {
-            try {
-                const html = await fetchViaProxy(
-                    'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(q) + '&kl=ru-ru'
-                );
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const out = [];
-                doc.querySelectorAll('.result').forEach(n => {
-                    const a = n.querySelector('.result__a');
-                    const s = n.querySelector('.result__snippet');
-                    if (!a) return;
-                    let h = a.getAttribute('href') || '';
-                    if (h.startsWith('//duckduckgo.com/l/?uddg=')) {
-                        try {
-                            const u = new URL('https:' + h);
-                            const r = u.searchParams.get('uddg');
-                            if (r) h = decodeURIComponent(r);
-                        } catch (e) {}
-                    }
-                    if (!h.startsWith('http')) return;
-                    out.push({
-                        source: 'web',
-                        engine: 'DDG',
-                        title: a.textContent.trim(),
-                        url: h,
-                        desc: s ? s.textContent.trim() : '',
-                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
-                        grad: 'g-c',
-                        badge: hostOf(h)
-                    });
-                });
-                return out;
-            } catch (e) { return []; }
-        }
-
-        /* ============================================================
-           ПОИСК: DUCKDUCKGO LITE
-           ============================================================ */
-        async function searchDDGLite(q) {
-            try {
-                const html = await fetchViaProxy(
-                    'https://lite.duckduckgo.com/lite/?q=' + encodeURIComponent(q)
-                );
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const out = [];
-                doc.querySelectorAll('a.result-link').forEach(a => {
-                    const h = a.href;
-                    if (!h || !h.startsWith('http')) return;
-                    const tr = a.closest('tr');
-                    let desc = '';
-                    if (tr && tr.nextElementSibling) desc = tr.nextElementSibling.textContent.trim();
-                    out.push({
-                        source: 'web',
-                        engine: 'DDG Lite',
-                        title: a.textContent.trim(),
-                        url: h,
-                        desc: desc,
-                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
-                        grad: 'g-c',
-                        badge: hostOf(h)
-                    });
-                });
-                return out;
-            } catch (e) { return []; }
-        }
-
-        /* ============================================================
-           ПОИСК: BING
-           ============================================================ */
-        async function searchBing(q) {
-            try {
-                const html = await fetchViaProxy(
-                    'https://www.bing.com/search?q=' + encodeURIComponent(q) + '&setlang=ru&cc=RU'
-                );
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const out = [];
-                doc.querySelectorAll('li.b_algo').forEach(li => {
-                    const a = li.querySelector('h2 a');
-                    const d = li.querySelector('.b_caption p') ||
-                        li.querySelector('.b_lineclamp2') ||
-                        li.querySelector('p');
-                    if (!a || !a.href) return;
-                    out.push({
-                        source: 'web',
-                        engine: 'Bing',
-                        title: a.textContent.trim(),
-                        url: a.href,
-                        desc: d ? d.textContent.trim() : '',
-                        icon: hostOf(a.href)[0] ? hostOf(a.href)[0].toUpperCase() : '?',
-                        grad: 'g-c',
-                        badge: hostOf(a.href)
-                    });
-                });
-                return out;
-            } catch (e) { return []; }
-        }
-
-        /* ============================================================
-           ПОИСК: MOJEEK
-           ============================================================ */
-        async function searchMojeek(q) {
-            try {
-                const html = await fetchViaProxy(
-                    'https://www.mojeek.com/search?q=' + encodeURIComponent(q)
-                );
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const out = [];
-                doc.querySelectorAll('ul.results-standard li').forEach(li => {
-                    const a = li.querySelector('a.title') || li.querySelector('h2 a');
-                    const p = li.querySelector('p.s');
-                    if (!a || !a.href) return;
-                    out.push({
-                        source: 'web',
-                        engine: 'Mojeek',
-                        title: a.textContent.trim(),
-                        url: a.href,
-                        desc: p ? p.textContent.trim() : '',
-                        icon: hostOf(a.href)[0] ? hostOf(a.href)[0].toUpperCase() : '?',
-                        grad: 'g-c',
-                        badge: hostOf(a.href)
-                    });
-                });
-                return out;
-            } catch (e) { return []; }
-        }
-
-        /* ============================================================
-           ПОИСК: BRAVE HTML
-           ============================================================ */
-        async function searchBrave(q) {
-            try {
-                const html = await fetchViaProxy(
-                    'https://search.brave.com/search?q=' + encodeURIComponent(q)
-                );
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const out = [];
-                doc.querySelectorAll('div.snippet').forEach(div => {
-                    const a = div.querySelector('a.heading-serpresult, a.result-header');
-                    const p = div.querySelector('.snippet-description');
-                    if (!a || !a.href) return;
-                    if (!a.href.startsWith('http')) return;
-                    out.push({
-                        source: 'web',
-                        engine: 'Brave',
-                        title: a.textContent.trim(),
-                        url: a.href,
-                        desc: p ? p.textContent.trim() : '',
-                        icon: hostOf(a.href)[0] ? hostOf(a.href)[0].toUpperCase() : '?',
-                        grad: 'g-c',
-                        badge: hostOf(a.href)
-                    });
-                });
-                return out;
-            } catch (e) { return []; }
-        }
-
-        /* ============================================================
-           ПОИСК: GOOGLE (через прокси, часто блокируется)
-           ============================================================ */
-        async function searchGoogle(q) {
-            try {
-                const html = await fetchViaProxy(
-                    'https://www.google.com/search?q=' + encodeURIComponent(q) + '&hl=ru&num=15'
-                );
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const out = [];
-                doc.querySelectorAll('div.g, div[data-ved] > div > a[href^="http"]').forEach(node => {
-                    const a = node.querySelector('a[href^="http"]') || (node.tagName === 'A' ? node : null);
-                    if (!a) return;
-                    const h = a.href;
-                    if (!h || !h.startsWith('http')) return;
-                    if (h.includes('google.com') || h.includes('gstatic')) return;
-                    const t = node.querySelector('h3') || a.querySelector('h3');
-                    const s = node.querySelector('span.aCOpRe, div.VwiC3b, span.st');
-                    out.push({
-                        source: 'web',
-                        engine: 'Google',
-                        title: t ? t.textContent.trim() : a.textContent.trim(),
-                        url: h,
-                        desc: s ? s.textContent.trim() : '',
-                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
-                        grad: 'g-c',
-                        badge: hostOf(h)
-                    });
-                });
-                return out;
-            } catch (e) { return []; }
-        }
-
-        /* ============================================================
-           ПОИСК: ЯНДЕКС (через прокси, часто блокируется)
-           ============================================================ */
-        async function searchYandex(q) {
-            try {
-                const html = await fetchViaProxy(
-                    'https://yandex.ru/search/?text=' + encodeURIComponent(q)
-                );
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const out = [];
-                doc.querySelectorAll('li.serp-item, div.serp-item').forEach(li => {
-                    const a = li.querySelector('a.organic__url, a.Link_theme_normal, h2 a');
-                    if (!a || !a.href) return;
-                    const h = a.href;
-                    if (!h.startsWith('http')) return;
-                    if (h.includes('yandex.')) return;
-                    const t = li.querySelector('h2') || a;
-                    const s = li.querySelector('.organic__content-wrapper, .text-container');
-                    out.push({
-                        source: 'web',
-                        engine: 'Яндекс',
-                        title: t ? t.textContent.trim() : a.textContent.trim(),
-                        url: h,
-                        desc: s ? s.textContent.trim() : '',
-                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
-                        grad: 'g-c',
-                        badge: hostOf(h)
-                    });
-                });
-                return out;
-            } catch (e) { return []; }
-        }
-
-        /* ============================================================
-           МУЛЬТИПОИСК: запускает все движки параллельно
-           ============================================================ */
-        async function searchWebMulti(q) {
-            const engines = [
-                searchGoogle(q),
-                searchYandex(q),
-                searchDDG(q),
-                searchBing(q),
-                searchMojeek(q),
-                searchBrave(q),
-                searchDDGLite(q)
-            ];
-            const results = await Promise.allSettled(engines);
-
-            const seen = new Set();
-            const merged = [];
-            const perEngine = {};
-
-            results.forEach(r => {
-                if (r.status !== 'fulfilled') return;
-                (r.value || []).forEach(item => {
-                    const key = normalizeUrl(item.url);
-                    if (!key || seen.has(key)) return;
-                    seen.add(key);
-                    const e = item.engine || 'web';
-                    perEngine[e] = (perEngine[e] || 0) + 1;
-                    merged.push(item);
-                });
-            });
-
-            console.log('Поисковики ответили:', perEngine);
-            return merged.slice(0, 20);
-        }
-
-        /* ============================================================
-           ПОИСК: YOUTUBE через Piped
-           ============================================================ */
-        const PIPED = [
-            'https://pipedapi.kavin.rocks',
-            'https://api.piped.private.coffee',
-            'https://pipedapi.adminforge.de'
-        ];
-        async function searchYouTube(q) {
-            for (const base of PIPED) {
+        async function fetchViaProxy(u) {
+            let lastErr = null;
+            for (const p of CORS_PROXIES) {
                 try {
                     const c = new AbortController();
                     const timer = setTimeout(() => c.abort(), 8000);
-                    const r = await fetch(
-                        base + '/search?q=' + encodeURIComponent(q) + '&filter=videos',
-                        { signal: c.signal }
-                    );
+                    const r = await fetch(p + encodeURIComponent(u), { signal: c.signal });
                     clearTimeout(timer);
-                    if (!r.ok) continue;
-                    const d = await r.json();
-                    if (!d || !d.items) continue;
-                    return d.items.slice(0, 5).map(v => ({
-                        source: 'youtube',
-                        title: v.title,
-                        url: 'https://www.youtube.com' + (v.url || ''),
-                        desc: (v.uploaderName || '') + (v.views ? ' • ' + formatViews(v.views) : ''),
-                        thumb: v.thumbnail,
-                        icon: 'Y',
-                        grad: 'g-a',
-                        badge: 'YouTube'
-                    }));
-                } catch (e) { continue; }
+                    if (r.ok) {
+                        const txt = await r.text();
+                        if (txt && txt.length > 200) return txt;
+                    }
+                } catch (e) {
+                    lastErr = e;
+                }
             }
-            return [];
-        }
-        function formatViews(n) {
-            if (!n && n !== 0) return '';
-            if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
-            if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
-            if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
-            return n + '';
+            throw lastErr || new Error('failed');
         }
 
         /* ============================================================
-           ПОИСК: WIKIPEDIA
+           ВИДЫ
            ============================================================ */
-        async function searchWikipedia(q) {
-            try {
-                const wl = settings.lang === 'ru' ? 'ru' : 'en';
-                const u = 'https://' + wl + '.wikipedia.org/w/api.php' +
-                    '?action=query&list=search&srsearch=' + encodeURIComponent(q) +
-                    '&format=json&origin=*&srlimit=3';
-                const r = await fetch(u);
-                const d = await r.json();
-                if (!d.query || !d.query.search) return [];
-                return d.query.search.map(r => ({
-                    source: 'wiki',
-                    title: r.title,
-                    url: 'https://' + wl + '.wikipedia.org/wiki/' + encodeURIComponent(r.title),
-                    desc: (r.snippet || '').replace(/<[^>]*>/g, ''),
-                    icon: 'W',
-                    grad: 'g-e',
-                    badge: 'Wikipedia'
-                }));
-            } catch (e) { return []; }
+        function showView(name) {
+            homeView.classList.toggle('hidden', name !== 'home');
+            pageView.classList.toggle('hidden', name !== 'page');
+            historyView.classList.toggle('hidden', name !== 'history');
+            downloadsView.classList.toggle('hidden', name !== 'downloads');
+            bookmarksView.classList.toggle('hidden', name !== 'bookmarks');
+            settingsView.classList.toggle('hidden', name !== 'settings');
         }
 
         /* ============================================================
-           КАТЕГОРИИ — HTML
+           ОТКРЫТИЕ URL — ЧЕРЕЗ НАТИВНЫЙ МОСТ
+           ============================================================ */
+        function openExternal(url) {
+            if (!url) return;
+            if (window.ZeroMain && window.ZeroMain.openUrl) {
+                window.ZeroMain.openUrl(url);
+            } else {
+                window.open(url, '_blank', 'noopener');
+            }
+        }
+
+        /* ============================================================
+           КАТЕГОРИИ HTML
            ============================================================ */
         function buildCategoriesHTML(q) {
             const enc = encodeURIComponent(q);
@@ -3404,25 +2489,384 @@
         }
 
         /* ============================================================
-           ГЛАВНЫЙ ПОИСК
+           ПОИСК: WIKIPEDIA
            ============================================================ */
-        async function runSearch(q, push = true) {
-            if (push) pushHistory({ type: 'search', q });
+        async function searchWikipedia(q) {
+            try {
+                const wl = settings.lang === 'ru' ? 'ru' : 'en';
+                const u = 'https://' + wl + '.wikipedia.org/w/api.php' +
+                    '?action=query&list=search&srsearch=' + encodeURIComponent(q) +
+                    '&format=json&origin=*&srlimit=3';
+                const r = await fetch(u);
+                const d = await r.json();
+                if (!d.query || !d.query.search) return [];
+                return d.query.search.map(r => ({
+                    source: 'wiki',
+                    engine: 'Wikipedia',
+                    title: r.title,
+                    url: 'https://' + wl + '.wikipedia.org/wiki/' + encodeURIComponent(r.title),
+                    desc: (r.snippet || '').replace(/<[^>]*>/g, ''),
+                    icon: 'W',
+                    grad: 'g-e',
+                    badge: 'Wikipedia'
+                }));
+            } catch (e) {
+                return [];
+            }
+        }
+
+        /* ============================================================
+           ПОИСК: DUCKDUCKGO INSTANT ANSWER
+           ============================================================ */
+        async function searchDDGInstant(q) {
+            try {
+                const u = 'https://api.duckduckgo.com/?q=' + encodeURIComponent(q) +
+                    '&format=json&no_html=1&skip_disambig=1';
+                const r = await fetch(u);
+                const d = await r.json();
+                const out = [];
+                if (d.AbstractText && d.AbstractURL) {
+                    out.push({
+                        source: 'web',
+                        engine: 'DDG',
+                        title: d.Heading || q,
+                        url: d.AbstractURL,
+                        desc: d.AbstractText,
+                        icon: 'D',
+                        grad: 'g-c',
+                        badge: 'DDG'
+                    });
+                }
+                if (d.RelatedTopics && Array.isArray(d.RelatedTopics)) {
+                    d.RelatedTopics.slice(0, 8).forEach(t => {
+                        if (t.FirstURL && t.Text) {
+                            out.push({
+                                source: 'web',
+                                engine: 'DDG',
+                                title: t.Text.split(' - ')[0] || t.Text,
+                                url: t.FirstURL,
+                                desc: t.Text,
+                                icon: 'D',
+                                grad: 'g-c',
+                                badge: 'DDG'
+                            });
+                        }
+                    });
+                }
+                return out;
+            } catch (e) {
+                return [];
+            }
+        }
+
+        /* ============================================================
+           ПОИСК: DUCKDUCKGO HTML
+           ============================================================ */
+        async function searchDDGHTML(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(q) + '&kl=ru-ru'
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('.result').forEach(n => {
+                    const a = n.querySelector('.result__a');
+                    const s = n.querySelector('.result__snippet');
+                    if (!a) return;
+                    let h = a.getAttribute('href') || '';
+                    if (h.startsWith('//duckduckgo.com/l/?uddg=')) {
+                        try {
+                            const u = new URL('https:' + h);
+                            const r = u.searchParams.get('uddg');
+                            if (r) h = decodeURIComponent(r);
+                        } catch (e) {}
+                    }
+                    if (!h.startsWith('http')) return;
+                    out.push({
+                        source: 'web',
+                        engine: 'DDG',
+                        title: a.textContent.trim(),
+                        url: h,
+                        desc: s ? s.textContent.trim() : '',
+                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(h)
+                    });
+                });
+                return out;
+            } catch (e) {
+                return [];
+            }
+        }
+
+        /* ============================================================
+           ПОИСК: BING HTML
+           ============================================================ */
+        async function searchBingHTML(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://www.bing.com/search?q=' + encodeURIComponent(q) + '&setlang=ru&cc=RU'
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('li.b_algo').forEach(li => {
+                    const a = li.querySelector('h2 a');
+                    const d = li.querySelector('.b_caption p') ||
+                        li.querySelector('.b_lineclamp2') ||
+                        li.querySelector('p');
+                    if (!a || !a.href) return;
+                    out.push({
+                        source: 'web',
+                        engine: 'Bing',
+                        title: a.textContent.trim(),
+                        url: a.href,
+                        desc: d ? d.textContent.trim() : '',
+                        icon: hostOf(a.href)[0] ? hostOf(a.href)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(a.href)
+                    });
+                });
+                return out;
+            } catch (e) {
+                return [];
+            }
+        }
+
+        /* ============================================================
+           ПОИСК: MOJEEK HTML
+           ============================================================ */
+        async function searchMojeekHTML(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://www.mojeek.com/search?q=' + encodeURIComponent(q)
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('ul.results-standard li').forEach(li => {
+                    const a = li.querySelector('a.title') || li.querySelector('h2 a');
+                    const p = li.querySelector('p.s');
+                    if (!a || !a.href) return;
+                    out.push({
+                        source: 'web',
+                        engine: 'Mojeek',
+                        title: a.textContent.trim(),
+                        url: a.href,
+                        desc: p ? p.textContent.trim() : '',
+                        icon: hostOf(a.href)[0] ? hostOf(a.href)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(a.href)
+                    });
+                });
+                return out;
+            } catch (e) {
+                return [];
+            }
+        }
+
+        /* ============================================================
+           ПОИСК: BRAVE HTML
+           ============================================================ */
+        async function searchBraveHTML(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://search.brave.com/search?q=' + encodeURIComponent(q)
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('div.snippet').forEach(div => {
+                    const a = div.querySelector('a.heading-serpresult, a.result-header');
+                    const p = div.querySelector('.snippet-description');
+                    if (!a || !a.href || !a.href.startsWith('http')) return;
+                    out.push({
+                        source: 'web',
+                        engine: 'Brave',
+                        title: a.textContent.trim(),
+                        url: a.href,
+                        desc: p ? p.textContent.trim() : '',
+                        icon: hostOf(a.href)[0] ? hostOf(a.href)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(a.href)
+                    });
+                });
+                return out;
+            } catch (e) {
+                return [];
+            }
+        }
+
+        /* ============================================================
+           ПОИСК: GOOGLE HTML
+           ============================================================ */
+        async function searchGoogleHTML(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://www.google.com/search?q=' + encodeURIComponent(q) + '&hl=ru&num=15'
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('div.g, div[data-ved] > div > a[href^="http"]').forEach(node => {
+                    const a = node.querySelector('a[href^="http"]') ||
+                        (node.tagName === 'A' ? node : null);
+                    if (!a) return;
+                    const h = a.href;
+                    if (!h || !h.startsWith('http')) return;
+                    if (h.includes('google.com') || h.includes('gstatic')) return;
+                    const t = node.querySelector('h3') || a.querySelector('h3');
+                    const s = node.querySelector('span.aCOpRe, div.VwiC3b, span.st');
+                    out.push({
+                        source: 'web',
+                        engine: 'Google',
+                        title: t ? t.textContent.trim() : a.textContent.trim(),
+                        url: h,
+                        desc: s ? s.textContent.trim() : '',
+                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(h)
+                    });
+                });
+                return out;
+            } catch (e) {
+                return [];
+            }
+        }
+
+        /* ============================================================
+           ПОИСК: ЯНДЕКС HTML
+           ============================================================ */
+        async function searchYandexHTML(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://yandex.ru/search/?text=' + encodeURIComponent(q)
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('li.serp-item, div.serp-item').forEach(li => {
+                    const a = li.querySelector('a.organic__url, a.Link_theme_normal, h2 a');
+                    if (!a || !a.href) return;
+                    const h = a.href;
+                    if (!h.startsWith('http') || h.includes('yandex.')) return;
+                    const t = li.querySelector('h2') || a;
+                    const s = li.querySelector('.organic__content-wrapper, .text-container');
+                    out.push({
+                        source: 'web',
+                        engine: 'Яндекс',
+                        title: t ? t.textContent.trim() : a.textContent.trim(),
+                        url: h,
+                        desc: s ? s.textContent.trim() : '',
+                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(h)
+                    });
+                });
+                return out;
+            } catch (e) {
+                return [];
+            }
+        }
+
+        /* ============================================================
+           МУЛЬТИПОИСК
+           ============================================================ */
+        async function searchWebMulti(q) {
+            const reliable = await Promise.allSettled([
+                searchWikipedia(q),
+                searchDDGInstant(q)
+            ]);
+
+            const htmlEngines = await Promise.allSettled([
+                searchDDGHTML(q),
+                searchBingHTML(q),
+                searchMojeekHTML(q),
+                searchBraveHTML(q),
+                searchGoogleHTML(q),
+                searchYandexHTML(q)
+            ]);
+
+            const reliableResults = [];
+            reliable.forEach(r => {
+                if (r.status === 'fulfilled') reliableResults.push(...r.value);
+            });
+
+            const htmlResults = [];
+            htmlEngines.forEach(r => {
+                if (r.status === 'fulfilled') htmlResults.push(...r.value);
+            });
+
+            const seen = new Set();
+            const merged = [];
+
+            [...htmlResults, ...reliableResults].forEach(item => {
+                const key = normalizeUrl(item.url);
+                if (!key || seen.has(key)) return;
+                seen.add(key);
+                merged.push(item);
+            });
+
+            return merged.slice(0, 25);
+        }
+
+        /* ============================================================
+           ПОИСК: YOUTUBE через Piped
+           ============================================================ */
+        const PIPED = [
+            'https://pipedapi.kavin.rocks',
+            'https://api.piped.private.coffee',
+            'https://pipedapi.adminforge.de',
+            'https://pipedapi.reallyaweso.me',
+            'https://pipedapi.drgns.space'
+        ];
+
+        async function searchYouTube(q) {
+            for (const b of PIPED) {
+                try {
+                    const c = new AbortController();
+                    const timer = setTimeout(() => c.abort(), 6000);
+                    const r = await fetch(
+                        b + '/search?q=' + encodeURIComponent(q) + '&filter=videos',
+                        { signal: c.signal }
+                    );
+                    clearTimeout(timer);
+                    if (!r.ok) continue;
+                    const d = await r.json();
+                    if (!d || !d.items) continue;
+                    return d.items.slice(0, 6).map(v => ({
+                        source: 'youtube',
+                        engine: 'YouTube',
+                        title: v.title,
+                        url: 'https://www.youtube.com' + (v.url || ''),
+                        desc: (v.uploaderName || '') + (v.views ? ' • ' + formatViews(v.views) : ''),
+                        thumb: v.thumbnail,
+                        icon: 'Y',
+                        grad: 'g-a',
+                        badge: 'YouTube'
+                    }));
+                } catch (e) {
+                    continue;
+                }
+            }
+            return [];
+        }
+
+        function formatViews(n) {
+            if (!n && n !== 0) return '';
+            if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
+            if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+            if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+            return n + '';
+        }
+
+        /* ============================================================
+           ГЛАВНАЯ ФУНКЦИЯ ПОИСКА
+           ============================================================ */
+        async function runSearch(q) {
             showView('page');
             pageView.classList.add('loading');
             state.currentUrl = null;
             state.currentTitle = q;
             const t = T();
 
-            address.value = q;
             $('#pageQuery').textContent = q;
             $('#pageSub').textContent = t.searchInProgress;
-
-            const tab = state.tabs.find(x => x.id === state.activeTab);
-            if (tab) {
-                tab.title = q;
-                tab.url = 'zero://search?q=' + encodeURIComponent(q);
-            }
 
             const rc = $('#results');
             rc.innerHTML = '';
@@ -3439,7 +2883,7 @@
 
             let html = '';
 
-            /* ============ 1. ВЕБ-РЕЗУЛЬТАТЫ (ПЕРВЫМИ) ============ */
+            /* ВЕБ-РЕЗУЛЬТАТЫ ПЕРВЫМИ */
             html += `<div class="section-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
@@ -3478,20 +2922,16 @@
                         <button class="cat-link" data-url="https://www.bing.com/search?q=${enc}">
                             <span class="cat-link-dot"></span><span class="cat-link-name">Bing</span>
                         </button>
-                        <button class="cat-link" data-url="https://www.mojeek.com/search?q=${enc}">
-                            <span class="cat-link-dot"></span><span class="cat-link-name">Mojeek</span>
-                        </button>
-                        <button class="cat-link" data-url="https://search.brave.com/search?q=${enc}">
-                            <span class="cat-link-dot"></span><span class="cat-link-name">Brave</span>
-                        </button>
                     </div>
                 </div>`;
             }
 
-            /* ============ 2. YOUTUBE ============ */
+            /* YOUTUBE */
             if (yt.length) {
                 html += `<div class="section-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
                     ${t.ytTitle}
                 </div>`;
                 yt.forEach((it, i) => {
@@ -3507,7 +2947,7 @@
                 });
             }
 
-            /* ============ 3. WIKIPEDIA ============ */
+            /* WIKIPEDIA */
             if (wiki.length) {
                 html += `<div class="section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -3529,19 +2969,19 @@
                 });
             }
 
-            /* ============ 4. КАТЕГОРИИ (В КОНЦЕ) ============ */
+            /* КАТЕГОРИИ */
             html += buildCategoriesHTML(q);
 
             rc.innerHTML = html;
 
             rc.querySelectorAll('.cat-link').forEach(b =>
-                b.addEventListener('click', () => renderEntry({ type: 'url', url: b.dataset.url }))
+                b.addEventListener('click', () => openExternal(b.dataset.url))
             );
             rc.querySelectorAll('.result[data-url]').forEach(el =>
-                el.addEventListener('click', () => renderEntry({ type: 'url', url: el.dataset.url }))
+                el.addEventListener('click', () => openExternal(el.dataset.url))
             );
 
-            const enginesHit = [...new Set(web.map(x => x.engine).filter(Boolean))].join(' · ');
+            const enginesHit = [...new Set(web.map(x => x.engine).filter(Boolean))].slice(0, 5).join(' · ');
             $('#pageSub').textContent = t.found + ': ' +
                 (yt.length + web.length + wiki.length) + ' ' + t.results +
                 (enginesHit ? ' • ' + enginesHit : '');
@@ -3550,68 +2990,15 @@
         }
 
         /* ============================================================
-           ЗАГРУЗКА URL
-           ============================================================ */
-        function loadUrl(rawUrl, push = true) {
-            const url = normalizeUrl(rawUrl);
-            if (!url) return;
-            if (push) pushHistory({ type: 'url', url });
-            state.currentUrl = url;
-            state.currentTitle = hostOf(url);
-            addToHistory(url, hostOf(url));
-            const tab = state.tabs.find(x => x.id === state.activeTab);
-            if (tab) {
-                tab.title = state.currentTitle;
-                tab.url = url;
-            }
-            if (window.ZeroAndroid && typeof window.ZeroAndroid.openUrl === 'function') {
-                window.ZeroAndroid.openUrl(url);
-                return;
-            }
-            showView('web');
-            webView.classList.remove('loaded');
-            webBlocked.classList.remove('show');
-            address.value = url;
-            webframe.src = url;
-            updateStar();
-            clearTimeout(state.blockedTimer);
-            state.blockedTimer = setTimeout(() => {
-                if (!webView.classList.contains('loaded')) webBlocked.classList.add('show');
-            }, 4000);
-        }
-
-        webframe.addEventListener('load', () => {
-            clearTimeout(state.blockedTimer);
-            webView.classList.add('loaded');
-            webBlocked.classList.remove('show');
-            try {
-                const h = webframe.contentWindow.location.href;
-                if (h && h !== 'about:blank' && !h.startsWith('about:')) {
-                    address.value = h;
-                    state.currentUrl = h;
-                    updateStar();
-                    addToHistory(h, hostOf(h));
-                }
-            } catch (e) {}
-        });
-
-        /* ============================================================
            ВВОД
            ============================================================ */
         function submitQuery(q) {
             q = String(q).trim();
             if (!q) return;
-            if (isUrl(q)) renderEntry({ type: 'url', url: q });
-            else renderEntry({ type: 'search', q });
+            if (isUrl(q)) openExternal(q);
+            else runSearch(q);
         }
-        address.addEventListener('focus', () => addrWrap.classList.add('focused'));
-        address.addEventListener('blur', () => addrWrap.classList.remove('focused'));
-        address.addEventListener('keydown', e => {
-            if (e.key === 'Enter' && address.value.trim()) {
-                address.blur();
-                submitQuery(address.value);
-            }
-        });
+
         bigSearch.addEventListener('keydown', e => {
             if (e.key === 'Enter' && bigSearch.value.trim()) {
                 submitQuery(bigSearch.value);
@@ -3619,183 +3006,37 @@
             }
         });
 
-        /* ============================================================
-           КЛИКИ
-           ============================================================ */
         $('#tiles').addEventListener('click', e => {
             const t = e.target.closest('.tile');
-            if (t) renderEntry({ type: 'url', url: t.dataset.url });
-        });
-        btnBack.addEventListener('click', () => {
-            if (window.ZeroAndroid && window.ZeroAndroid.goBack) window.ZeroAndroid.goBack();
-            else goBack();
-        });
-        btnFwd.addEventListener('click', goForward);
-        btnReload.addEventListener('click', () => {
-            if (state.view === 'web' && state.currentUrl) {
-                webframe.src = state.currentUrl;
-                webView.classList.remove('loaded');
-            } else if (state.view === 'page') {
-                const q = $('#pageQuery').textContent;
-                if (q) runSearch(q, false);
-            }
-        });
-        $('#openExternal').addEventListener('click', () => {
-            if (state.currentUrl) window.open(state.currentUrl, '_blank', 'noopener');
-        });
-        $('#openExternalFromBlocked').addEventListener('click', () => {
-            if (state.currentUrl) window.open(state.currentUrl, '_blank', 'noopener');
+            if (t) openExternal(t.dataset.url);
         });
 
         /* ============================================================
-           ПЕРЕВОДЧИК
+           ЗАКЛАДКИ — ОТОБРАЖЕНИЕ
            ============================================================ */
-        const TRANSLATE_ENDPOINTS = [
-            'https://translate.astian.org/translate',
-            'https://libretranslate.de/translate'
-        ];
-        const TRANSLATE_LANGS = [
-            { code: 'ru', flag: '🇷🇺', name: 'Русский' },
-            { code: 'en', flag: '🇬🇧', name: 'English' },
-            { code: 'uk', flag: '🇺🇦', name: 'Українська' },
-            { code: 'de', flag: '🇩🇪', name: 'Deutsch' },
-            { code: 'fr', flag: '🇫🇷', name: 'Français' },
-            { code: 'es', flag: '🇪🇸', name: 'Español' },
-            { code: 'tr', flag: '🇹🇷', name: 'Türkçe' },
-            { code: 'zh', flag: '🇨🇳', name: '中文' },
-            { code: 'ja', flag: '🇯🇵', name: '日本語' }
-        ];
-        async function translateText(text, tgt, src = 'auto') {
-            const trimmed = String(text).trim();
-            if (!trimmed || trimmed.length < 2) return trimmed;
-            let lastErr = null;
-            for (const ep of TRANSLATE_ENDPOINTS) {
-                try {
-                    const c = new AbortController();
-                    const timer = setTimeout(() => c.abort(), 8000);
-                    const r = await fetch(ep, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ q: trimmed, source: src, target: tgt, format: 'text' }),
-                        signal: c.signal
-                    });
-                    clearTimeout(timer);
-                    if (!r.ok) throw new Error('HTTP ' + r.status);
-                    const d = await r.json();
-                    if (d && d.translatedText) return d.translatedText;
-                } catch (e) { lastErr = e; continue; }
-            }
-            throw lastErr || new Error('unavailable');
-        }
-        btnTranslate.addEventListener('click', () => {
-            if (!state.currentUrl) return;
-            openTranslator();
-        });
-        function openTranslator() {
-            const cur = localStorage.getItem('zero_lang') || 'ru';
-            sheetContent.innerHTML = `
-                <div class="sheet-title">Переводчик</div>
-                <div class="selection-box">
-                    <span class="from">Текст</span>
-                    <div id="selectionText">${escapeHtml(state.lastSelection||'Выделите текст на странице')}</div>
-                </div>
-                <div class="lang-grid">
-                    ${TRANSLATE_LANGS.map(l => `
-                        <button class="lang-btn ${l.code===cur?'current':''}" data-code="${l.code}">
-                            <span class="lang-flag">${l.flag}</span>
-                            <span class="lang-name">${l.name}</span>
-                        </button>
-                    `).join('')}
-                </div>
-                <div class="selection-result" id="selectionResult" style="display:none">
-                    <span class="to">Перевод</span>
-                    <div id="selectionResultText"></div>
-                </div>
-                <div class="translate-actions">
-                    <button class="secondary" id="btnPasteFrom">Вставить</button>
-                    <button class="primary" id="btnDoTranslate" ${!state.lastSelection?'disabled':''}>Перевести</button>
-                </div>
-            `;
-            scrim.classList.add('show');
-            sheet.classList.add('show');
-            $('#btnPasteFrom').addEventListener('click', async () => {
-                try {
-                    const t = await navigator.clipboard.readText();
-                    state.lastSelection = t;
-                    $('#selectionText').textContent = t || '';
-                    $('#btnDoTranslate').disabled = !t.trim();
-                } catch (e) {}
-            });
-            const doBtn = $('#btnDoTranslate');
-            doBtn.addEventListener('click', async () => {
-                if (!state.lastSelection.trim()) return;
-                const code = sheetContent.querySelector('.lang-btn.current')?.dataset.code || cur;
-                localStorage.setItem('zero_lang', code);
-                doBtn.disabled = true;
-                doBtn.textContent = '...';
-                try {
-                    const out = await translateText(state.lastSelection, code);
-                    $('#selectionResultText').textContent = out;
-                    $('#selectionResult').style.display = '';
-                } catch (e) {
-                    $('#selectionResultText').textContent = 'Ошибка перевода';
-                    $('#selectionResult').style.display = '';
-                } finally {
-                    doBtn.disabled = false;
-                    doBtn.textContent = 'Перевести';
-                }
-            });
-            sheetContent.querySelectorAll('.lang-btn').forEach(b => {
-                b.addEventListener('click', () => {
-                    const c = b.dataset.code;
-                    localStorage.setItem('zero_lang', c);
-                    sheetContent.querySelectorAll('.lang-btn').forEach(x => {
-                        x.classList.toggle('current', x.dataset.code === c);
-                    });
-                });
-            });
-        }
-
-        /* ============================================================
-           НИЖНЯЯ НАВИГАЦИЯ
-           ============================================================ */
-        $$('.nav-btn').forEach(b => {
-            b.addEventListener('click', () => {
-                const a = b.dataset.act;
-                if (a === 'home') {
-                    if (window.ZeroAndroid && window.ZeroAndroid.goHome) window.ZeroAndroid.goHome();
-                    else renderEntry({ type: 'home' });
-                }
-                if (a === 'tabs') openSheet('tabs');
-                if (a === 'bookmarks') showBookmarks();
-                if (a === 'settings') openSheet('menu');
-            });
-        });
-
-        /* ============================================================
-           ЗАКЛАДКИ
-           ============================================================ */
-        function updateBmCount() {
-            const el = $('#bookmarksCount');
-            if (!el) return;
-            el.textContent = state.bookmarks.length === 0
-                ? '—' : state.bookmarks.length + ' ' + pluralCount(state.bookmarks.length);
-        }
-        function showBookmarks() { showView('bookmarks'); renderBookmarks(); }
-        function renderBookmarks() {
+        function showBookmarks() {
+            showView('bookmarks');
             const list = $('#bookmarksList');
             const empty = $('#bookmarksEmpty');
-            updateBmCount();
+            const el = $('#bookmarksCount');
+            if (el) {
+                el.textContent = state.bookmarks.length === 0
+                    ? '—'
+                    : state.bookmarks.length + ' ' + pluralCount(state.bookmarks.length);
+            }
             list.innerHTML = '';
-            if (state.bookmarks.length === 0) { empty.style.display = ''; return; }
+            if (state.bookmarks.length === 0) {
+                empty.style.display = '';
+                return;
+            }
             empty.style.display = 'none';
             const grads = ['g-a', 'g-b', 'g-c', 'g-e', 'g-f', 'g-g', 'g-h'];
             state.bookmarks.forEach((b, i) => {
                 const h = hostOf(b.url);
-                const el = document.createElement('div');
-                el.className = 'bm-item';
-                el.style.animationDelay = (i * 0.04) + 's';
-                el.innerHTML = `
+                const item = document.createElement('div');
+                item.className = 'bm-item';
+                item.style.animationDelay = (i * 0.04) + 's';
+                item.innerHTML = `
                     <div class="bm-thumb ${grads[i%grads.length]}">${(h[0]||'?').toUpperCase()}</div>
                     <div class="bm-body">
                         <div class="bm-title">${escapeHtml(b.title)}</div>
@@ -3807,26 +3048,168 @@
                         </svg>
                     </button>
                 `;
-                el.querySelector('.bm-body').parentElement.addEventListener('click', e => {
+                item.querySelector('.bm-body').parentElement.addEventListener('click', e => {
                     if (e.target.closest('.bm-del')) return;
-                    renderEntry({ type: 'url', url: b.url });
+                    openExternal(b.url);
                 });
-                el.querySelector('.bm-del').addEventListener('click', e => {
+                item.querySelector('.bm-del').addEventListener('click', e => {
                     e.stopPropagation();
                     const idx = state.bookmarks.findIndex(x => x.url === b.url && x.added === b.added);
                     if (idx >= 0) {
                         state.bookmarks.splice(idx, 1);
                         saveBookmarks();
-                        updateStar();
-                        renderBookmarks();
+                        syncStar();
+                        showBookmarks();
                         flashMessage(T().removeBookmark);
+                    }
+                });
+                list.appendChild(item);
+            });
+        }
+
+        /* ============================================================
+           ИСТОРИЯ — ОТОБРАЖЕНИЕ
+           ============================================================ */
+        function showHistory() {
+            showView('history');
+            updateHistoryCount();
+            const list = $('#historyList');
+            const empty = $('#historyEmpty');
+            list.innerHTML = '';
+            const q = ($('#historySearch').value || '').toLowerCase().trim();
+            let items = state.browsingHistory;
+            if (q) {
+                items = items.filter(i =>
+                    (i.title || '').toLowerCase().includes(q) ||
+                    (i.url || '').toLowerCase().includes(q)
+                );
+            }
+            if (items.length === 0) {
+                empty.style.display = '';
+                return;
+            }
+            empty.style.display = 'none';
+            items.slice(0, 100).forEach(item => {
+                const d = new Date(item.visited);
+                const time = d.getHours().toString().padStart(2, '0') + ':' +
+                    d.getMinutes().toString().padStart(2, '0');
+                const el = document.createElement('div');
+                el.className = 'hist-item';
+                el.innerHTML = `
+                    <div class="hist-time">${time}</div>
+                    <div class="hist-body">
+                        <div class="hist-title">${escapeHtml(item.title)}</div>
+                        <div class="hist-url">${escapeHtml(hostOf(item.url))}</div>
+                    </div>
+                    <button class="hist-del">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                `;
+                el.querySelector('.hist-body').parentElement.addEventListener('click', e => {
+                    if (e.target.closest('.hist-del')) return;
+                    openExternal(item.url);
+                });
+                el.querySelector('.hist-del').addEventListener('click', e => {
+                    e.stopPropagation();
+                    const i = state.browsingHistory.findIndex(x =>
+                        x.url === item.url && x.visited === item.visited
+                    );
+                    if (i >= 0) {
+                        state.browsingHistory.splice(i, 1);
+                        saveBrowsingHistory();
+                        showHistory();
                     }
                 });
                 list.appendChild(el);
             });
         }
+
+        /* ============================================================
+           ЗАГРУЗКИ — ОТОБРАЖЕНИЕ
+           ============================================================ */
+        function showDownloads() {
+            showView('downloads');
+            updateDownloadsCount();
+            const list = $('#downloadsList');
+            const empty = $('#downloadsEmpty');
+            list.innerHTML = '';
+            if (state.downloads.length === 0) {
+                empty.style.display = '';
+                return;
+            }
+            empty.style.display = 'none';
+            state.downloads.forEach(d => {
+                const el = document.createElement('div');
+                el.className = 'dl-item';
+                el.innerHTML = `
+                    <div class="dl-icon g-a">${(d.name[0]||'?').toUpperCase()}</div>
+                    <div class="dl-body">
+                        <div class="dl-name">${escapeHtml(d.name)}</div>
+                        <div class="dl-meta">${new Date(d.date).toLocaleString('ru-RU')}</div>
+                    </div>
+                `;
+                list.appendChild(el);
+            });
+        }
+
+        /* ============================================================
+           НАСТРОЙКИ — ОТОБРАЖЕНИЕ
+           ============================================================ */
+        function showSettings() {
+            showView('settings');
+        }
+
+        /* ============================================================
+           ОБРАБОТЧИКИ
+           ============================================================ */
+        $('#historySearch').addEventListener('input', showHistory);
+
+        $('#clearHistoryBtn').addEventListener('click', () => {
+            state.browsingHistory = [];
+            saveBrowsingHistory();
+            showHistory();
+        });
+
+        $('#clearDownloadsBtn').addEventListener('click', () => {
+            state.downloads = [];
+            saveDownloads();
+            showDownloads();
+        });
+
+        $('#itemClearBm').addEventListener('click', () => {
+            state.bookmarks = [];
+            saveBookmarks();
+            syncStar();
+            flashMessage(T().cleared);
+        });
+
+        $('#itemClearAll').addEventListener('click', () => {
+            state.bookmarks = [];
+            state.browsingHistory = [];
+            state.downloads = [];
+            saveBookmarks();
+            saveBrowsingHistory();
+            saveDownloads();
+            syncStar();
+            flashMessage(T().allCleared);
+        });
+
+        $('#itemReset').addEventListener('click', () => {
+            try {
+                localStorage.clear();
+            } catch (e) {}
+            settings = { lang: 'ru', theme: 'dark' };
+            state.bookmarks = [];
+            state.browsingHistory = [];
+            state.downloads = [];
+            applyTheme();
+            syncStar();
+            flashMessage(T().resetDone);
+        });
+
         $('#bmExportBtn').addEventListener('click', () => {
-            const t = T();
             try {
                 const data = JSON.stringify({
                     version: 1,
@@ -3840,70 +3223,11 @@
                 a.download = 'zero-bookmarks.json';
                 a.click();
                 setTimeout(() => URL.revokeObjectURL(url), 1000);
-                flashMessage(t.exportDone);
-            } catch (e) { flashMessage(t.importError); }
+                flashMessage(T().exportDone);
+            } catch (e) {}
         });
 
-        /* ============================================================
-           НАСТРОЙКИ
-           ============================================================ */
-        function showSettings() { showView('settings'); }
-
-        $('#itemLang').addEventListener('click', () => {
-            openPicker(
-                T().labelLang,
-                Object.keys(LANG_PACKS).map(c => ({
-                    value: c,
-                    flag: LANG_NAMES[c].flag,
-                    name: LANG_NAMES[c].name,
-                    selected: settings.lang === c
-                })),
-                v => {
-                    settings.lang = v;
-                    saveSettings();
-                    applyLanguage();
-                    closeSheet();
-                    flashMessage('OK');
-                }
-            );
-        });
-        $('#itemSearch').addEventListener('click', () => {
-            openPicker(
-                T().labelSearchEng,
-                Object.keys(SEARCH_ENGINES).map(k => ({
-                    value: k,
-                    flag: '',
-                    name: SEARCH_ENGINES[k].name,
-                    selected: settings.searchEngine === k
-                })),
-                v => {
-                    settings.searchEngine = v;
-                    saveSettings();
-                    applyLanguage();
-                    closeSheet();
-                }
-            );
-        });
-        $('#itemTheme').addEventListener('click', () => {
-            const t = T();
-            openPicker(
-                t.labelTheme,
-                [
-                    { value: 'dark', flag: '🌙', name: t.themeDark, selected: settings.theme === 'dark' },
-                    { value: 'light', flag: '☀️', name: t.themeLight, selected: settings.theme === 'light' },
-                    { value: 'auto', flag: '⚙️', name: t.themeAuto, selected: settings.theme === 'auto' }
-                ],
-                v => {
-                    settings.theme = v;
-                    saveSettings();
-                    applyTheme();
-                    applyLanguage();
-                    closeSheet();
-                }
-            );
-        });
         $('#itemImportBm').addEventListener('click', () => {
-            const t = T();
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = '.json,application/json';
@@ -3927,239 +3251,46 @@
                             }
                         });
                         saveBookmarks();
-                        updateStar();
-                        updateBmCount();
-                        renderBookmarks();
-                        closeSheet();
-                        flashMessage(t.importDone);
-                    } catch (e) { flashMessage(t.importError); }
+                        syncStar();
+                        flashMessage(T().importDone);
+                    } catch (e) {
+                        flashMessage(T().importError);
+                    }
                 };
                 rd.readAsText(f);
             };
             input.click();
         });
-        $('#itemClearBm').addEventListener('click', () => {
-            const t = T();
-            confirmSheet(t.clearBmConfirmTitle, t.clearBmConfirmText, t.confirmClear, () => {
-                state.bookmarks = [];
-                saveBookmarks();
-                updateStar();
-                updateBmCount();
-                renderBookmarks();
-                closeSheet();
-                flashMessage(t.cleared);
-            });
-        });
-        $('#itemClearCookies').addEventListener('click', () => {
-            const t = T();
-            confirmSheet(t.clearCookiesConfirmTitle, t.clearCookiesConfirmText, t.confirmClear, () => {
-                try {
-                    if (window.ZeroAndroid && window.ZeroAndroid.clearCookies) {
-                        window.ZeroAndroid.clearCookies();
-                    }
-                } catch (e) {}
-                closeSheet();
-                flashMessage(t.cookiesCleared);
-            });
-        });
-        $('#itemClearAll').addEventListener('click', () => {
-            const t = T();
-            confirmSheet(t.clearAllConfirmTitle, t.clearAllConfirmText, t.confirmClear, () => {
-                state.bookmarks = [];
-                state.browsingHistory = [];
-                state.downloads = [];
-                saveBookmarks();
-                saveBrowsingHistory();
-                saveDownloads();
-                try {
-                    if (window.ZeroAndroid && window.ZeroAndroid.clearData) {
-                        window.ZeroAndroid.clearData();
-                    }
-                } catch (e) {}
-                updateStar();
-                updateBmCount();
-                updateHistoryCount();
-                updateDownloadsCount();
-                closeSheet();
-                flashMessage(t.allCleared);
-            });
-        });
-        $('#itemReset').addEventListener('click', () => {
-            const t = T();
-            confirmSheet(t.resetConfirmTitle, t.resetConfirmText, t.confirmReset, () => {
-                try {
-                    localStorage.removeItem(SETTINGS_KEY);
-                    localStorage.removeItem('zero_bookmarks');
-                    localStorage.removeItem('zero_history');
-                    localStorage.removeItem('zero_downloads');
-                } catch (e) {}
-                settings = { lang: 'ru', theme: 'dark', searchEngine: 'ddg' };
-                state.bookmarks = [];
-                state.browsingHistory = [];
-                state.downloads = [];
-                applyTheme();
-                applyLanguage();
-                updateBmCount();
-                updateHistoryCount();
-                updateDownloadsCount();
-                closeSheet();
-                flashMessage(t.resetDone);
-            });
+
+        $('#itemLang').addEventListener('click', () => {
+            // Пока только RU, но заготовка есть
         });
 
-        /* ============================================================
-           ПИКЕР И ПОДТВЕРЖДЕНИЕ
-           ============================================================ */
-        function openPicker(title, opts, onSelect) {
-            sheetContent.innerHTML = `<div class="picker-title">${escapeHtml(title)}</div>` +
-                opts.map(o => `
-                    <button class="picker-option ${o.selected?'selected':''}" data-value="${escapeHtml(o.value)}">
-                        <span class="picker-flag">${o.flag||'●'}</span>
-                        <span class="picker-name">${escapeHtml(o.name)}</span>
-                        <span class="picker-check">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20 6L9 17l-5-5"/>
-                            </svg>
-                        </span>
-                    </button>
-                `).join('');
-            sheetContent.querySelectorAll('.picker-option').forEach(b => {
-                b.addEventListener('click', () => onSelect(b.dataset.value));
-            });
-            scrim.classList.add('show');
-            sheet.classList.add('show');
-        }
-        function confirmSheet(title, text, cLabel, onConfirm) {
-            const t = T();
-            sheetContent.innerHTML = `
-                <div class="picker-title">${escapeHtml(title)}</div>
-                <div style="font-size:13.5px;color:var(--muted);line-height:1.55;margin:0 4px 20px">${escapeHtml(text)}</div>
-                <div class="translate-actions">
-                    <button class="secondary" id="cfCancel">${escapeHtml(t.cancel)}</button>
-                    <button class="primary" id="cfConfirm" style="background:linear-gradient(135deg,#f43f5e,#ec4899)">${escapeHtml(cLabel)}</button>
-                </div>
-            `;
-            $('#cfCancel').addEventListener('click', closeSheet);
-            $('#cfConfirm').addEventListener('click', onConfirm);
-            scrim.classList.add('show');
-            sheet.classList.add('show');
-        }
-
-        /* ============================================================
-           ВКЛАДКИ И МЕНЮ
-           ============================================================ */
-        function updateTabCount() { tabCount.textContent = state.tabs.length; }
-
-        function openSheet(type) {
-            if (type === 'tabs') {
-                sheetContent.innerHTML = `<div class="sheet-title">${T().navTabs} (${state.tabs.length})</div>` +
-                    state.tabs.map(t => `
-                        <div class="tab-item" data-id="${t.id}">
-                            <div class="tab-fav ${t.grad}">${t.letter}</div>
-                            <div class="tab-meta">
-                                <div class="tab-title">${escapeHtml(t.title)}</div>
-                                <div class="tab-url">${escapeHtml(t.url)}</div>
-                            </div>
-                        </div>
-                    `).join('');
-                sheetContent.querySelectorAll('.tab-item').forEach(item => {
-                    item.addEventListener('click', () => {
-                        state.activeTab = +item.dataset.id;
-                        closeSheet();
-                        renderEntry({ type: 'home' }, false);
-                    });
-                });
-                scrim.classList.add('show');
-                sheet.classList.add('show');
-                return;
+        $('#itemTheme').addEventListener('click', () => {
+            const order = ['dark', 'light', 'auto'];
+            const i = order.indexOf(settings.theme);
+            settings.theme = order[(i + 1) % order.length];
+            saveSettings();
+            applyTheme();
+            const el = $('#valueTheme');
+            if (el) {
+                el.textContent = settings.theme === 'dark'
+                    ? T().themeDark
+                    : settings.theme === 'light' ? T().themeLight : T().themeAuto;
             }
-            if (type === 'menu') {
-                const t = T();
-                sheetContent.innerHTML = `
-                    <div class="sheet-title">${t.navSettings}</div>
-                    <button class="tab-item" data-key="history">
-                        <div class="tab-fav g-e">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M12 6v6l4 2"/>
-                            </svg>
-                        </div>
-                        <div class="tab-meta"><div class="tab-title">${t.menuHistory}</div></div>
-                    </button>
-                    <button class="tab-item" data-key="downloads">
-                        <div class="tab-fav g-f">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                            </svg>
-                        </div>
-                        <div class="tab-meta"><div class="tab-title">${t.menuDownloads}</div></div>
-                    </button>
-                    <div class="tab-item toggle-row" data-key="private">
-                        <div class="tab-fav g-g">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-                                <circle cx="9" cy="7" r="4"/>
-                            </svg>
-                        </div>
-                        <div class="tab-meta"><div class="tab-title">${t.menuPrivate}</div></div>
-                        <div class="toggle ${state.private?'on':''}" id="privateToggle"></div>
-                    </div>
-                    <button class="tab-item" data-key="translator">
-                        <div class="tab-fav g-b">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                                <path d="M3 5h10M8 3v2c0 5-3 8-5 9M5 9c0 3 3 5 5 6"/>
-                                <path d="M12 21l5-12 5 12M14 17h6"/>
-                            </svg>
-                        </div>
-                        <div class="tab-meta"><div class="tab-title">${t.menuTranslator}</div></div>
-                    </button>
-                    <button class="tab-item" data-key="settings">
-                        <div class="tab-fav g-a">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                                <path d="M4 21v-6M4 11V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 15h4M10 8h4M18 16h4"/>
-                            </svg>
-                        </div>
-                        <div class="tab-meta"><div class="tab-title">${t.menuSettings}</div></div>
-                    </button>
-                `;
-                sheetContent.querySelectorAll('.tab-item').forEach(i => {
-                    i.addEventListener('click', e => {
-                        if (e.target.closest('#privateToggle')) return;
-                        const k = i.dataset.key;
-                        if (k === 'history') { closeSheet(); showHistory(); return; }
-                        if (k === 'downloads') { closeSheet(); showDownloads(); return; }
-                        if (k === 'private') { togglePrivate(); i.querySelector('.toggle').classList.toggle('on'); return; }
-                        if (k === 'translator') { closeSheet(); if (state.currentUrl) setTimeout(openTranslator, 300); return; }
-                        if (k === 'settings') { closeSheet(); showSettings(); return; }
-                    });
-                });
-                const pt = $('#privateToggle');
-                if (pt) pt.addEventListener('click', e => {
-                    e.stopPropagation();
-                    togglePrivate();
-                    pt.classList.toggle('on');
-                });
-                scrim.classList.add('show');
-                sheet.classList.add('show');
-            }
-        }
-        function closeSheet() {
-            scrim.classList.remove('show');
-            sheet.classList.remove('show');
-        }
-        scrim.addEventListener('click', closeSheet);
+        });
 
         /* ============================================================
-           ВСПЛЫВАЮЩЕЕ СООБЩЕНИЕ
+           FLASH-СООБЩЕНИЕ
            ============================================================ */
         function flashMessage(text) {
             const el = document.createElement('div');
             el.textContent = text;
-            el.style.cssText = 'position:fixed;left:50%;bottom:100px;transform:translateX(-50%);' +
+            el.style.cssText = 'position:fixed;left:50%;bottom:80px;transform:translateX(-50%);' +
                 'padding:12px 20px;border-radius:14px;z-index:100;' +
                 'background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;' +
                 'font-size:13px;font-weight:700;box-shadow:0 12px 30px -8px rgba(124,58,237,.7);' +
-                'animation:up .4s var(--ease) both';
+                'animation:up .4s cubic-bezier(.22,1,.36,1) both';
             document.body.appendChild(el);
             setTimeout(() => {
                 el.style.transition = 'opacity .4s';
@@ -4173,27 +3304,51 @@
            ============================================================ */
         document.addEventListener('selectionchange', () => {
             const s = window.getSelection();
-            if (s && s.toString().trim()) state.lastSelection = s.toString().trim();
+            if (s && s.toString().trim()) {
+                state.lastSelection = s.toString().trim();
+            }
         });
 
         /* ============================================================
-           СТАРТ ПРИЛОЖЕНИЯ
+           ХУКИ ДЛЯ НАТИВНОЙ ЧАСТИ
+           ============================================================ */
+        window.onToggleBookmark = function() {
+            toggleBookmark();
+        };
+
+        window.onShowTabs = function() {
+            // Вкладки реализуем позже, пока просто главная
+            if (window.ZeroBottom && window.ZeroBottom.goHome) {
+                window.ZeroBottom.goHome();
+            }
+        };
+
+        window.onShowBookmarks = function() {
+            showBookmarks();
+        };
+
+        window.onShowMenu = function() {
+            showSettings();
+        };
+
+        window.onNativeUrlChange = function(url, title) {
+            state.currentUrl = url;
+            state.currentTitle = title || hostOf(url);
+            addToHistory(url, state.currentTitle);
+            syncStar();
+        };
+
+        /* ============================================================
+           СТАРТ
            ============================================================ */
         loadSettings();
         applyTheme();
-        applyLanguage();
-        updateTabCount();
-        updateNavButtons();
-        updateStar();
         updateHistoryCount();
         updateDownloadsCount();
 
         window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
             if (settings.theme === 'auto') applyTheme();
         });
-
-        setTimeout(() => bigSearch.focus({ preventScroll: true }), 600);
     </script>
-
 </body>
     </html>
