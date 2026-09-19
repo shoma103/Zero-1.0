@@ -4,62 +4,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html, body { height:100%; overflow:hidden; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
-  background: linear-gradient(180deg, #08080c, #0b0b11);
-  color: #f5f5f7;
-  user-select: none;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;width:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,sans-serif;
+  background:#0b0b11;
+  color:#f5f5f7;
+  user-select:none;
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
-.topbar {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 10px; height: 100%;
+.topbar{display:flex;align-items:center;gap:6px;padding:8px 10px;height:100%}
+.icon-btn{
+  width:38px;height:38px;flex:0 0 auto;
+  display:grid;place-items:center;
+  border:none;border-radius:12px;background:transparent;color:#f5f5f7;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .2s;
 }
-.icon-btn {
-  width: 38px; height: 38px; flex: 0 0 auto;
-  display: grid; place-items: center;
-  border: none; border-radius: 12px; background: transparent; color: #f5f5f7;
-  transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .2s;
+.icon-btn svg{width:19px;height:19px}
+.icon-btn:active{transform:scale(.85);background:rgba(255,255,255,.1)}
+.icon-btn.off{opacity:.25;pointer-events:none}
+.address-wrap{
+  flex:1;min-width:0;height:40px;padding:1.5px;border-radius:20px;
+  background:rgba(255,255,255,.08);
+  transition:background .3s,box-shadow .3s;
 }
-.icon-btn svg { width: 19px; height: 19px; }
-.icon-btn:active { transform: scale(.85); background: rgba(255,255,255,.1); }
-.icon-btn.off { opacity: .25; pointer-events: none; }
-.address-wrap {
-  flex: 1; min-width: 0; height: 40px; padding: 1.5px; border-radius: 20px;
-  background: rgba(255,255,255,.08);
-  transition: background .3s, box-shadow .3s;
+.address-wrap.focused{
+  background:linear-gradient(135deg,#7c3aed,#ec4899,#f59e0b,#06b6d4,#7c3aed);
+  background-size:300% 100%;
+  animation:shine 5s linear infinite;
+  box-shadow:0 0 0 3px rgba(124,58,237,.15),0 8px 24px -8px rgba(236,72,153,.55);
 }
-.address-wrap.focused {
-  background: linear-gradient(135deg,#7c3aed,#ec4899,#f59e0b,#06b6d4,#7c3aed);
-  background-size: 300% 100%;
-  animation: shine 5s linear infinite;
-  box-shadow: 0 0 0 3px rgba(124,58,237,.15), 0 8px 24px -8px rgba(236,72,153,.55);
+@keyframes shine{to{background-position:200% 50%}}
+.address-inner{
+  height:100%;border-radius:18.5px;background:#0b0b11;
+  display:flex;align-items:center;gap:6px;padding:0 6px 0 12px;
 }
-@keyframes shine { to { background-position: 200% 50%; } }
-.address-inner {
-  height: 100%; border-radius: 18.5px; background: #0b0b11;
-  display: flex; align-items: center; gap: 6px; padding: 0 6px 0 12px;
+.address-wrap.focused .address-inner{background:#0a0a10}
+.address-inner svg.lock{width:12px;height:12px;flex:0 0 auto;color:#8b8b96}
+.address-wrap.focused .address-inner svg.lock{color:#a78bfa}
+.address{
+  flex:1;min-width:0;border:none;outline:none;background:transparent;
+  color:#f5f5f7;font-size:13px;font-weight:500;padding-right:4px;
 }
-.address-wrap.focused .address-inner { background: #0a0a10; }
-.address-inner svg.lock { width: 12px; height: 12px; flex: 0 0 auto; color: #8b8b96; }
-.address-wrap.focused .address-inner svg.lock { color: #a78bfa; }
-.address {
-  flex: 1; min-width: 0; border: none; outline: none; background: transparent;
-  color: #f5f5f7; font-size: 13px; font-weight: 500; padding-right: 4px;
+.address::placeholder{color:#8b8b96;font-weight:400}
+.star-btn{
+  width:30px;height:30px;flex:0 0 auto;border:none;background:transparent;
+  border-radius:9px;display:grid;place-items:center;color:#8b8b96;
+  transition:transform .3s;
 }
-.address::placeholder { color: #8b8b96; font-weight: 400; }
-.star-btn {
-  width: 30px; height: 30px; flex: 0 0 auto; border: none; background: transparent;
-  border-radius: 9px; display: grid; place-items: center; color: #8b8b96;
-  transition: transform .3s;
-}
-.star-btn svg { width: 15px; height: 15px; transition: fill .25s, stroke .25s; }
-.star-btn:active { transform: scale(.82); }
-.star-btn.on { color: #fbbf24; }
-.star-btn.on svg { fill: #fbbf24; stroke: #fbbf24; filter: drop-shadow(0 0 5px rgba(251,191,36,.5)); }
-.address-wrap.focused .star-btn { opacity: 0; pointer-events: none; }
+.star-btn svg{width:15px;height:15px;transition:fill .25s,stroke .25s}
+.star-btn:active{transform:scale(.82)}
+.star-btn.on{color:#fbbf24}
+.star-btn.on svg{fill:#fbbf24;stroke:#fbbf24;filter:drop-shadow(0 0 5px rgba(251,191,36,.5))}
+.address-wrap.focused .star-btn{opacity:0;pointer-events:none}
 </style>
 </head>
 <body>
@@ -98,39 +95,48 @@ body {
 <script>
 const $ = s => document.querySelector(s);
 
-function setAddress(url, title, canBack, canForward) {
-    const a = $('#address');
-    const isHome = !url || url.indexOf('file:///android_asset/') === 0 || url.indexOf('about:') === 0;
-    if (isHome) {
-        a.value = '';
-        a.placeholder = 'Поиск или адрес';
-    } else {
-        a.value = url;
+function callBridge(name, method, ...args) {
+  try {
+    if (window[name] && typeof window[name][method] === 'function') {
+      window[name][method](...args);
+      return true;
     }
-    $('#btnBack').classList.toggle('off', !canBack);
-    $('#btnFwd').classList.toggle('off', !canForward);
+  } catch (e) {}
+  return false;
+}
+
+function setAddress(url, title, canBack, canForward) {
+  const a = $('#address');
+  if (document.activeElement !== a) {
+    const isHome = !url || url.indexOf('file:///android_asset/') === 0 || url.indexOf('about:') === 0;
+    a.value = isHome ? '' : url;
+  }
+  const bb = $('#btnBack');
+  const bf = $('#btnFwd');
+  bb.classList.toggle('off', !canBack);
+  bf.classList.toggle('off', !canForward);
 }
 
 function setStar(on) {
-    $('#btnStar').classList.toggle('on', on);
+  $('#btnStar').classList.toggle('on', on);
 }
 
 $('#address').addEventListener('focus', () => $('#addrWrap').classList.add('focused'));
 $('#address').addEventListener('blur', () => $('#addrWrap').classList.remove('focused'));
 $('#address').addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-        const q = $('#address').value.trim();
-        if (q) {
-            if (window.ZeroTop) window.ZeroTop.openUrl(q);
-            $('#address').blur();
-        }
+  if (e.key === 'Enter') {
+    const q = $('#address').value.trim();
+    if (q) {
+      callBridge('ZeroTop', 'openUrl', q);
+      $('#address').blur();
     }
+  }
 });
 
-$('#btnBack').addEventListener('click', () => { if (window.ZeroTop) window.ZeroTop.goBack(); });
-$('#btnFwd').addEventListener('click', () => { if (window.ZeroTop) window.ZeroTop.goForward(); });
-$('#btnReload').addEventListener('click', () => { if (window.ZeroTop) window.ZeroTop.reload(); });
-$('#btnStar').addEventListener('click', () => { if (window.ZeroTop) window.ZeroTop.toggleBookmark(); });
+$('#btnBack').addEventListener('click', () => callBridge('ZeroTop', 'goBack'));
+$('#btnFwd').addEventListener('click', () => callBridge('ZeroTop', 'goForward'));
+$('#btnReload').addEventListener('click', () => callBridge('ZeroTop', 'reload'));
+$('#btnStar').addEventListener('click', () => callBridge('ZeroTop', 'toggleBookmark'));
 
 window.setAddress = setAddress;
 window.setStar = setStar;
