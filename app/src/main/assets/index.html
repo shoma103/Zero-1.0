@@ -1,34 +1,74 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <!-- ============================================================
+    <!-- ================================================================
          ZERO BROWSER
          Минималистичный браузер на Chromium
-         Версия: 1.4.0
-         ============================================================ -->
+         Версия: 2.0.0
+         ================================================================
+         СОДЕРЖАНИЕ:
+         1. Мета-теги
+         2. CSS-переменные
+         3. Сброс стилей
+         4. Фоновые орбы
+         5. Каркас приложения
+         6. Верхняя панель
+         7. Адресная строка
+         8. Приватный режим
+         9. Контент и виды
+         10. Главная
+         11. Большой поиск
+         12. Плитки
+         13. Результаты поиска
+         14. Категории
+         15. История
+         16. Загрузки
+         17. Закладки
+         18. Настройки
+         19. Пикер
+         20. Веб-фрейм
+         21. Плавающие кнопки
+         22. Нижняя панель
+         23. Ripple
+         24. Шторка
+         25. Переводчик
+         ================================================================ -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
     <meta name="theme-color" content="#08080c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Zero — минималистичный браузер с умным поиском">
     <title>Zero</title>
 
     <style>
         /* ============================================================
-           1. ПЕРЕМЕННЫЕ
+           1. CSS-ПЕРЕМЕННЫЕ
            ============================================================ */
         :root {
+            /* Тёмная тема — основная */
             --bg: #08080c;
             --bg2: #0b0b11;
             --text: #f5f5f7;
             --muted: #8b8b96;
             --line: rgba(255, 255, 255, .08);
             --glass: rgba(255, 255, 255, .05);
+
+            /* Главный градиент */
             --g1: linear-gradient(135deg, #7c3aed, #ec4899, #f59e0b);
+
+            /* Кривые анимаций */
             --ease: cubic-bezier(.22, 1, .36, 1);
             --spring: cubic-bezier(.34, 1.56, .64, 1);
+
+            /* Цвета статусов */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #f43f5e;
+            --info: #06b6d4;
         }
 
+        /* Светлая тема */
         body.light {
             --bg: #f4f4f8;
             --bg2: #ffffff;
@@ -48,8 +88,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html,
-        body {
+        html, body {
             height: 100%;
             overflow: hidden;
         }
@@ -89,6 +128,7 @@
             border-radius: 50%;
             filter: blur(90px);
             opacity: .45;
+            will-change: transform;
         }
 
         .orb.a {
@@ -120,21 +160,15 @@
         }
 
         @keyframes f1 {
-            50% {
-                transform: translate(120px, 80px) scale(1.15);
-            }
+            50% { transform: translate(120px, 80px) scale(1.15); }
         }
 
         @keyframes f2 {
-            50% {
-                transform: translate(-100px, -90px) scale(1.2);
-            }
+            50% { transform: translate(-100px, -90px) scale(1.2); }
         }
 
         @keyframes f3 {
-            50% {
-                transform: translate(-140px, 60px) scale(.85);
-            }
+            50% { transform: translate(-140px, 60px) scale(.85); }
         }
 
         body.light .orb {
@@ -153,7 +187,7 @@
         }
 
         /* ============================================================
-           4. КАРКАС
+           4. КАРКАС ПРИЛОЖЕНИЯ
            ============================================================ */
         .app {
             position: fixed;
@@ -249,6 +283,7 @@
             align-items: center;
             gap: 9px;
             padding: 0 6px 0 14px;
+            transition: background .35s var(--ease);
         }
 
         .address-inner svg.lock {
@@ -256,6 +291,11 @@
             height: 13px;
             flex: 0 0 auto;
             color: var(--muted);
+            transition: color .3s;
+        }
+
+        .address-wrap.focused .address-inner svg.lock {
+            color: #a78bfa;
         }
 
         .address {
@@ -267,6 +307,7 @@
             color: var(--text);
             font-size: 14px;
             font-weight: 500;
+            letter-spacing: -.1px;
             padding-right: 4px;
         }
 
@@ -285,13 +326,15 @@
             display: grid;
             place-items: center;
             color: var(--muted);
-            transition: transform .4s var(--spring), color .25s;
+            transition: transform .4s var(--spring), color .25s, background .25s, opacity .25s;
+            position: relative;
+            overflow: hidden;
         }
 
         .star-btn svg {
             width: 17px;
             height: 17px;
-            transition: transform .5s var(--spring), fill .25s;
+            transition: transform .5s var(--spring), fill .25s, stroke .25s;
         }
 
         .star-btn:active {
@@ -305,6 +348,17 @@
         .star-btn.on svg {
             fill: #fbbf24;
             stroke: #fbbf24;
+            filter: drop-shadow(0 0 6px rgba(251, 191, 36, .5));
+        }
+
+        .star-btn.bounce svg {
+            animation: starPop .55s var(--spring);
+        }
+
+        @keyframes starPop {
+            0% { transform: scale(1); }
+            45% { transform: scale(1.5) rotate(20deg); }
+            100% { transform: scale(1); }
         }
 
         .address-wrap.focused .star-btn {
@@ -313,9 +367,7 @@
         }
 
         @keyframes shine {
-            to {
-                background-position: 200% 50%;
-            }
+            to { background-position: 200% 50%; }
         }
 
         /* ============================================================
@@ -342,6 +394,7 @@
             color: #fff;
             font-size: 11px;
             font-weight: 700;
+            letter-spacing: .3px;
             box-shadow: 0 8px 24px -8px rgba(124, 58, 237, .8);
             animation: up .4s var(--ease) both;
             pointer-events: none;
@@ -388,18 +441,12 @@
         }
 
         @keyframes up {
-            from {
-                opacity: 0;
-                transform: translateY(26px);
-            }
-            to {
-                opacity: 1;
-                transform: none;
-            }
+            from { opacity: 0; transform: translateY(26px); }
+            to { opacity: 1; transform: none; }
         }
 
         /* ============================================================
-           9. ГЛАВНАЯ
+           9. ГЛАВНАЯ — HERO
            ============================================================ */
         .hero {
             text-align: center;
@@ -426,8 +473,12 @@
             color: var(--muted);
             margin-top: 12px;
             font-weight: 500;
+            letter-spacing: .2px;
         }
 
+        /* ============================================================
+           10. БОЛЬШОЙ ПОИСК
+           ============================================================ */
         .big-search {
             padding: 1.5px;
             border-radius: 21px;
@@ -468,8 +519,12 @@
 
         .big-search input::placeholder {
             color: var(--muted);
+            font-weight: 400;
         }
 
+        /* ============================================================
+           11. ПЛИТКИ
+           ============================================================ */
         .tiles {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -488,12 +543,13 @@
             border-radius: 18px;
             background: var(--glass);
             border: 1px solid var(--line);
-            transition: transform .45s var(--spring), background .3s;
+            transition: transform .45s var(--spring), background .3s var(--ease), border-color .3s;
         }
 
         .tile:active {
             transform: scale(.9);
             background: rgba(255, 255, 255, .09);
+            border-color: rgba(255, 255, 255, .16);
         }
 
         .tile-icon {
@@ -505,6 +561,9 @@
             font-size: 14px;
             font-weight: 800;
             color: #fff;
+            letter-spacing: -.5px;
+            position: relative;
+            z-index: 1;
             box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .7);
         }
 
@@ -512,6 +571,7 @@
             font-size: 10.5px;
             color: var(--muted);
             font-weight: 600;
+            letter-spacing: .1px;
         }
 
         .g-a { background: linear-gradient(135deg, #ff2d55, #ff6b35); }
@@ -524,7 +584,7 @@
         .g-h { background: linear-gradient(135deg, #10b981, #06b6d4); }
 
         /* ============================================================
-           10. РЕЗУЛЬТАТЫ
+           12. РЕЗУЛЬТАТЫ ПОИСКА
            ============================================================ */
         .page-head {
             margin-bottom: 18px;
@@ -577,7 +637,7 @@
         }
 
         .head-action.danger {
-            color: #f43f5e;
+            color: var(--danger);
             border-color: rgba(244, 63, 94, .3);
         }
 
@@ -644,6 +704,9 @@
             height: 14px;
         }
 
+        /* ============================================================
+           13. КАТЕГОРИИ
+           ============================================================ */
         .cat-block {
             margin-bottom: 20px;
             animation: up .5s var(--ease) both;
@@ -657,6 +720,7 @@
             font-size: 13.5px;
             font-weight: 800;
             color: var(--text);
+            letter-spacing: -.2px;
         }
 
         .cat-emoji {
@@ -666,6 +730,7 @@
             display: grid;
             place-items: center;
             font-size: 15px;
+            flex: 0 0 auto;
             background: linear-gradient(135deg, rgba(124, 58, 237, .25), rgba(236, 72, 153, .25));
             border: 1px solid rgba(167, 139, 250, .3);
         }
@@ -701,7 +766,7 @@
             display: flex;
             align-items: center;
             gap: 9px;
-            transition: transform .4s var(--spring), background .3s;
+            transition: transform .4s var(--spring), background .3s, border-color .3s;
         }
 
         .cat-link:active {
@@ -726,6 +791,9 @@
             text-overflow: ellipsis;
         }
 
+        /* ============================================================
+           14. КАРТОЧКА РЕЗУЛЬТАТА
+           ============================================================ */
         .result {
             display: flex;
             gap: 13px;
@@ -768,11 +836,13 @@
         .result-body {
             flex: 1;
             min-width: 0;
+            padding-top: 2px;
         }
 
         .result-title {
             font-size: 14.5px;
             font-weight: 700;
+            letter-spacing: -.2px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -808,6 +878,7 @@
             border-radius: 8px;
             font-size: 9.5px;
             font-weight: 800;
+            letter-spacing: .3px;
             background: rgba(124, 58, 237, .25);
             color: #c4b5fd;
             text-transform: uppercase;
@@ -818,9 +889,12 @@
         .result-badge.web { background: rgba(6, 182, 212, .2); color: #67e8f9; }
 
         /* ============================================================
-           11. ИСТОРИЯ / ЗАГРУЗКИ / ЗАКЛАДКИ
+           15. ИСТОРИЯ
            ============================================================ */
-        .hist-group { margin-bottom: 18px; animation: up .55s var(--ease) both; }
+        .hist-group {
+            margin-bottom: 18px;
+            animation: up .55s var(--ease) both;
+        }
 
         .hist-date {
             font-size: 11.5px;
@@ -858,7 +932,10 @@
             flex: 0 0 42px;
         }
 
-        .hist-body { flex: 1; min-width: 0; }
+        .hist-body {
+            flex: 1;
+            min-width: 0;
+        }
 
         .hist-title {
             font-size: 13.5px;
@@ -889,7 +966,7 @@
             color: var(--muted);
             display: grid;
             place-items: center;
-            transition: transform .4s var(--spring), color .25s;
+            transition: transform .4s var(--spring), color .25s, background .25s;
         }
 
         .hist-del svg,
@@ -903,10 +980,13 @@
         .dl-del:active,
         .bm-del:active {
             transform: scale(.85);
-            color: #f43f5e;
+            color: var(--danger);
             background: rgba(244, 63, 94, .12);
         }
 
+        /* ============================================================
+           16. ЗАГРУЗКИ
+           ============================================================ */
         .dl-item {
             display: flex;
             align-items: center;
@@ -934,7 +1014,10 @@
             box-shadow: 0 8px 22px -10px rgba(0, 0, 0, .8);
         }
 
-        .dl-body { flex: 1; min-width: 0; }
+        .dl-body {
+            flex: 1;
+            min-width: 0;
+        }
 
         .dl-name {
             font-size: 14px;
@@ -953,6 +1036,9 @@
             text-overflow: ellipsis;
         }
 
+        /* ============================================================
+           17. ЗАКЛАДКИ
+           ============================================================ */
         .bm-item {
             display: flex;
             align-items: center;
@@ -984,7 +1070,10 @@
             color: #fff;
         }
 
-        .bm-body { flex: 1; min-width: 0; }
+        .bm-body {
+            flex: 1;
+            min-width: 0;
+        }
 
         .bm-title {
             font-size: 14.5px;
@@ -1003,6 +1092,9 @@
             text-overflow: ellipsis;
         }
 
+        /* ============================================================
+           18. ПУСТЫЕ СОСТОЯНИЯ
+           ============================================================ */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -1034,6 +1126,9 @@
             margin: 0 auto;
         }
 
+        /* ============================================================
+           19. ПОИСК ВНУТРИ РАЗДЕЛА
+           ============================================================ */
         .search-box {
             padding: 12px 16px;
             border-radius: 14px;
@@ -1067,9 +1162,11 @@
         }
 
         /* ============================================================
-           12. НАСТРОЙКИ
+           20. НАСТРОЙКИ
            ============================================================ */
-        .settings-group { margin-bottom: 24px; }
+        .settings-group {
+            margin-bottom: 24px;
+        }
 
         .settings-group-title {
             font-size: 11.5px;
@@ -1115,7 +1212,10 @@
             height: 20px;
         }
 
-        .settings-body { flex: 1; min-width: 0; }
+        .settings-body {
+            flex: 1;
+            min-width: 0;
+        }
 
         .settings-label {
             font-size: 14.5px;
@@ -1139,6 +1239,9 @@
             opacity: .6;
         }
 
+        /* ============================================================
+           21. ПИКЕР
+           ============================================================ */
         .picker-title {
             font-size: 16px;
             font-weight: 800;
@@ -1209,6 +1312,9 @@
             opacity: 1;
         }
 
+        /* ============================================================
+           22. О ПРИЛОЖЕНИИ
+           ============================================================ */
         .about-box {
             padding: 20px;
             border-radius: 20px;
@@ -1245,7 +1351,7 @@
         }
 
         /* ============================================================
-           13. ВЕБ-ФРЕЙМ
+           23. ВЕБ-ФРЕЙМ
            ============================================================ */
         .webframe {
             position: absolute;
@@ -1289,6 +1395,9 @@
             to { transform: rotate(360deg); }
         }
 
+        /* ============================================================
+           24. ПЛАВАЮЩИЕ КНОПКИ
+           ============================================================ */
         .fab {
             position: absolute;
             bottom: 20px;
@@ -1373,7 +1482,7 @@
         }
 
         /* ============================================================
-           14. НИЖНЯЯ ПАНЕЛЬ
+           25. НИЖНЯЯ ПАНЕЛЬ
            ============================================================ */
         .bottombar {
             display: flex;
@@ -1406,12 +1515,13 @@
             color: var(--muted);
             font-size: 9.5px;
             font-weight: 700;
-            transition: transform .45s var(--spring), color .3s;
+            transition: transform .45s var(--spring), color .3s var(--ease), background .3s;
         }
 
         .nav-btn svg {
             width: 22px;
             height: 22px;
+            transition: filter .35s;
         }
 
         .nav-btn:active {
@@ -1444,7 +1554,7 @@
         }
 
         /* ============================================================
-           15. RIPPLE
+           26. RIPPLE
            ============================================================ */
         .ripple {
             position: absolute;
@@ -1461,7 +1571,7 @@
         }
 
         /* ============================================================
-           16. ШТОРКА
+           27. ШТОРКА
            ============================================================ */
         .scrim {
             position: fixed;
@@ -1532,7 +1642,7 @@
             background: var(--glass);
             border: 1px solid var(--line);
             margin-bottom: 10px;
-            transition: transform .45s var(--spring);
+            transition: transform .45s var(--spring), background .3s;
             position: relative;
             overflow: hidden;
             color: var(--text);
@@ -1555,7 +1665,11 @@
             color: #fff;
         }
 
-        .tab-meta { flex: 1; min-width: 0; text-align: left; }
+        .tab-meta {
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+        }
 
         .tab-title {
             font-size: 14px;
@@ -1574,7 +1688,9 @@
             text-overflow: ellipsis;
         }
 
-        .tab-item.toggle-row { justify-content: space-between; }
+        .tab-item.toggle-row {
+            justify-content: space-between;
+        }
 
         .toggle {
             width: 48px;
@@ -1584,6 +1700,10 @@
             position: relative;
             flex: 0 0 auto;
             transition: background .3s;
+        }
+
+        body.light .toggle {
+            background: rgba(0, 0, 0, .1);
         }
 
         .toggle::after {
@@ -1608,7 +1728,7 @@
         }
 
         /* ============================================================
-           17. ПЕРЕВОДЧИК
+           28. ПЕРЕВОДЧИК
            ============================================================ */
         .lang-grid {
             display: grid;
@@ -1721,17 +1841,17 @@
 
 <body>
 
-    <!-- ФОН -->
+    <!-- ФОНОВЫЕ ОРБЫ -->
     <div class="bg">
         <div class="orb a"></div>
         <div class="orb b"></div>
         <div class="orb c"></div>
     </div>
 
-    <!-- ПРИЛОЖЕНИЕ -->
+    <!-- ОСНОВНОЙ КАРКАС -->
     <div class="app">
 
-        <!-- ВЕРХ -->
+        <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
         <header class="topbar">
 
             <button class="icon-btn off" id="btnBack">
@@ -1748,20 +1868,16 @@
 
             <div class="address-wrap" id="addrWrap">
                 <div class="address-inner">
-
                     <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="4" y="11" width="16" height="10" rx="2.5"/>
                         <path d="M8 11V7a4 4 0 018 0v4"/>
                     </svg>
-
                     <input id="address" class="address" placeholder="Поиск или адрес" autocomplete="off" spellcheck="false" enterkeyhint="go">
-
                     <button class="star-btn" id="btnStar">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
                     </button>
-
                 </div>
             </div>
 
@@ -1860,7 +1976,7 @@
                             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                         </svg>
                     </div>
-                    <p>Загрузок пока нет.</p>
+                    <p>Загрузок пока нет. Скачанные файлы появятся здесь.</p>
                 </div>
             </section>
 
@@ -1880,7 +1996,7 @@
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
                     </div>
-                    <p id="bmEmptyText">Пока пусто.</p>
+                    <p id="bmEmptyText">Пока пусто. Нажмите ⭐ в адресной строке.</p>
                 </div>
             </section>
 
@@ -2026,8 +2142,8 @@
                     <div class="settings-group-title" id="labelAboutGroup">О приложении</div>
                     <div class="about-box">
                         <div class="about-logo">Zero</div>
-                        <div class="about-ver">Версия 1.4.0</div>
-                        <div class="about-desc" id="aboutDesc">Приватный браузер без регистрации и сбора данных. Никаких аккаунтов, никакой аналитики. Всё хранится только на твоём устройстве.</div>
+                        <div class="about-ver">Версия 2.0.0</div>
+                        <div class="about-desc" id="aboutDesc">Приватный браузер без регистрации и сбора данных. Мультипоиск по 7 движкам: Google, Яндекс, DuckDuckGo, Bing, Mojeek, Brave и DDG Lite.</div>
                     </div>
                 </div>
             </section>
@@ -2040,13 +2156,13 @@
                 <iframe id="webframe" class="webframe" referrerpolicy="no-referrer"
                     sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation-by-user-activation">
                 </iframe>
-                <button class="fab fab-translate" id="btnTranslate">
+                <button class="fab fab-translate" id="btnTranslate" title="Перевести">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 5h10M8 3v2c0 5-3 8-5 9M5 9c0 3 3 5 5 6"/>
                         <path d="M12 21l5-12 5 12M14 17h6"/>
                     </svg>
                 </button>
-                <button class="fab fab-external" id="openExternal">
+                <button class="fab fab-external" id="openExternal" title="Открыть в браузере">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
                         <path d="M15 3h6v6"/>
@@ -2101,6 +2217,11 @@
     </div>
 
     <script>
+        /* ================================================================
+           ZERO BROWSER — JAVASCRIPT
+           Версия: 2.0.0
+           ================================================================ */
+
         /* ============================================================
            ССЫЛКИ НА DOM
            ============================================================ */
@@ -2130,7 +2251,7 @@
         const webBlocked = $('#webBlocked');
 
         /* ============================================================
-           КАТЕГОРИИ
+           КАТЕГОРИИ САЙТОВ — 15 штук
            ============================================================ */
         const CATEGORIES = [
             { emoji: '🎬', name: 'Кино и сериалы', sites: [
@@ -2250,17 +2371,19 @@
         ];
 
         /* ============================================================
-           ПОИСКОВЫЕ СИСТЕМЫ
+           ПОИСКОВЫЕ ДВИЖКИ
            ============================================================ */
         const SEARCH_ENGINES = {
             ddg: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
             google: { name: 'Google', url: 'https://www.google.com/search?q=' },
             yandex: { name: 'Яндекс', url: 'https://yandex.ru/search/?text=' },
-            bing: { name: 'Bing', url: 'https://www.bing.com/search?q=' }
+            bing: { name: 'Bing', url: 'https://www.bing.com/search?q=' },
+            mojeek: { name: 'Mojeek', url: 'https://www.mojeek.com/search?q=' },
+            brave: { name: 'Brave', url: 'https://search.brave.com/search?q=' }
         };
 
         /* ============================================================
-           ЯЗЫКИ
+           ЯЗЫКОВЫЕ ПАКЕТЫ
            ============================================================ */
         const SETTINGS_KEY = 'zero_settings';
 
@@ -2440,6 +2563,9 @@
 
         const THEMES = ['dark', 'light', 'auto'];
 
+        /* ============================================================
+           НАСТРОЙКИ И СОСТОЯНИЕ
+           ============================================================ */
         let settings = {
             lang: 'ru',
             theme: 'dark',
@@ -2470,7 +2596,7 @@
         ];
 
         /* ============================================================
-           НАСТРОЙКИ
+           НАСТРОЙКИ — ФУНКЦИИ
            ============================================================ */
         function loadSettings() {
             try {
@@ -2550,7 +2676,7 @@
         }
 
         /* ============================================================
-           ПРОКСИ
+           CORS-ПРОКСИ
            ============================================================ */
         async function fetchViaProxy(u) {
             let lastErr = null;
@@ -2618,7 +2744,7 @@
         });
 
         /* ============================================================
-           ИСТОРИЯ
+           ИСТОРИЯ ПОСЕЩЕНИЙ
            ============================================================ */
         function loadBrowsingHistory() {
             try {
@@ -2806,7 +2932,7 @@
         }
 
         /* ============================================================
-           RIPPLE
+           RIPPLE-ЭФФЕКТ
            ============================================================ */
         document.addEventListener('pointerdown', e => {
             const el = e.target.closest(
@@ -2916,7 +3042,7 @@
         }
 
         /* ============================================================
-           ПОИСК DDG
+           ПОИСК: DUCKDUCKGO HTML
            ============================================================ */
         async function searchDDG(q) {
             try {
@@ -2940,6 +3066,7 @@
                     if (!h.startsWith('http')) return;
                     out.push({
                         source: 'web',
+                        engine: 'DDG',
                         title: a.textContent.trim(),
                         url: h,
                         desc: s ? s.textContent.trim() : '',
@@ -2953,7 +3080,38 @@
         }
 
         /* ============================================================
-           ПОИСК BING
+           ПОИСК: DUCKDUCKGO LITE
+           ============================================================ */
+        async function searchDDGLite(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://lite.duckduckgo.com/lite/?q=' + encodeURIComponent(q)
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('a.result-link').forEach(a => {
+                    const h = a.href;
+                    if (!h || !h.startsWith('http')) return;
+                    const tr = a.closest('tr');
+                    let desc = '';
+                    if (tr && tr.nextElementSibling) desc = tr.nextElementSibling.textContent.trim();
+                    out.push({
+                        source: 'web',
+                        engine: 'DDG Lite',
+                        title: a.textContent.trim(),
+                        url: h,
+                        desc: desc,
+                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(h)
+                    });
+                });
+                return out;
+            } catch (e) { return []; }
+        }
+
+        /* ============================================================
+           ПОИСК: BING
            ============================================================ */
         async function searchBing(q) {
             try {
@@ -2970,6 +3128,7 @@
                     if (!a || !a.href) return;
                     out.push({
                         source: 'web',
+                        engine: 'Bing',
                         title: a.textContent.trim(),
                         url: a.href,
                         desc: d ? d.textContent.trim() : '',
@@ -2983,26 +3142,167 @@
         }
 
         /* ============================================================
-           ОБЪЕДИНЁННЫЙ ПОИСК
+           ПОИСК: MOJEEK
            ============================================================ */
-        async function searchWebMulti(q) {
-            const [ddg, bing] = await Promise.allSettled([searchDDG(q), searchBing(q)]);
-            const a = ddg.status === 'fulfilled' ? ddg.value : [];
-            const b = bing.status === 'fulfilled' ? bing.value : [];
-            const seen = new Set();
-            const merged = [];
-            a.concat(b).forEach(item => {
-                const key = normalizeUrl(item.url);
-                if (!seen.has(key)) {
-                    seen.add(key);
-                    merged.push(item);
-                }
-            });
-            return merged.slice(0, 15);
+        async function searchMojeek(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://www.mojeek.com/search?q=' + encodeURIComponent(q)
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('ul.results-standard li').forEach(li => {
+                    const a = li.querySelector('a.title') || li.querySelector('h2 a');
+                    const p = li.querySelector('p.s');
+                    if (!a || !a.href) return;
+                    out.push({
+                        source: 'web',
+                        engine: 'Mojeek',
+                        title: a.textContent.trim(),
+                        url: a.href,
+                        desc: p ? p.textContent.trim() : '',
+                        icon: hostOf(a.href)[0] ? hostOf(a.href)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(a.href)
+                    });
+                });
+                return out;
+            } catch (e) { return []; }
         }
 
         /* ============================================================
-           ПОИСК YOUTUBE
+           ПОИСК: BRAVE HTML
+           ============================================================ */
+        async function searchBrave(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://search.brave.com/search?q=' + encodeURIComponent(q)
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('div.snippet').forEach(div => {
+                    const a = div.querySelector('a.heading-serpresult, a.result-header');
+                    const p = div.querySelector('.snippet-description');
+                    if (!a || !a.href) return;
+                    if (!a.href.startsWith('http')) return;
+                    out.push({
+                        source: 'web',
+                        engine: 'Brave',
+                        title: a.textContent.trim(),
+                        url: a.href,
+                        desc: p ? p.textContent.trim() : '',
+                        icon: hostOf(a.href)[0] ? hostOf(a.href)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(a.href)
+                    });
+                });
+                return out;
+            } catch (e) { return []; }
+        }
+
+        /* ============================================================
+           ПОИСК: GOOGLE (через прокси, часто блокируется)
+           ============================================================ */
+        async function searchGoogle(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://www.google.com/search?q=' + encodeURIComponent(q) + '&hl=ru&num=15'
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('div.g, div[data-ved] > div > a[href^="http"]').forEach(node => {
+                    const a = node.querySelector('a[href^="http"]') || (node.tagName === 'A' ? node : null);
+                    if (!a) return;
+                    const h = a.href;
+                    if (!h || !h.startsWith('http')) return;
+                    if (h.includes('google.com') || h.includes('gstatic')) return;
+                    const t = node.querySelector('h3') || a.querySelector('h3');
+                    const s = node.querySelector('span.aCOpRe, div.VwiC3b, span.st');
+                    out.push({
+                        source: 'web',
+                        engine: 'Google',
+                        title: t ? t.textContent.trim() : a.textContent.trim(),
+                        url: h,
+                        desc: s ? s.textContent.trim() : '',
+                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(h)
+                    });
+                });
+                return out;
+            } catch (e) { return []; }
+        }
+
+        /* ============================================================
+           ПОИСК: ЯНДЕКС (через прокси, часто блокируется)
+           ============================================================ */
+        async function searchYandex(q) {
+            try {
+                const html = await fetchViaProxy(
+                    'https://yandex.ru/search/?text=' + encodeURIComponent(q)
+                );
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const out = [];
+                doc.querySelectorAll('li.serp-item, div.serp-item').forEach(li => {
+                    const a = li.querySelector('a.organic__url, a.Link_theme_normal, h2 a');
+                    if (!a || !a.href) return;
+                    const h = a.href;
+                    if (!h.startsWith('http')) return;
+                    if (h.includes('yandex.')) return;
+                    const t = li.querySelector('h2') || a;
+                    const s = li.querySelector('.organic__content-wrapper, .text-container');
+                    out.push({
+                        source: 'web',
+                        engine: 'Яндекс',
+                        title: t ? t.textContent.trim() : a.textContent.trim(),
+                        url: h,
+                        desc: s ? s.textContent.trim() : '',
+                        icon: hostOf(h)[0] ? hostOf(h)[0].toUpperCase() : '?',
+                        grad: 'g-c',
+                        badge: hostOf(h)
+                    });
+                });
+                return out;
+            } catch (e) { return []; }
+        }
+
+        /* ============================================================
+           МУЛЬТИПОИСК: запускает все движки параллельно
+           ============================================================ */
+        async function searchWebMulti(q) {
+            const engines = [
+                searchGoogle(q),
+                searchYandex(q),
+                searchDDG(q),
+                searchBing(q),
+                searchMojeek(q),
+                searchBrave(q),
+                searchDDGLite(q)
+            ];
+            const results = await Promise.allSettled(engines);
+
+            const seen = new Set();
+            const merged = [];
+            const perEngine = {};
+
+            results.forEach(r => {
+                if (r.status !== 'fulfilled') return;
+                (r.value || []).forEach(item => {
+                    const key = normalizeUrl(item.url);
+                    if (!key || seen.has(key)) return;
+                    seen.add(key);
+                    const e = item.engine || 'web';
+                    perEngine[e] = (perEngine[e] || 0) + 1;
+                    merged.push(item);
+                });
+            });
+
+            console.log('Поисковики ответили:', perEngine);
+            return merged.slice(0, 20);
+        }
+
+        /* ============================================================
+           ПОИСК: YOUTUBE через Piped
            ============================================================ */
         const PIPED = [
             'https://pipedapi.kavin.rocks',
@@ -3045,7 +3345,7 @@
         }
 
         /* ============================================================
-           ПОИСК WIKIPEDIA
+           ПОИСК: WIKIPEDIA
            ============================================================ */
         async function searchWikipedia(q) {
             try {
@@ -3069,7 +3369,7 @@
         }
 
         /* ============================================================
-           КАТЕГОРИИ HTML
+           КАТЕГОРИИ — HTML
            ============================================================ */
         function buildCategoriesHTML(q) {
             const enc = encodeURIComponent(q);
@@ -3083,7 +3383,6 @@
                 </svg>
                 ${t.categoriesTitle}
             </div>`;
-
             CATEGORIES.forEach((cat, i) => {
                 html += `<div class="cat-block" style="animation-delay:${(i*0.04).toFixed(2)}s">
                     <div class="cat-head">
@@ -3138,29 +3437,9 @@
             const yt = yR.status === 'fulfilled' ? yR.value : [];
             const wiki = wkR.status === 'fulfilled' ? wkR.value : [];
 
-            let html = buildCategoriesHTML(q);
+            let html = '';
 
-            /* --- Блок YouTube --- */
-            if (yt.length) {
-                html += `<div class="section-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    ${t.ytTitle}
-                </div>`;
-                yt.forEach((it, i) => {
-                    const thumb = `<div class="result-thumb"><img src="${escapeHtml(it.thumb)}" alt=""></div>`;
-                    html += `<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.05).toFixed(2)}s both">
-                        ${thumb}
-                        <div class="result-body">
-                            <div class="result-title">${escapeHtml(it.title)}</div>
-                            <div class="result-url">${escapeHtml(hostOf(it.url))}</div>
-                            <div class="result-desc">${escapeHtml(it.desc || '')}</div>
-                        </div>
-                        <div class="result-badge yt">YouTube</div>
-                    </div>`;
-                });
-            }
-
-            /* --- Блок веб-результатов (ВСЕГДА) --- */
+            /* ============ 1. ВЕБ-РЕЗУЛЬТАТЫ (ПЕРВЫМИ) ============ */
             html += `<div class="section-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
@@ -3172,14 +3451,14 @@
             if (web.length) {
                 web.forEach((it, i) => {
                     const thumb = `<div class="result-thumb ${it.grad || 'g-c'}">${it.icon || '?'}</div>`;
-                    html += `<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.05).toFixed(2)}s both">
+                    html += `<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.04).toFixed(2)}s both">
                         ${thumb}
                         <div class="result-body">
                             <div class="result-title">${escapeHtml(it.title)}</div>
                             <div class="result-url">${escapeHtml(hostOf(it.url))}</div>
                             <div class="result-desc">${escapeHtml(it.desc || '')}</div>
                         </div>
-                        <div class="result-badge web">${escapeHtml(it.badge || '')}</div>
+                        <div class="result-badge web">${escapeHtml(it.engine || 'web')}</div>
                     </div>`;
                 });
             } else {
@@ -3199,11 +3478,36 @@
                         <button class="cat-link" data-url="https://www.bing.com/search?q=${enc}">
                             <span class="cat-link-dot"></span><span class="cat-link-name">Bing</span>
                         </button>
+                        <button class="cat-link" data-url="https://www.mojeek.com/search?q=${enc}">
+                            <span class="cat-link-dot"></span><span class="cat-link-name">Mojeek</span>
+                        </button>
+                        <button class="cat-link" data-url="https://search.brave.com/search?q=${enc}">
+                            <span class="cat-link-dot"></span><span class="cat-link-name">Brave</span>
+                        </button>
                     </div>
                 </div>`;
             }
 
-            /* --- Блок Википедии --- */
+            /* ============ 2. YOUTUBE ============ */
+            if (yt.length) {
+                html += `<div class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    ${t.ytTitle}
+                </div>`;
+                yt.forEach((it, i) => {
+                    html += `<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.05).toFixed(2)}s both">
+                        <div class="result-thumb"><img src="${escapeHtml(it.thumb)}" alt=""></div>
+                        <div class="result-body">
+                            <div class="result-title">${escapeHtml(it.title)}</div>
+                            <div class="result-url">${escapeHtml(hostOf(it.url))}</div>
+                            <div class="result-desc">${escapeHtml(it.desc || '')}</div>
+                        </div>
+                        <div class="result-badge yt">YouTube</div>
+                    </div>`;
+                });
+            }
+
+            /* ============ 3. WIKIPEDIA ============ */
             if (wiki.length) {
                 html += `<div class="section-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -3225,6 +3529,9 @@
                 });
             }
 
+            /* ============ 4. КАТЕГОРИИ (В КОНЦЕ) ============ */
+            html += buildCategoriesHTML(q);
+
             rc.innerHTML = html;
 
             rc.querySelectorAll('.cat-link').forEach(b =>
@@ -3234,10 +3541,10 @@
                 el.addEventListener('click', () => renderEntry({ type: 'url', url: el.dataset.url }))
             );
 
-            const totalSites = CATEGORIES.reduce((s, c) => s + c.sites.length, 0);
+            const enginesHit = [...new Set(web.map(x => x.engine).filter(Boolean))].join(' · ');
             $('#pageSub').textContent = t.found + ': ' +
                 (yt.length + web.length + wiki.length) + ' ' + t.results +
-                ' + ' + totalSites + ' ' + t.sitesFound;
+                (enginesHit ? ' • ' + enginesHit : '');
 
             setTimeout(() => pageView.classList.remove('loading'), 500);
         }
@@ -3450,7 +3757,7 @@
         }
 
         /* ============================================================
-           НАВИГАЦИЯ
+           НИЖНЯЯ НАВИГАЦИЯ
            ============================================================ */
         $$('.nav-btn').forEach(b => {
             b.addEventListener('click', () => {
@@ -3701,7 +4008,7 @@
         });
 
         /* ============================================================
-           ПИКЕР
+           ПИКЕР И ПОДТВЕРЖДЕНИЕ
            ============================================================ */
         function openPicker(title, opts, onSelect) {
             sheetContent.innerHTML = `<div class="picker-title">${escapeHtml(title)}</div>` +
@@ -3843,7 +4150,7 @@
         scrim.addEventListener('click', closeSheet);
 
         /* ============================================================
-           FLASH
+           ВСПЛЫВАЮЩЕЕ СООБЩЕНИЕ
            ============================================================ */
         function flashMessage(text) {
             const el = document.createElement('div');
@@ -3870,7 +4177,7 @@
         });
 
         /* ============================================================
-           СТАРТ
+           СТАРТ ПРИЛОЖЕНИЯ
            ============================================================ */
         loadSettings();
         applyTheme();
