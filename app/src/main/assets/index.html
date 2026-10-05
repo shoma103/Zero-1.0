@@ -118,8 +118,7 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 .maps-layer-btn.on{background:linear-gradient(135deg,#06b6d4,#3b82f6);border-color:transparent;box-shadow:0 8px 22px -10px rgba(6,182,212,.9)}
 .maps-layer-btn:active{transform:scale(.9)}
 .leaflet-container{background:#0b0b11!important;font-family:inherit!important;outline:none}
-.leaflet-control-attribution{background:rgba(15,15,22,.85)!important;color:var(--muted)!important;font-size:9px!important;border-radius:6px 0 0 0;padding:2px 6px!important}
-.leaflet-control-attribution a{color:#a78bfa!important}
+.leaflet-control-attribution{display:none!important}
 .leaflet-bar{border:none!important;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)!important}
 .leaflet-bar a{background:rgba(15,15,22,.94)!important;color:var(--text)!important;border-color:var(--line)!important;width:38px!important;height:38px!important;line-height:38px!important}
 .leaflet-bar a:hover{background:rgba(30,30,40,.96)!important}
@@ -221,19 +220,34 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 .about-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-top:14px}
 .scrim{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
 .scrim.show{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:linear-gradient(180deg,var(--bg2),var(--bg));border-top-left-radius:30px;border-top-right-radius:30px;border-top:1px solid var(--line);padding:12px 16px 22px;transform:translateY(110%);transition:transform .6s var(--ease);max-height:72vh;overflow-y:auto;scrollbar-width:none;box-shadow:0 -24px 70px -24px rgba(124,58,237,.6)}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:linear-gradient(180deg,var(--bg2),var(--bg));border-top-left-radius:30px;border-top-right-radius:30px;border-top:1px solid var(--line);padding:12px 16px 22px;transform:translateY(110%);transition:transform .6s var(--ease);max-height:78vh;overflow-y:auto;scrollbar-width:none;box-shadow:0 -24px 70px -24px rgba(124,58,237,.6)}
 .sheet::-webkit-scrollbar{display:none}
 .sheet.show{transform:none}
 .sheet-handle{width:42px;height:4px;border-radius:2px;background:rgba(255,255,255,.18);margin:0 auto 18px}
 .sheet-title{font-size:19px;font-weight:800;margin-bottom:16px;background:var(--g1);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 5s linear infinite;display:inline-block}
+.sheet-tabs-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sheet-tabs-close-all{padding:7px 12px;border-radius:11px;border:1px solid var(--line);background:var(--glass);color:var(--danger);font-size:11.5px;font-weight:700;transition:transform .4s var(--spring)}
+.sheet-tabs-close-all:active{transform:scale(.94)}
 .tab-item{display:flex;align-items:center;gap:12px;padding:13px;border-radius:17px;background:var(--glass);border:1px solid var(--line);margin-bottom:10px;transition:transform .45s var(--spring),background .3s;position:relative;overflow:hidden;color:var(--text);width:100%;text-align:left}
 .tab-item:active{transform:scale(.97);background:var(--glass2)}
+.tab-item.active{background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(236,72,153,.18));border-color:rgba(167,139,250,.55);box-shadow:0 10px 26px -12px rgba(124,58,237,.9)}
+.tab-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#a78bfa,#ec4899);border-radius:0 3px 3px 0}
 .tab-fav{width:34px;height:34px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;font-weight:800;font-size:13px;color:#fff}
 .tab-meta{flex:1;min-width:0;text-align:left}
 .tab-title{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tab-url{font-size:11px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.new-tab-btn{width:100%;padding:15px;border-radius:17px;border:none;background:linear-gradient(135deg,#7c3aed,#ec4899);background-size:200% 100%;color:#fff;font-size:14.5px;font-weight:700;box-shadow:0 12px 32px -12px rgba(124,58,237,.9);transition:transform .45s var(--spring);animation:shine 6s linear infinite}
+.tab-close{width:32px;height:32px;flex:0 0 auto;border:none;background:transparent;border-radius:10px;color:var(--muted);display:grid;place-items:center;transition:transform .4s var(--spring),color .25s}
+.tab-close svg{width:16px;height:16px}
+.tab-close:active{transform:scale(.85);color:var(--danger);background:rgba(244,63,94,.15)}
+.tab-active-badge{position:absolute;top:8px;right:44px;padding:2px 7px;border-radius:7px;font-size:9px;font-weight:800;background:rgba(167,139,250,.28);color:#c4b5fd;text-transform:uppercase}
+.new-tab-btn{width:100%;padding:15px;border-radius:17px;border:none;background:linear-gradient(135deg,#7c3aed,#ec4899);background-size:200% 100%;color:#fff;font-size:14.5px;font-weight:700;box-shadow:0 12px 32px -12px rgba(124,58,237,.9);transition:transform .45s var(--spring);animation:shine 6s linear infinite;margin-top:6px}
 .new-tab-btn:active{transform:scale(.96)}
+.sheet-section-title{font-size:11.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#a78bfa;margin:16px 4px 10px}
+.fav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:8px}
+.fav-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:14px;background:var(--glass);border:1px solid var(--line);color:var(--text);text-align:center;transition:transform .4s var(--spring),background .3s;font-family:inherit;overflow:hidden}
+.fav-item:active{transform:scale(.92);background:var(--glass2)}
+.fav-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:14px;color:#fff;flex:0 0 auto}
+.fav-label{font-size:9.5px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;letter-spacing:.1px}
 .lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .lang-btn{position:relative;overflow:hidden;padding:15px 8px;border-radius:16px;background:var(--glass);border:1px solid var(--line);color:var(--text);font-size:13.5px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .45s var(--spring),background .3s}
 .lang-btn:active{transform:scale(.94)}
@@ -334,10 +348,7 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 <div class="lib-card maps-card" id="homeMapsCard">
 <div class="lib-card-head">
 <div class="lib-card-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-<path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/>
-<path d="M8 2v16M16 6v16"/>
-</svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></svg>
 </div>
 <div style="flex:1;min-width:0">
 <div class="lib-card-title">Карты</div>
@@ -386,12 +397,8 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
 <input id="mapSearch" placeholder="Найти место, адрес, город" autocomplete="off">
 </div>
-<button class="maps-btn" id="mapLocateBtn" title="Моё местоположение">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>
-</button>
-<button class="maps-btn" id="mapCloseBtn" title="Закрыть">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-</button>
+<button class="maps-btn" id="mapLocateBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg></button>
+<button class="maps-btn" id="mapCloseBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
 </div>
 <div class="maps-layers" id="mapsLayers">
 <button class="maps-layer-btn on" data-layer="osm" title="Обычная">🗺</button>
@@ -414,9 +421,7 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 </div>
 <div id="historyList"></div>
 <div class="empty-state" id="historyEmpty" style="display:none">
-<div class="empty-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-</div>
+<div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
 <p>История пуста. Все посещённые страницы появятся здесь.</p>
 </div>
 </section>
@@ -431,9 +436,7 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 </div>
 <div id="downloadsList"></div>
 <div class="empty-state" id="downloadsEmpty" style="display:none">
-<div class="empty-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-</div>
+<div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div>
 <p>Загрузок пока нет. Скачанные файлы появятся здесь.</p>
 </div>
 </section>
@@ -448,9 +451,7 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 </div>
 <div id="bookmarksList"></div>
 <div class="empty-state" id="bookmarksEmpty" style="display:none">
-<div class="empty-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-</div>
+<div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
 <p>Пока пусто. Нажмите ⭐ в адресной строке.</p>
 </div>
 </section>
@@ -549,8 +550,8 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 <div class="settings-group-title">О приложении</div>
 <div class="about-box">
 <div class="about-logo">Zero</div>
-<div class="about-ver">Версия 5.3.0</div>
-<div class="about-desc">Приватный браузер с нативными панелями, картами и погодой. Никаких аккаунтов, никакой аналитики. Все данные хранятся только на устройстве.</div>
+<div class="about-ver">Версия 5.4.0</div>
+<div class="about-desc">Приватный браузер с нативными панелями, картами, погодой и вкладками. Никаких аккаунтов, никакой аналитики. Все данные хранятся только на устройстве.</div>
 </div>
 </div>
 </section>
@@ -566,7 +567,7 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 
 <script>
 /* ==========================================================
-   ZERO BROWSER v5.3.0
+   ZERO BROWSER v5.4.0
    ========================================================== */
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -574,127 +575,71 @@ const homeView=$('#homeView'),pageView=$('#pageView'),historyView=$('#historyVie
 const bigSearch=$('#bigSearch'),scrim=$('#scrim'),sheet=$('#sheet'),sheetContent=$('#sheetContent');
 
 /* ==========================================================
-   БИБЛИОТЕКА СЕРВИСОВ
+   БИБЛИОТЕКА
    ========================================================== */
 const GRADS=['g-a','g-b','g-c','g-d','g-e','g-f','g-g','g-h','g-i','g-j','g-k','g-l','g-m','g-n','g-o','g-p'];
 const LIBRARY={
 ru:{flag:'🇷🇺',name:'Россия',groups:[
-{id:'finance',emoji:'💳',name:'Финансы',sites:[
-{n:'Сбербанк',u:'https://online.sberbank.ru'},{n:'Т-Банк',u:'https://www.tbank.ru'},{n:'Альфа-Банк',u:'https://alfabank.ru'},{n:'ВТБ',u:'https://www.vtb.ru'},{n:'Газпромбанк',u:'https://www.gazprombank.ru'},{n:'Райффайзен',u:'https://www.raiffeisen.ru'},{n:'Совкомбанк',u:'https://sovcombank.ru'},{n:'Открытие',u:'https://www.open.ru'},{n:'Россельхозбанк',u:'https://www.rshb.ru'},{n:'Почта Банк',u:'https://www.pochtabank.ru'},{n:'ЮMoney',u:'https://yoomoney.ru'},{n:'СБП',u:'https://sbp.nspk.ru'},{n:'Банк России',u:'https://www.cbr.ru'},{n:'Мосбиржа',u:'https://www.moex.com'},{n:'Тинькофф Инвестиции',u:'https://www.tinkoff.ru/invest/'},{n:'CoinMarketCap',u:'https://coinmarketcap.com'},{n:'Binance',u:'https://www.binance.com'},{n:'Bybit',u:'https://www.bybit.com'},{n:'OKX',u:'https://www.okx.com'}
-]},
-{id:'food',emoji:'🍔',name:'Еда и продукты',sites:[
-{n:'Яндекс.Еда',u:'https://eda.yandex.ru'},{n:'Delivery Club',u:'https://delivery-club.ru'},{n:'Самокат',u:'https://samokat.ru'},{n:'ВкусВилл',u:'https://vkusvill.ru'},{n:'Купер',u:'https://kuper.ru'},{n:'Перекрёсток',u:'https://www.perekrestok.ru'},{n:'Пятёрочка',u:'https://5ka.ru'},{n:'Магнит',u:'https://magnit.ru'},{n:'Лента',u:'https://lenta.com'},{n:'Ашан',u:'https://www.auchan.ru'},{n:'Метро',u:'https://www.metro-cc.ru'},{n:'Окей',u:'https://www.okeydostavka.ru'},{n:'Дикси',u:'https://dixy.ru'},{n:'Додо Пицца',u:'https://dodopizza.ru'},{n:'Вкусно и точка',u:'https://vkusnoitochka.ru'},{n:'KFC',u:'https://kfc.ru'},{n:'Burger King',u:'https://burgerking.ru'},{n:'Тануки',u:'https://tanuki.ru'},{n:'Якитория',u:'https://yakitoriya.ru'},{n:'Пицца Хат',u:'https://pizzahut.ru'}
-]},
-{id:'shop',emoji:'🛒',name:'Покупки',sites:[
-{n:'Ozon',u:'https://www.ozon.ru'},{n:'Wildberries',u:'https://www.wildberries.ru'},{n:'Яндекс.Маркет',u:'https://market.yandex.ru'},{n:'Avito',u:'https://www.avito.ru'},{n:'AliExpress',u:'https://aliexpress.ru'},{n:'Мегамаркет',u:'https://megamarket.ru'},{n:'М.Видео',u:'https://www.mvideo.ru'},{n:'DNS',u:'https://www.dns-shop.ru'},{n:'Эльдорадо',u:'https://www.eldorado.ru'},{n:'Ситилинк',u:'https://www.citilink.ru'},{n:'Связной',u:'https://www.svyaznoy.ru'},{n:'МТС',u:'https://www.mts.ru'},{n:'Билайн',u:'https://www.beeline.ru'},{n:'Мегафон',u:'https://www.megafon.ru'},{n:'Tele2',u:'https://msk.t2.ru'},{n:'Detmir',u:'https://www.detmir.ru'},{n:'Леруа Мерлен',u:'https://leroymerlin.ru'},{n:'Петрович',u:'https://petrovich.ru'},{n:'ВсеИнструменты',u:'https://www.vseinstrumenti.ru'},{n:'Твой Дом',u:'https://tdom.ru'}
-]},
-{id:'fashion',emoji:'👕',name:'Одежда и обувь',sites:[
-{n:'Lamoda',u:'https://www.lamoda.ru'},{n:'Wildberries',u:'https://www.wildberries.ru'},{n:'Ozon',u:'https://www.ozon.ru'},{n:'Спортмастер',u:'https://www.sportmaster.ru'},{n:'Decathlon',u:'https://www.decathlon.ru'},{n:'Ostin',u:'https://www.ostin.com'},{n:'Befree',u:'https://befree.ru'},{n:'Zolla',u:'https://zolla.ru'},{n:'Baon',u:'https://www.baon.ru'},{n:'Finn Flare',u:'https://finn-flare.ru'},{n:'Savage',u:'https://savage.ru'},{n:'Gloria Jeans',u:'https://www.gloria-jeans.ru'},{n:'Zarina',u:'https://zarina.ru'},{n:'Love Republic',u:'https://loverepublic.ru'},{n:'Modis',u:'https://modis.ru'},{n:'Nike',u:'https://www.nike.com/ru/'},{n:'Adidas',u:'https://www.adidas.ru'},{n:'Puma',u:'https://ru.puma.com'},{n:'Reebok',u:'https://www.reebok.ru'},{n:'ECCO',u:'https://www.ecco.com/ru-ru/'}
-]},
-{id:'beauty',emoji:'💅',name:'Красота и здоровье',sites:[
-{n:'Золотое Яблоко',u:'https://goldapple.ru'},{n:'Летуаль',u:'https://www.letu.ru'},{n:'Иль де Ботэ',u:'https://iledebeaute.ru'},{n:'Rive Gauche',u:'https://rivegauche.ru'},{n:'Подружка',u:'https://podrygka.ru'},{n:'Apteka.ru',u:'https://apteka.ru'},{n:'Здравсити',u:'https://zdravcity.ru'},{n:'Мегаптека',u:'https://megapteka.ru'},{n:'Асна',u:'https://asna.ru'},{n:'Ригла',u:'https://rigla.ru'},{n:'DocDoc',u:'https://docdoc.ru'},{n:'СберЗдоровье',u:'https://sberhealth.ru'},{n:'Яндекс.Здоровье',u:'https://health.yandex.ru'},{n:'Rlsnet',u:'https://www.rlsnet.ru'},{n:'Здоровье Mail',u:'https://health.mail.ru'},{n:'ПроДокторов',u:'https://prodoctorov.ru'},{n:'НаПоправку',u:'https://napopravku.ru'},{n:'Клиника.ру',u:'https://www.klinika.ru'},{n:'Инвитро',u:'https://www.invitro.ru'},{n:'Хеликс',u:'https://helix.ru'}
-]},
-{id:'fun',emoji:'🎬',name:'Развлечения',sites:[
-{n:'Кинопоиск',u:'https://www.kinopoisk.ru'},{n:'Иви',u:'https://www.ivi.ru'},{n:'Wink',u:'https://wink.ru'},{n:'Okko',u:'https://okko.tv'},{n:'Premier',u:'https://premier.one'},{n:'More.tv',u:'https://more.tv'},{n:'Start',u:'https://start.ru'},{n:'Kion',u:'https://kion.ru'},{n:'YouTube',u:'https://m.youtube.com'},{n:'Rutube',u:'https://rutube.ru'},{n:'VK Видео',u:'https://vkvideo.ru'},{n:'Дзен',u:'https://dzen.ru'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'Яндекс.Музыка',u:'https://music.yandex.ru'},{n:'VK Музыка',u:'https://vk.com/music'},{n:'Звук',u:'https://zvuk.com'},{n:'Spotify',u:'https://open.spotify.com'},{n:'SoundCloud',u:'https://soundcloud.com'},{n:'Кинопоиск HD',u:'https://hd.kinopoisk.ru'},{n:'Netflix',u:'https://www.netflix.com'}
-]},
-{id:'travel',emoji:'✈️',name:'Путешествия',sites:[
-{n:'Авиасейлс',u:'https://www.aviasales.ru'},{n:'Яндекс.Путешествия',u:'https://travel.yandex.ru'},{n:'Ozon Travel',u:'https://ozon.ru/travel'},{n:'Туту.ру',u:'https://www.tutu.ru'},{n:'OneTwoTrip',u:'https://www.onetwotrip.com'},{n:'Biletix',u:'https://www.biletix.ru'},{n:'Kupi.com',u:'https://www.kupi.com'},{n:'Trip.com',u:'https://www.trip.com'},{n:'РЖД',u:'https://www.rzd.ru'},{n:'Аэрофлот',u:'https://www.aeroflot.ru'},{n:'S7',u:'https://www.s7.ru'},{n:'Utair',u:'https://www.utair.ru'},{n:'Победа',u:'https://www.pobeda.aero'},{n:'Россия',u:'https://www.rossiya-airlines.com'},{n:'Уральские',u:'https://www.uralairlines.ru'},{n:'Аврора',u:'https://www.flyaurora.ru'},{n:'Smartavia',u:'https://www.flysmartavia.com'},{n:'Nordwind',u:'https://nordwindairlines.ru'},{n:'ИрАэро',u:'https://iraero.ru'},{n:'ЮВТ Аэро',u:'https://uvtaero.ru'}
-]},
-{id:'edu',emoji:'📚',name:'Образование',sites:[
-{n:'Stepik',u:'https://stepik.org'},{n:'Skillbox',u:'https://skillbox.ru'},{n:'GeekBrains',u:'https://gb.ru'},{n:'Яндекс.Практикум',u:'https://practicum.yandex.ru'},{n:'Нетология',u:'https://netology.ru'},{n:'Skyeng',u:'https://skyeng.ru'},{n:'Учи.ру',u:'https://uchi.ru'},{n:'Фоксфорд',u:'https://foxford.ru'},{n:'Инфоурок',u:'https://infourok.ru'},{n:'Открытое образование',u:'https://openedu.ru'},{n:'Универсариум',u:'https://universarium.org'},{n:'Лекториум',u:'https://www.lektorium.tv'},{n:'Coursera',u:'https://www.coursera.org'},{n:'edX',u:'https://www.edx.org'},{n:'Khan Academy',u:'https://www.khanacademy.org'},{n:'Udemy',u:'https://www.udemy.com'},{n:'Duolingo',u:'https://www.duolingo.com'},{n:'Codecademy',u:'https://www.codecademy.com'},{n:'Хабр',u:'https://habr.com'},{n:'КиберЛенинка',u:'https://cyberleninka.ru'}
-]},
-{id:'hotels',emoji:'🏨',name:'Отдых и отели',sites:[
-{n:'Островок',u:'https://ostrovok.ru'},{n:'Яндекс.Путешествия',u:'https://travel.yandex.ru/hotels/'},{n:'Суточно.ру',u:'https://sutochno.ru'},{n:'101Hotels',u:'https://101hotels.com'},{n:'Bronevik',u:'https://bronevik.com'},{n:'Академсервис',u:'https://www.academservice.ru'},{n:'Booking',u:'https://www.booking.com'},{n:'Airbnb',u:'https://www.airbnb.ru'},{n:'Agoda',u:'https://www.agoda.com'},{n:'Hotels.com',u:'https://www.hotels.com'},{n:'Tripadvisor',u:'https://www.tripadvisor.ru'},{n:'Trivago',u:'https://www.trivago.ru'},{n:'Marriott',u:'https://www.marriott.com'},{n:'Hilton',u:'https://www.hilton.com'},{n:'Radisson',u:'https://www.radissonhotels.com'},{n:'Accor',u:'https://all.accor.com'},{n:'Azimut',u:'https://azimuthotels.com'},{n:'Cosmos',u:'https://cosmos-hotel.ru'},{n:'Amaks',u:'https://amaks-hotels.ru'},{n:'Heliopark',u:'https://heliopark.ru'}
-]},
-{id:'service',emoji:'⚙️',name:'Сервисы',sites:[
-{n:'Госуслуги',u:'https://www.gosuslugi.ru'},{n:'Мос.ру',u:'https://www.mos.ru'},{n:'Налог.ру',u:'https://www.nalog.gov.ru'},{n:'Почта России',u:'https://www.pochta.ru'},{n:'СДЭК',u:'https://www.cdek.ru'},{n:'Boxberry',u:'https://boxberry.ru'},{n:'DPD',u:'https://www.dpd.ru'},{n:'Яндекс.Карты',u:'https://yandex.ru/maps'},{n:'2ГИС',u:'https://2gis.ru'},{n:'Домклик',u:'https://domclick.ru'},{n:'Циан',u:'https://www.cian.ru'},{n:'Авито Недвижимость',u:'https://www.avito.ru/nedvizhimost'},{n:'ЖКХ',u:'https://www.gosuslugi.ru/category/house'},{n:'ФНС ЛК',u:'https://lknpd.nalog.ru'},{n:'СФР',u:'https://sfr.gov.ru'},{n:'Росреестр',u:'https://rosreestr.gov.ru'},{n:'МФЦ',u:'https://md.mos.ru'},{n:'ФССП',u:'https://fssp.gov.ru'},{n:'ГИБДД',u:'https://гибдд.рф'},{n:'ЕМИАС',u:'https://emias.info'}
-]},
-{id:'ai',emoji:'🤖',name:'Нейросети',sites:[
-{n:'GigaChat',u:'https://giga.chat'},{n:'YandexGPT',u:'https://ya.ru/ai/chat'},{n:'Kandinsky',u:'https://www.sberbank.com/promo/kandinsky/'},{n:'Шедеврум',u:'https://shedevrum.ai'},{n:'Алиса',u:'https://alice.yandex.ru'},{n:'ChatGPT',u:'https://chat.openai.com'},{n:'Claude',u:'https://claude.ai'},{n:'Gemini',u:'https://gemini.google.com'},{n:'Perplexity',u:'https://www.perplexity.ai'},{n:'Midjourney',u:'https://www.midjourney.com'},{n:'DeepSeek',u:'https://chat.deepseek.com'},{n:'Qwen',u:'https://chat.qwen.ai'},{n:'Copilot',u:'https://copilot.microsoft.com'},{n:'Poe',u:'https://poe.com'},{n:'Character.AI',u:'https://character.ai'},{n:'Hugging Face',u:'https://huggingface.co'},{n:'Leonardo AI',u:'https://leonardo.ai'},{n:'Runway',u:'https://runwayml.com'},{n:'Suno',u:'https://suno.com'},{n:'ElevenLabs',u:'https://elevenlabs.io'}
-]},
-{id:'transport',emoji:'🚕',name:'Транспорт',sites:[
-{n:'Яндекс.Такси',u:'https://taxi.yandex.ru'},{n:'Яндекс.Драйв',u:'https://yandex.ru/drive'},{n:'Делимобиль',u:'https://delimobil.ru'},{n:'Ситидрайв',u:'https://citydrive.ru'},{n:'BelkaCar',u:'https://belkacar.ru'},{n:'Uber',u:'https://www.uber.com'},{n:'Bolt',u:'https://bolt.eu'},{n:'inDrive',u:'https://indrive.com'},{n:'Яндекс.Транспорт',u:'https://yandex.ru/maps/transport'},{n:'Мосгортранс',u:'https://mosgortrans.ru'},{n:'Метро Москвы',u:'https://mosmetro.ru'},{n:'РЖД Билеты',u:'https://ticket.rzd.ru'},{n:'Аэроэкспресс',u:'https://aeroexpress.ru'},{n:'BlaBlaCar',u:'https://www.blablacar.ru'},{n:'Попутчик',u:'https://poputchik.ru'},{n:'Туту.ру',u:'https://www.tutu.ru'},{n:'Яндекс.Заправки',u:'https://yandex.ru/maps/fuel'},{n:'Газпромнефть',u:'https://gazpromneft-gas.ru'},{n:'Лукойл',u:'https://lukoil.ru'},{n:'Роснефть',u:'https://rosneft.ru'}
-]},
-{id:'social',emoji:'💬',name:'Соцсети',sites:[
-{n:'ВКонтакте',u:'https://m.vk.com'},{n:'Одноклассники',u:'https://m.ok.ru'},{n:'Telegram',u:'https://web.telegram.org'},{n:'WhatsApp',u:'https://web.whatsapp.com'},{n:'Viber',u:'https://web.viber.com'},{n:'TikTok',u:'https://www.tiktok.com'},{n:'YouTube',u:'https://m.youtube.com'},{n:'Дзен',u:'https://dzen.ru'},{n:'Rutube',u:'https://rutube.ru'},{n:'X (Twitter)',u:'https://x.com'},{n:'Pinterest',u:'https://ru.pinterest.com'},{n:'Reddit',u:'https://www.reddit.com'},{n:'Discord',u:'https://discord.com'},{n:'LinkedIn',u:'https://www.linkedin.com'},{n:'Facebook',u:'https://www.facebook.com'},{n:'Instagram',u:'https://www.instagram.com'},{n:'Threads',u:'https://www.threads.net'},{n:'Snapchat',u:'https://www.snapchat.com'},{n:'Mastodon',u:'https://mastodon.social'},{n:'Bluesky',u:'https://bsky.app'}
-]},
-{id:'games',emoji:'🎮',name:'Игры',sites:[
-{n:'Steam',u:'https://store.steampowered.com'},{n:'Epic Games',u:'https://store.epicgames.com'},{n:'VK Play',u:'https://vkplay.ru'},{n:'My.Games',u:'https://my.games'},{n:'Mail Games',u:'https://games.mail.ru'},{n:'Genshin Impact',u:'https://genshin.hoyoverse.com'},{n:'Roblox',u:'https://www.roblox.com'},{n:'Minecraft',u:'https://www.minecraft.net'},{n:'PlayStation',u:'https://www.playstation.com'},{n:'Xbox',u:'https://www.xbox.com'},{n:'Nintendo',u:'https://www.nintendo.com'},{n:'Battle.net',u:'https://eu.shop.battle.net'},{n:'Ubisoft',u:'https://www.ubisoft.com'},{n:'EA',u:'https://www.ea.com'},{n:'Rockstar',u:'https://www.rockstargames.com'},{n:'Wargaming',u:'https://wargaming.com'},{n:'Lesta Games',u:'https://lesta.ru'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'StopGame',u:'https://stopgame.ru'},{n:'DTF',u:'https://dtf.ru'}
-]}
+{id:'finance',emoji:'💳',name:'Финансы',sites:[{n:'Сбербанк',u:'https://online.sberbank.ru'},{n:'Т-Банк',u:'https://www.tbank.ru'},{n:'Альфа-Банк',u:'https://alfabank.ru'},{n:'ВТБ',u:'https://www.vtb.ru'},{n:'Газпромбанк',u:'https://www.gazprombank.ru'},{n:'Райффайзен',u:'https://www.raiffeisen.ru'},{n:'Совкомбанк',u:'https://sovcombank.ru'},{n:'Открытие',u:'https://www.open.ru'},{n:'Россельхозбанк',u:'https://www.rshb.ru'},{n:'Почта Банк',u:'https://www.pochtabank.ru'},{n:'ЮMoney',u:'https://yoomoney.ru'},{n:'СБП',u:'https://sbp.nspk.ru'},{n:'Банк России',u:'https://www.cbr.ru'},{n:'Мосбиржа',u:'https://www.moex.com'},{n:'Тинькофф Инвестиции',u:'https://www.tinkoff.ru/invest/'},{n:'CoinMarketCap',u:'https://coinmarketcap.com'},{n:'Binance',u:'https://www.binance.com'},{n:'Bybit',u:'https://www.bybit.com'},{n:'OKX',u:'https://www.okx.com'}]},
+{id:'food',emoji:'🍔',name:'Еда и продукты',sites:[{n:'Яндекс.Еда',u:'https://eda.yandex.ru'},{n:'Delivery Club',u:'https://delivery-club.ru'},{n:'Самокат',u:'https://samokat.ru'},{n:'ВкусВилл',u:'https://vkusvill.ru'},{n:'Купер',u:'https://kuper.ru'},{n:'Перекрёсток',u:'https://www.perekrestok.ru'},{n:'Пятёрочка',u:'https://5ka.ru'},{n:'Магнит',u:'https://magnit.ru'},{n:'Лента',u:'https://lenta.com'},{n:'Ашан',u:'https://www.auchan.ru'},{n:'Метро',u:'https://www.metro-cc.ru'},{n:'Окей',u:'https://www.okeydostavka.ru'},{n:'Дикси',u:'https://dixy.ru'},{n:'Додо Пицца',u:'https://dodopizza.ru'},{n:'Вкусно и точка',u:'https://vkusnoitochka.ru'},{n:'KFC',u:'https://kfc.ru'},{n:'Burger King',u:'https://burgerking.ru'},{n:'Тануки',u:'https://tanuki.ru'},{n:'Якитория',u:'https://yakitoriya.ru'},{n:'Пицца Хат',u:'https://pizzahut.ru'}]},
+{id:'shop',emoji:'🛒',name:'Покупки',sites:[{n:'Ozon',u:'https://www.ozon.ru'},{n:'Wildberries',u:'https://www.wildberries.ru'},{n:'Яндекс.Маркет',u:'https://market.yandex.ru'},{n:'Avito',u:'https://www.avito.ru'},{n:'AliExpress',u:'https://aliexpress.ru'},{n:'Мегамаркет',u:'https://megamarket.ru'},{n:'М.Видео',u:'https://www.mvideo.ru'},{n:'DNS',u:'https://www.dns-shop.ru'},{n:'Эльдорадо',u:'https://www.eldorado.ru'},{n:'Ситилинк',u:'https://www.citilink.ru'},{n:'Связной',u:'https://www.svyaznoy.ru'},{n:'МТС',u:'https://www.mts.ru'},{n:'Билайн',u:'https://www.beeline.ru'},{n:'Мегафон',u:'https://www.megafon.ru'},{n:'Tele2',u:'https://msk.t2.ru'},{n:'Detmir',u:'https://www.detmir.ru'},{n:'Леруа Мерлен',u:'https://leroymerlin.ru'},{n:'Петрович',u:'https://petrovich.ru'},{n:'ВсеИнструменты',u:'https://www.vseinstrumenti.ru'},{n:'Твой Дом',u:'https://tdom.ru'}]},
+{id:'fashion',emoji:'👕',name:'Одежда и обувь',sites:[{n:'Lamoda',u:'https://www.lamoda.ru'},{n:'Wildberries',u:'https://www.wildberries.ru'},{n:'Ozon',u:'https://www.ozon.ru'},{n:'Спортмастер',u:'https://www.sportmaster.ru'},{n:'Decathlon',u:'https://www.decathlon.ru'},{n:'Ostin',u:'https://www.ostin.com'},{n:'Befree',u:'https://befree.ru'},{n:'Zolla',u:'https://zolla.ru'},{n:'Baon',u:'https://www.baon.ru'},{n:'Finn Flare',u:'https://finn-flare.ru'},{n:'Savage',u:'https://savage.ru'},{n:'Gloria Jeans',u:'https://www.gloria-jeans.ru'},{n:'Zarina',u:'https://zarina.ru'},{n:'Love Republic',u:'https://loverepublic.ru'},{n:'Modis',u:'https://modis.ru'},{n:'Nike',u:'https://www.nike.com/ru/'},{n:'Adidas',u:'https://www.adidas.ru'},{n:'Puma',u:'https://ru.puma.com'},{n:'Reebok',u:'https://www.reebok.ru'},{n:'ECCO',u:'https://www.ecco.com/ru-ru/'}]},
+{id:'beauty',emoji:'💅',name:'Красота и здоровье',sites:[{n:'Золотое Яблоко',u:'https://goldapple.ru'},{n:'Летуаль',u:'https://www.letu.ru'},{n:'Иль де Ботэ',u:'https://iledebeaute.ru'},{n:'Rive Gauche',u:'https://rivegauche.ru'},{n:'Подружка',u:'https://podrygka.ru'},{n:'Apteka.ru',u:'https://apteka.ru'},{n:'Здравсити',u:'https://zdravcity.ru'},{n:'Мегаптека',u:'https://megapteka.ru'},{n:'Асна',u:'https://asna.ru'},{n:'Ригла',u:'https://rigla.ru'},{n:'DocDoc',u:'https://docdoc.ru'},{n:'СберЗдоровье',u:'https://sberhealth.ru'},{n:'Яндекс.Здоровье',u:'https://health.yandex.ru'},{n:'Rlsnet',u:'https://www.rlsnet.ru'},{n:'Здоровье Mail',u:'https://health.mail.ru'},{n:'ПроДокторов',u:'https://prodoctorov.ru'},{n:'НаПоправку',u:'https://napopravku.ru'},{n:'Клиника.ру',u:'https://www.klinika.ru'},{n:'Инвитро',u:'https://www.invitro.ru'},{n:'Хеликс',u:'https://helix.ru'}]},
+{id:'fun',emoji:'🎬',name:'Развлечения',sites:[{n:'Кинопоиск',u:'https://www.kinopoisk.ru'},{n:'Иви',u:'https://www.ivi.ru'},{n:'Wink',u:'https://wink.ru'},{n:'Okko',u:'https://okko.tv'},{n:'Premier',u:'https://premier.one'},{n:'More.tv',u:'https://more.tv'},{n:'Start',u:'https://start.ru'},{n:'Kion',u:'https://kion.ru'},{n:'YouTube',u:'https://m.youtube.com'},{n:'Rutube',u:'https://rutube.ru'},{n:'VK Видео',u:'https://vkvideo.ru'},{n:'Дзен',u:'https://dzen.ru'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'Яндекс.Музыка',u:'https://music.yandex.ru'},{n:'VK Музыка',u:'https://vk.com/music'},{n:'Звук',u:'https://zvuk.com'},{n:'Spotify',u:'https://open.spotify.com'},{n:'SoundCloud',u:'https://soundcloud.com'},{n:'Кинопоиск HD',u:'https://hd.kinopoisk.ru'},{n:'Netflix',u:'https://www.netflix.com'}]},
+{id:'travel',emoji:'✈️',name:'Путешествия',sites:[{n:'Авиасейлс',u:'https://www.aviasales.ru'},{n:'Яндекс.Путешествия',u:'https://travel.yandex.ru'},{n:'Ozon Travel',u:'https://ozon.ru/travel'},{n:'Туту.ру',u:'https://www.tutu.ru'},{n:'OneTwoTrip',u:'https://www.onetwotrip.com'},{n:'Biletix',u:'https://www.biletix.ru'},{n:'Kupi.com',u:'https://www.kupi.com'},{n:'Trip.com',u:'https://www.trip.com'},{n:'РЖД',u:'https://www.rzd.ru'},{n:'Аэрофлот',u:'https://www.aeroflot.ru'},{n:'S7',u:'https://www.s7.ru'},{n:'Utair',u:'https://www.utair.ru'},{n:'Победа',u:'https://www.pobeda.aero'},{n:'Россия',u:'https://www.rossiya-airlines.com'},{n:'Уральские',u:'https://www.uralairlines.ru'},{n:'Аврора',u:'https://www.flyaurora.ru'},{n:'Smartavia',u:'https://www.flysmartavia.com'},{n:'Nordwind',u:'https://nordwindairlines.ru'},{n:'ИрАэро',u:'https://iraero.ru'},{n:'ЮВТ Аэро',u:'https://uvtaero.ru'}]},
+{id:'edu',emoji:'📚',name:'Образование',sites:[{n:'Stepik',u:'https://stepik.org'},{n:'Skillbox',u:'https://skillbox.ru'},{n:'GeekBrains',u:'https://gb.ru'},{n:'Яндекс.Практикум',u:'https://practicum.yandex.ru'},{n:'Нетология',u:'https://netology.ru'},{n:'Skyeng',u:'https://skyeng.ru'},{n:'Учи.ру',u:'https://uchi.ru'},{n:'Фоксфорд',u:'https://foxford.ru'},{n:'Инфоурок',u:'https://infourok.ru'},{n:'Открытое образование',u:'https://openedu.ru'},{n:'Универсариум',u:'https://universarium.org'},{n:'Лекториум',u:'https://www.lektorium.tv'},{n:'Coursera',u:'https://www.coursera.org'},{n:'edX',u:'https://www.edx.org'},{n:'Khan Academy',u:'https://www.khanacademy.org'},{n:'Udemy',u:'https://www.udemy.com'},{n:'Duolingo',u:'https://www.duolingo.com'},{n:'Codecademy',u:'https://www.codecademy.com'},{n:'Хабр',u:'https://habr.com'},{n:'КиберЛенинка',u:'https://cyberleninka.ru'}]},
+{id:'hotels',emoji:'🏨',name:'Отдых и отели',sites:[{n:'Островок',u:'https://ostrovok.ru'},{n:'Яндекс.Путешествия',u:'https://travel.yandex.ru/hotels/'},{n:'Суточно.ру',u:'https://sutochno.ru'},{n:'101Hotels',u:'https://101hotels.com'},{n:'Bronevik',u:'https://bronevik.com'},{n:'Академсервис',u:'https://www.academservice.ru'},{n:'Booking',u:'https://www.booking.com'},{n:'Airbnb',u:'https://www.airbnb.ru'},{n:'Agoda',u:'https://www.agoda.com'},{n:'Hotels.com',u:'https://www.hotels.com'},{n:'Tripadvisor',u:'https://www.tripadvisor.ru'},{n:'Trivago',u:'https://www.trivago.ru'},{n:'Marriott',u:'https://www.marriott.com'},{n:'Hilton',u:'https://www.hilton.com'},{n:'Radisson',u:'https://www.radissonhotels.com'},{n:'Accor',u:'https://all.accor.com'},{n:'Azimut',u:'https://azimuthotels.com'},{n:'Cosmos',u:'https://cosmos-hotel.ru'},{n:'Amaks',u:'https://amaks-hotels.ru'},{n:'Heliopark',u:'https://heliopark.ru'}]},
+{id:'service',emoji:'⚙️',name:'Сервисы',sites:[{n:'Госуслуги',u:'https://www.gosuslugi.ru'},{n:'Мос.ру',u:'https://www.mos.ru'},{n:'Налог.ру',u:'https://www.nalog.gov.ru'},{n:'Почта России',u:'https://www.pochta.ru'},{n:'СДЭК',u:'https://www.cdek.ru'},{n:'Boxberry',u:'https://boxberry.ru'},{n:'DPD',u:'https://www.dpd.ru'},{n:'Яндекс.Карты',u:'https://yandex.ru/maps'},{n:'2ГИС',u:'https://2gis.ru'},{n:'Домклик',u:'https://domclick.ru'},{n:'Циан',u:'https://www.cian.ru'},{n:'Авито Недвижимость',u:'https://www.avito.ru/nedvizhimost'},{n:'ЖКХ',u:'https://www.gosuslugi.ru/category/house'},{n:'ФНС ЛК',u:'https://lknpd.nalog.ru'},{n:'СФР',u:'https://sfr.gov.ru'},{n:'Росреестр',u:'https://rosreestr.gov.ru'},{n:'МФЦ',u:'https://md.mos.ru'},{n:'ФССП',u:'https://fssp.gov.ru'},{n:'ГИБДД',u:'https://гибдд.рф'},{n:'ЕМИАС',u:'https://emias.info'}]},
+{id:'ai',emoji:'🤖',name:'Нейросети',sites:[{n:'GigaChat',u:'https://giga.chat'},{n:'YandexGPT',u:'https://ya.ru/ai/chat'},{n:'Kandinsky',u:'https://www.sberbank.com/promo/kandinsky/'},{n:'Шедеврум',u:'https://shedevrum.ai'},{n:'Алиса',u:'https://alice.yandex.ru'},{n:'ChatGPT',u:'https://chat.openai.com'},{n:'Claude',u:'https://claude.ai'},{n:'Gemini',u:'https://gemini.google.com'},{n:'Perplexity',u:'https://www.perplexity.ai'},{n:'Midjourney',u:'https://www.midjourney.com'},{n:'DeepSeek',u:'https://chat.deepseek.com'},{n:'Qwen',u:'https://chat.qwen.ai'},{n:'Copilot',u:'https://copilot.microsoft.com'},{n:'Poe',u:'https://poe.com'},{n:'Character.AI',u:'https://character.ai'},{n:'Hugging Face',u:'https://huggingface.co'},{n:'Leonardo AI',u:'https://leonardo.ai'},{n:'Runway',u:'https://runwayml.com'},{n:'Suno',u:'https://suno.com'},{n:'ElevenLabs',u:'https://elevenlabs.io'}]},
+{id:'transport',emoji:'🚕',name:'Транспорт',sites:[{n:'Яндекс.Такси',u:'https://taxi.yandex.ru'},{n:'Яндекс.Драйв',u:'https://yandex.ru/drive'},{n:'Делимобиль',u:'https://delimobil.ru'},{n:'Ситидрайв',u:'https://citydrive.ru'},{n:'BelkaCar',u:'https://belkacar.ru'},{n:'Uber',u:'https://www.uber.com'},{n:'Bolt',u:'https://bolt.eu'},{n:'inDrive',u:'https://indrive.com'},{n:'Яндекс.Транспорт',u:'https://yandex.ru/maps/transport'},{n:'Мосгортранс',u:'https://mosgortrans.ru'},{n:'Метро Москвы',u:'https://mosmetro.ru'},{n:'РЖД Билеты',u:'https://ticket.rzd.ru'},{n:'Аэроэкспресс',u:'https://aeroexpress.ru'},{n:'BlaBlaCar',u:'https://www.blablacar.ru'},{n:'Попутчик',u:'https://poputchik.ru'},{n:'Туту.ру',u:'https://www.tutu.ru'},{n:'Яндекс.Заправки',u:'https://yandex.ru/maps/fuel'},{n:'Газпромнефть',u:'https://gazpromneft-gas.ru'},{n:'Лукойл',u:'https://lukoil.ru'},{n:'Роснефть',u:'https://rosneft.ru'}]},
+{id:'social',emoji:'💬',name:'Соцсети',sites:[{n:'ВКонтакте',u:'https://m.vk.com'},{n:'Одноклассники',u:'https://m.ok.ru'},{n:'Telegram',u:'https://web.telegram.org'},{n:'WhatsApp',u:'https://web.whatsapp.com'},{n:'Viber',u:'https://web.viber.com'},{n:'TikTok',u:'https://www.tiktok.com'},{n:'YouTube',u:'https://m.youtube.com'},{n:'Дзен',u:'https://dzen.ru'},{n:'Rutube',u:'https://rutube.ru'},{n:'X (Twitter)',u:'https://x.com'},{n:'Pinterest',u:'https://ru.pinterest.com'},{n:'Reddit',u:'https://www.reddit.com'},{n:'Discord',u:'https://discord.com'},{n:'LinkedIn',u:'https://www.linkedin.com'},{n:'Facebook',u:'https://www.facebook.com'},{n:'Instagram',u:'https://www.instagram.com'},{n:'Threads',u:'https://www.threads.net'},{n:'Snapchat',u:'https://www.snapchat.com'},{n:'Mastodon',u:'https://mastodon.social'},{n:'Bluesky',u:'https://bsky.app'}]},
+{id:'games',emoji:'🎮',name:'Игры',sites:[{n:'Steam',u:'https://store.steampowered.com'},{n:'Epic Games',u:'https://store.epicgames.com'},{n:'VK Play',u:'https://vkplay.ru'},{n:'My.Games',u:'https://my.games'},{n:'Mail Games',u:'https://games.mail.ru'},{n:'Genshin Impact',u:'https://genshin.hoyoverse.com'},{n:'Roblox',u:'https://www.roblox.com'},{n:'Minecraft',u:'https://www.minecraft.net'},{n:'PlayStation',u:'https://www.playstation.com'},{n:'Xbox',u:'https://www.xbox.com'},{n:'Nintendo',u:'https://www.nintendo.com'},{n:'Battle.net',u:'https://eu.shop.battle.net'},{n:'Ubisoft',u:'https://www.ubisoft.com'},{n:'EA',u:'https://www.ea.com'},{n:'Rockstar',u:'https://www.rockstargames.com'},{n:'Wargaming',u:'https://wargaming.com'},{n:'Lesta Games',u:'https://lesta.ru'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'StopGame',u:'https://stopgame.ru'},{n:'DTF',u:'https://dtf.ru'}]}
 ]},
 us:{flag:'🇺🇸',name:'США',groups:[
-{id:'finance',emoji:'💳',name:'Finance',sites:[
-{n:'PayPal',u:'https://www.paypal.com'},{n:'Venmo',u:'https://venmo.com'},{n:'Cash App',u:'https://cash.app'},{n:'Stripe',u:'https://stripe.com'},{n:'Square',u:'https://squareup.com'},{n:'Chase',u:'https://www.chase.com'},{n:'Bank of America',u:'https://www.bankofamerica.com'},{n:'Wells Fargo',u:'https://www.wellsfargo.com'},{n:'Citi',u:'https://www.citi.com'},{n:'Capital One',u:'https://www.capitalone.com'},{n:'Robinhood',u:'https://robinhood.com'},{n:'Coinbase',u:'https://www.coinbase.com'},{n:'Kraken',u:'https://www.kraken.com'},{n:'Fidelity',u:'https://www.fidelity.com'},{n:'Vanguard',u:'https://investor.vanguard.com'},{n:'NYSE',u:'https://www.nyse.com'},{n:'Nasdaq',u:'https://www.nasdaq.com'},{n:'IRS',u:'https://www.irs.gov'},{n:'Mint',u:'https://mint.intuit.com'},{n:'Zelle',u:'https://www.zellepay.com'}
-]},
-{id:'food',emoji:'🍔',name:'Food',sites:[
-{n:'DoorDash',u:'https://www.doordash.com'},{n:'Uber Eats',u:'https://www.ubereats.com'},{n:'Grubhub',u:'https://www.grubhub.com'},{n:'Postmates',u:'https://postmates.com'},{n:'Instacart',u:'https://www.instacart.com'},{n:'Whole Foods',u:'https://www.wholefoodsmarket.com'},{n:'Walmart Grocery',u:'https://grocery.walmart.com'},{n:'Kroger',u:'https://www.kroger.com'},{n:'Safeway',u:'https://www.safeway.com'},{n:"Trader Joe's",u:'https://www.traderjoes.com'},{n:"McDonald's",u:'https://www.mcdonalds.com'},{n:'Starbucks',u:'https://www.starbucks.com'},{n:'Chipotle',u:'https://www.chipotle.com'},{n:'Subway',u:'https://www.subway.com'},{n:'KFC',u:'https://www.kfc.com'},{n:'Taco Bell',u:'https://www.tacobell.com'},{n:'Burger King',u:'https://www.burgerking.com'},{n:'Pizza Hut',u:'https://www.pizzahut.com'},{n:"Domino's",u:'https://www.dominos.com'},{n:'Shake Shack',u:'https://shakeshack.com'}
-]},
-{id:'shop',emoji:'🛒',name:'Shopping',sites:[
-{n:'Amazon',u:'https://www.amazon.com'},{n:'eBay',u:'https://www.ebay.com'},{n:'Walmart',u:'https://www.walmart.com'},{n:'Target',u:'https://www.target.com'},{n:'Best Buy',u:'https://www.bestbuy.com'},{n:'Costco',u:'https://www.costco.com'},{n:'Etsy',u:'https://www.etsy.com'},{n:'Wish',u:'https://www.wish.com'},{n:'Temu',u:'https://www.temu.com'},{n:'AliExpress',u:'https://www.aliexpress.com'},{n:'Home Depot',u:'https://www.homedepot.com'},{n:"Lowe's",u:'https://www.lowes.com'},{n:'IKEA',u:'https://www.ikea.com/us/'},{n:'Wayfair',u:'https://www.wayfair.com'},{n:"Sam's Club",u:'https://www.samsclub.com'},{n:"Kohl's",u:'https://www.kohls.com'},{n:"Macy's",u:'https://www.macys.com'},{n:'Nordstrom',u:'https://www.nordstrom.com'},{n:"Bloomingdale's",u:'https://www.bloomingdales.com'},{n:'Saks',u:'https://www.saksfifthavenue.com'}
-]},
-{id:'fashion',emoji:'👕',name:'Fashion',sites:[
-{n:'Nike',u:'https://www.nike.com'},{n:'Adidas',u:'https://www.adidas.com/us'},{n:'Gap',u:'https://www.gap.com'},{n:'Old Navy',u:'https://oldnavy.gap.com'},{n:'H&M',u:'https://www2.hm.com/en_us/'},{n:'Zara',u:'https://www.zara.com/us/'},{n:'Forever 21',u:'https://www.forever21.com'},{n:'Uniqlo',u:'https://www.uniqlo.com/us/'},{n:"Levi's",u:'https://www.levi.com/US/'},{n:'Ralph Lauren',u:'https://www.ralphlauren.com'},{n:'Tommy Hilfiger',u:'https://usa.tommy.com'},{n:'Calvin Klein',u:'https://www.calvinklein.us'},{n:'Under Armour',u:'https://www.underarmour.com'},{n:'Puma',u:'https://us.puma.com'},{n:'Reebok',u:'https://www.reebok.com/us/'},{n:'New Balance',u:'https://www.newbalance.com'},{n:'Foot Locker',u:'https://www.footlocker.com'},{n:'ASOS',u:'https://www.asos.com/us/'},{n:'Shein',u:'https://us.shein.com'},{n:'Revolve',u:'https://www.revolve.com'}
-]},
-{id:'beauty',emoji:'💅',name:'Beauty & Health',sites:[
-{n:'Sephora',u:'https://www.sephora.com'},{n:'Ulta Beauty',u:'https://www.ulta.com'},{n:'CVS',u:'https://www.cvs.com'},{n:'Walgreens',u:'https://www.walgreens.com'},{n:'Rite Aid',u:'https://www.riteaid.com'},{n:'WebMD',u:'https://www.webmd.com'},{n:'Mayo Clinic',u:'https://www.mayoclinic.org'},{n:'Cleveland Clinic',u:'https://my.clevelandclinic.org'},{n:'Johns Hopkins',u:'https://www.hopkinsmedicine.org'},{n:'Healthline',u:'https://www.healthline.com'},{n:'Zocdoc',u:'https://www.zocdoc.com'},{n:'GoodRx',u:'https://www.goodrx.com'},{n:'Glossier',u:'https://www.glossier.com'},{n:'MAC Cosmetics',u:'https://www.maccosmetics.com'},{n:'Estée Lauder',u:'https://www.esteelauder.com'},{n:'Clinique',u:'https://www.clinique.com'},{n:"L'Oreal",u:'https://www.lorealparisusa.com'},{n:'Fenty Beauty',u:'https://fentybeauty.com'},{n:'Rare Beauty',u:'https://www.rarebeauty.com'},{n:'Drunk Elephant',u:'https://www.drunkelephant.com'}
-]},
-{id:'fun',emoji:'🎬',name:'Entertainment',sites:[
-{n:'Netflix',u:'https://www.netflix.com'},{n:'Hulu',u:'https://www.hulu.com'},{n:'Disney+',u:'https://www.disneyplus.com'},{n:'HBO Max',u:'https://www.max.com'},{n:'Prime Video',u:'https://www.primevideo.com'},{n:'Apple TV+',u:'https://tv.apple.com'},{n:'Peacock',u:'https://www.peacocktv.com'},{n:'Paramount+',u:'https://www.paramountplus.com'},{n:'YouTube',u:'https://www.youtube.com'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'Spotify',u:'https://open.spotify.com'},{n:'Apple Music',u:'https://music.apple.com'},{n:'SoundCloud',u:'https://soundcloud.com'},{n:'Pandora',u:'https://www.pandora.com'},{n:'Tidal',u:'https://tidal.com'},{n:'IMDb',u:'https://www.imdb.com'},{n:'Rotten Tomatoes',u:'https://www.rottentomatoes.com'},{n:'Metacritic',u:'https://www.metacritic.com'},{n:'Letterboxd',u:'https://letterboxd.com'},{n:'IGN',u:'https://www.ign.com'}
-]},
-{id:'travel',emoji:'✈️',name:'Travel',sites:[
-{n:'Booking',u:'https://www.booking.com'},{n:'Expedia',u:'https://www.expedia.com'},{n:'Airbnb',u:'https://www.airbnb.com'},{n:'Kayak',u:'https://www.kayak.com'},{n:'Priceline',u:'https://www.priceline.com'},{n:'Tripadvisor',u:'https://www.tripadvisor.com'},{n:'United',u:'https://www.united.com'},{n:'Delta',u:'https://www.delta.com'},{n:'American Airlines',u:'https://www.aa.com'},{n:'Southwest',u:'https://www.southwest.com'},{n:'JetBlue',u:'https://www.jetblue.com'},{n:'Alaska Air',u:'https://www.alaskaair.com'},{n:'Spirit',u:'https://www.spirit.com'},{n:'Frontier',u:'https://www.flyfrontier.com'},{n:'Amtrak',u:'https://www.amtrak.com'},{n:'Greyhound',u:'https://www.greyhound.com'},{n:'Hertz',u:'https://www.hertz.com'},{n:'Avis',u:'https://www.avis.com'},{n:'Enterprise',u:'https://www.enterprise.com'},{n:'Budget',u:'https://www.budget.com'}
-]},
-{id:'edu',emoji:'📚',name:'Education',sites:[
-{n:'Coursera',u:'https://www.coursera.org'},{n:'edX',u:'https://www.edx.org'},{n:'Khan Academy',u:'https://www.khanacademy.org'},{n:'Udemy',u:'https://www.udemy.com'},{n:'Codecademy',u:'https://www.codecademy.com'},{n:'Duolingo',u:'https://www.duolingo.com'},{n:'Skillshare',u:'https://www.skillshare.com'},{n:'MIT OCW',u:'https://ocw.mit.edu'},{n:'Harvard Online',u:'https://online-learning.harvard.edu'},{n:'Stanford Online',u:'https://online.stanford.edu'},{n:'Berkeley Online',u:'https://www.unex.berkeley.edu'},{n:'Udacity',u:'https://www.udacity.com'},{n:'Pluralsight',u:'https://www.pluralsight.com'},{n:'LinkedIn Learning',u:'https://www.linkedin.com/learning/'},{n:'MasterClass',u:'https://www.masterclass.com'},{n:'Brilliant',u:'https://brilliant.org'},{n:'DataCamp',u:'https://www.datacamp.com'},{n:'freeCodeCamp',u:'https://www.freecodecamp.org'},{n:'W3Schools',u:'https://www.w3schools.com'},{n:'Stack Overflow',u:'https://stackoverflow.com'}
-]},
-{id:'hotels',emoji:'🏨',name:'Hotels & Rest',sites:[
-{n:'Airbnb',u:'https://www.airbnb.com'},{n:'Vrbo',u:'https://www.vrbo.com'},{n:'Marriott',u:'https://www.marriott.com'},{n:'Hilton',u:'https://www.hilton.com'},{n:'Hyatt',u:'https://www.hyatt.com'},{n:'IHG',u:'https://www.ihg.com'},{n:'Wyndham',u:'https://www.wyndhamhotels.com'},{n:'Choice Hotels',u:'https://www.choicehotels.com'},{n:'Best Western',u:'https://www.bestwestern.com'},{n:'Radisson',u:'https://www.radissonhotels.com'},{n:'Four Seasons',u:'https://www.fourseasons.com'},{n:'Ritz-Carlton',u:'https://www.ritzcarlton.com'},{n:'W Hotels',u:'https://www.marriott.com/w-hotels'},{n:'Westin',u:'https://www.marriott.com/westin'},{n:'Sheraton',u:'https://www.marriott.com/sheraton'},{n:'Holiday Inn',u:'https://www.ihg.com/holidayinn'},{n:'Motel 6',u:'https://www.motel6.com'},{n:'Hostelworld',u:'https://www.hostelworld.com'},{n:'Camping World',u:'https://www.campingworld.com'},{n:'KOA',u:'https://koa.com'}
-]},
-{id:'service',emoji:'⚙️',name:'Services',sites:[
-{n:'Google Maps',u:'https://maps.google.com'},{n:'Yelp',u:'https://www.yelp.com'},{n:'USPS',u:'https://www.usps.com'},{n:'UPS',u:'https://www.ups.com'},{n:'FedEx',u:'https://www.fedex.com'},{n:'DHL',u:'https://www.dhl.com/us-en/'},{n:'IRS',u:'https://www.irs.gov'},{n:'DMV',u:'https://www.dmv.org'},{n:'Zillow',u:'https://www.zillow.com'},{n:'Redfin',u:'https://www.redfin.com'},{n:'Realtor',u:'https://www.realtor.com'},{n:'Trulia',u:'https://www.trulia.com'},{n:'Craigslist',u:'https://www.craigslist.org'},{n:'Nextdoor',u:'https://nextdoor.com'},{n:'Angi',u:'https://www.angi.com'},{n:'TaskRabbit',u:'https://www.taskrabbit.com'},{n:'Thumbtack',u:'https://www.thumbtack.com'},{n:'Rover',u:'https://www.rover.com'},{n:'Care.com',u:'https://www.care.com'},{n:'LifeLock',u:'https://www.lifelock.com'}
-]},
-{id:'ai',emoji:'🤖',name:'AI',sites:[
-{n:'ChatGPT',u:'https://chat.openai.com'},{n:'Claude',u:'https://claude.ai'},{n:'Gemini',u:'https://gemini.google.com'},{n:'Perplexity',u:'https://www.perplexity.ai'},{n:'Midjourney',u:'https://www.midjourney.com'},{n:'GitHub Copilot',u:'https://github.com/features/copilot'},{n:'Notion AI',u:'https://www.notion.so/product/ai'},{n:'Character.AI',u:'https://character.ai'},{n:'Poe',u:'https://poe.com'},{n:'Runway',u:'https://runwayml.com'},{n:'ElevenLabs',u:'https://elevenlabs.io'},{n:'Hugging Face',u:'https://huggingface.co'},{n:'Replicate',u:'https://replicate.com'},{n:'Stability AI',u:'https://stability.ai'},{n:'Anthropic',u:'https://www.anthropic.com'},{n:'OpenAI',u:'https://openai.com'},{n:'DeepSeek',u:'https://chat.deepseek.com'},{n:'Grok',u:'https://grok.com'},{n:'Mistral',u:'https://mistral.ai'},{n:'Cohere',u:'https://cohere.com'}
-]},
-{id:'transport',emoji:'🚕',name:'Transport',sites:[
-{n:'Uber',u:'https://www.uber.com'},{n:'Lyft',u:'https://www.lyft.com'},{n:'Via',u:'https://ridewithvia.com'},{n:'Turo',u:'https://turo.com'},{n:'Getaround',u:'https://www.getaround.com'},{n:'Zipcar',u:'https://www.zipcar.com'},{n:'Hertz',u:'https://www.hertz.com'},{n:'Enterprise',u:'https://www.enterprise.com'},{n:'Amtrak',u:'https://www.amtrak.com'},{n:'Megabus',u:'https://us.megabus.com'},{n:'FlixBus',u:'https://www.flixbus.com'},{n:'Google Maps',u:'https://maps.google.com'},{n:'Waze',u:'https://www.waze.com'},{n:'Apple Maps',u:'https://maps.apple.com'},{n:'Transit',u:'https://transitapp.com'},{n:'Citymapper',u:'https://citymapper.com'},{n:'ParkMobile',u:'https://parkmobile.io'},{n:'SpotHero',u:'https://spothero.com'},{n:'EVgo',u:'https://www.evgo.com'},{n:'ChargePoint',u:'https://www.chargepoint.com'}
-]},
-{id:'social',emoji:'💬',name:'Social',sites:[
-{n:'Facebook',u:'https://www.facebook.com'},{n:'Instagram',u:'https://www.instagram.com'},{n:'X (Twitter)',u:'https://x.com'},{n:'TikTok',u:'https://www.tiktok.com'},{n:'Snapchat',u:'https://www.snapchat.com'},{n:'Reddit',u:'https://www.reddit.com'},{n:'Pinterest',u:'https://www.pinterest.com'},{n:'LinkedIn',u:'https://www.linkedin.com'},{n:'Discord',u:'https://discord.com'},{n:'Threads',u:'https://www.threads.net'},{n:'Tumblr',u:'https://www.tumblr.com'},{n:'Mastodon',u:'https://mastodon.social'},{n:'Bluesky',u:'https://bsky.app'},{n:'WhatsApp',u:'https://web.whatsapp.com'},{n:'Telegram',u:'https://web.telegram.org'},{n:'Signal',u:'https://signal.org'},{n:'Clubhouse',u:'https://www.clubhouse.com'},{n:'Nextdoor',u:'https://nextdoor.com'},{n:'Meetup',u:'https://www.meetup.com'},{n:'Quora',u:'https://www.quora.com'}
-]},
-{id:'games',emoji:'🎮',name:'Games',sites:[
-{n:'Steam',u:'https://store.steampowered.com'},{n:'Epic Games',u:'https://store.epicgames.com'},{n:'PlayStation',u:'https://www.playstation.com'},{n:'Xbox',u:'https://www.xbox.com'},{n:'Nintendo',u:'https://www.nintendo.com'},{n:'Roblox',u:'https://www.roblox.com'},{n:'Minecraft',u:'https://www.minecraft.net'},{n:'Battle.net',u:'https://us.shop.battle.net'},{n:'Ubisoft',u:'https://www.ubisoft.com'},{n:'EA',u:'https://www.ea.com'},{n:'Rockstar',u:'https://www.rockstargames.com'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'IGN',u:'https://www.ign.com'},{n:'GameSpot',u:'https://www.gamespot.com'},{n:'Polygon',u:'https://www.polygon.com'},{n:'Kotaku',u:'https://kotaku.com'},{n:'Eurogamer',u:'https://www.eurogamer.net'},{n:'PC Gamer',u:'https://www.pcgamer.com'},{n:'GameFAQs',u:'https://gamefaqs.gamespot.com'},{n:'HowLongToBeat',u:'https://howlongtobeat.com'}
-]}
+{id:'finance',emoji:'💳',name:'Finance',sites:[{n:'PayPal',u:'https://www.paypal.com'},{n:'Venmo',u:'https://venmo.com'},{n:'Cash App',u:'https://cash.app'},{n:'Stripe',u:'https://stripe.com'},{n:'Square',u:'https://squareup.com'},{n:'Chase',u:'https://www.chase.com'},{n:'Bank of America',u:'https://www.bankofamerica.com'},{n:'Wells Fargo',u:'https://www.wellsfargo.com'},{n:'Citi',u:'https://www.citi.com'},{n:'Capital One',u:'https://www.capitalone.com'},{n:'Robinhood',u:'https://robinhood.com'},{n:'Coinbase',u:'https://www.coinbase.com'},{n:'Kraken',u:'https://www.kraken.com'},{n:'Fidelity',u:'https://www.fidelity.com'},{n:'Vanguard',u:'https://investor.vanguard.com'},{n:'NYSE',u:'https://www.nyse.com'},{n:'Nasdaq',u:'https://www.nasdaq.com'},{n:'IRS',u:'https://www.irs.gov'},{n:'Mint',u:'https://mint.intuit.com'},{n:'Zelle',u:'https://www.zellepay.com'}]},
+{id:'food',emoji:'🍔',name:'Food',sites:[{n:'DoorDash',u:'https://www.doordash.com'},{n:'Uber Eats',u:'https://www.ubereats.com'},{n:'Grubhub',u:'https://www.grubhub.com'},{n:'Postmates',u:'https://postmates.com'},{n:'Instacart',u:'https://www.instacart.com'},{n:'Whole Foods',u:'https://www.wholefoodsmarket.com'},{n:'Walmart Grocery',u:'https://grocery.walmart.com'},{n:'Kroger',u:'https://www.kroger.com'},{n:'Safeway',u:'https://www.safeway.com'},{n:"Trader Joe's",u:'https://www.traderjoes.com'},{n:"McDonald's",u:'https://www.mcdonalds.com'},{n:'Starbucks',u:'https://www.starbucks.com'},{n:'Chipotle',u:'https://www.chipotle.com'},{n:'Subway',u:'https://www.subway.com'},{n:'KFC',u:'https://www.kfc.com'},{n:'Taco Bell',u:'https://www.tacobell.com'},{n:'Burger King',u:'https://www.burgerking.com'},{n:'Pizza Hut',u:'https://www.pizzahut.com'},{n:"Domino's",u:'https://www.dominos.com'},{n:'Shake Shack',u:'https://shakeshack.com'}]},
+{id:'shop',emoji:'🛒',name:'Shopping',sites:[{n:'Amazon',u:'https://www.amazon.com'},{n:'eBay',u:'https://www.ebay.com'},{n:'Walmart',u:'https://www.walmart.com'},{n:'Target',u:'https://www.target.com'},{n:'Best Buy',u:'https://www.bestbuy.com'},{n:'Costco',u:'https://www.costco.com'},{n:'Etsy',u:'https://www.etsy.com'},{n:'Wish',u:'https://www.wish.com'},{n:'Temu',u:'https://www.temu.com'},{n:'AliExpress',u:'https://www.aliexpress.com'},{n:'Home Depot',u:'https://www.homedepot.com'},{n:"Lowe's",u:'https://www.lowes.com'},{n:'IKEA',u:'https://www.ikea.com/us/'},{n:'Wayfair',u:'https://www.wayfair.com'},{n:"Sam's Club",u:'https://www.samsclub.com'},{n:"Kohl's",u:'https://www.kohls.com'},{n:"Macy's",u:'https://www.macys.com'},{n:'Nordstrom',u:'https://www.nordstrom.com'},{n:"Bloomingdale's",u:'https://www.bloomingdales.com'},{n:'Saks',u:'https://www.saksfifthavenue.com'}]},
+{id:'fashion',emoji:'👕',name:'Fashion',sites:[{n:'Nike',u:'https://www.nike.com'},{n:'Adidas',u:'https://www.adidas.com/us'},{n:'Gap',u:'https://www.gap.com'},{n:'Old Navy',u:'https://oldnavy.gap.com'},{n:'H&M',u:'https://www2.hm.com/en_us/'},{n:'Zara',u:'https://www.zara.com/us/'},{n:'Forever 21',u:'https://www.forever21.com'},{n:'Uniqlo',u:'https://www.uniqlo.com/us/'},{n:"Levi's",u:'https://www.levi.com/US/'},{n:'Ralph Lauren',u:'https://www.ralphlauren.com'},{n:'Tommy Hilfiger',u:'https://usa.tommy.com'},{n:'Calvin Klein',u:'https://www.calvinklein.us'},{n:'Under Armour',u:'https://www.underarmour.com'},{n:'Puma',u:'https://us.puma.com'},{n:'Reebok',u:'https://www.reebok.com/us/'},{n:'New Balance',u:'https://www.newbalance.com'},{n:'Foot Locker',u:'https://www.footlocker.com'},{n:'ASOS',u:'https://www.asos.com/us/'},{n:'Shein',u:'https://us.shein.com'},{n:'Revolve',u:'https://www.revolve.com'}]},
+{id:'beauty',emoji:'💅',name:'Beauty & Health',sites:[{n:'Sephora',u:'https://www.sephora.com'},{n:'Ulta Beauty',u:'https://www.ulta.com'},{n:'CVS',u:'https://www.cvs.com'},{n:'Walgreens',u:'https://www.walgreens.com'},{n:'Rite Aid',u:'https://www.riteaid.com'},{n:'WebMD',u:'https://www.webmd.com'},{n:'Mayo Clinic',u:'https://www.mayoclinic.org'},{n:'Cleveland Clinic',u:'https://my.clevelandclinic.org'},{n:'Johns Hopkins',u:'https://www.hopkinsmedicine.org'},{n:'Healthline',u:'https://www.healthline.com'},{n:'Zocdoc',u:'https://www.zocdoc.com'},{n:'GoodRx',u:'https://www.goodrx.com'},{n:'Glossier',u:'https://www.glossier.com'},{n:'MAC Cosmetics',u:'https://www.maccosmetics.com'},{n:'Estée Lauder',u:'https://www.esteelauder.com'},{n:'Clinique',u:'https://www.clinique.com'},{n:"L'Oreal",u:'https://www.lorealparisusa.com'},{n:'Fenty Beauty',u:'https://fentybeauty.com'},{n:'Rare Beauty',u:'https://www.rarebeauty.com'},{n:'Drunk Elephant',u:'https://www.drunkelephant.com'}]},
+{id:'fun',emoji:'🎬',name:'Entertainment',sites:[{n:'Netflix',u:'https://www.netflix.com'},{n:'Hulu',u:'https://www.hulu.com'},{n:'Disney+',u:'https://www.disneyplus.com'},{n:'HBO Max',u:'https://www.max.com'},{n:'Prime Video',u:'https://www.primevideo.com'},{n:'Apple TV+',u:'https://tv.apple.com'},{n:'Peacock',u:'https://www.peacocktv.com'},{n:'Paramount+',u:'https://www.paramountplus.com'},{n:'YouTube',u:'https://www.youtube.com'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'Spotify',u:'https://open.spotify.com'},{n:'Apple Music',u:'https://music.apple.com'},{n:'SoundCloud',u:'https://soundcloud.com'},{n:'Pandora',u:'https://www.pandora.com'},{n:'Tidal',u:'https://tidal.com'},{n:'IMDb',u:'https://www.imdb.com'},{n:'Rotten Tomatoes',u:'https://www.rottentomatoes.com'},{n:'Metacritic',u:'https://www.metacritic.com'},{n:'Letterboxd',u:'https://letterboxd.com'},{n:'IGN',u:'https://www.ign.com'}]},
+{id:'travel',emoji:'✈️',name:'Travel',sites:[{n:'Booking',u:'https://www.booking.com'},{n:'Expedia',u:'https://www.expedia.com'},{n:'Airbnb',u:'https://www.airbnb.com'},{n:'Kayak',u:'https://www.kayak.com'},{n:'Priceline',u:'https://www.priceline.com'},{n:'Tripadvisor',u:'https://www.tripadvisor.com'},{n:'United',u:'https://www.united.com'},{n:'Delta',u:'https://www.delta.com'},{n:'American Airlines',u:'https://www.aa.com'},{n:'Southwest',u:'https://www.southwest.com'},{n:'JetBlue',u:'https://www.jetblue.com'},{n:'Alaska Air',u:'https://www.alaskaair.com'},{n:'Spirit',u:'https://www.spirit.com'},{n:'Frontier',u:'https://www.flyfrontier.com'},{n:'Amtrak',u:'https://www.amtrak.com'},{n:'Greyhound',u:'https://www.greyhound.com'},{n:'Hertz',u:'https://www.hertz.com'},{n:'Avis',u:'https://www.avis.com'},{n:'Enterprise',u:'https://www.enterprise.com'},{n:'Budget',u:'https://www.budget.com'}]},
+{id:'edu',emoji:'📚',name:'Education',sites:[{n:'Coursera',u:'https://www.coursera.org'},{n:'edX',u:'https://www.edx.org'},{n:'Khan Academy',u:'https://www.khanacademy.org'},{n:'Udemy',u:'https://www.udemy.com'},{n:'Codecademy',u:'https://www.codecademy.com'},{n:'Duolingo',u:'https://www.duolingo.com'},{n:'Skillshare',u:'https://www.skillshare.com'},{n:'MIT OCW',u:'https://ocw.mit.edu'},{n:'Harvard Online',u:'https://online-learning.harvard.edu'},{n:'Stanford Online',u:'https://online.stanford.edu'},{n:'Berkeley Online',u:'https://www.unex.berkeley.edu'},{n:'Udacity',u:'https://www.udacity.com'},{n:'Pluralsight',u:'https://www.pluralsight.com'},{n:'LinkedIn Learning',u:'https://www.linkedin.com/learning/'},{n:'MasterClass',u:'https://www.masterclass.com'},{n:'Brilliant',u:'https://brilliant.org'},{n:'DataCamp',u:'https://www.datacamp.com'},{n:'freeCodeCamp',u:'https://www.freecodecamp.org'},{n:'W3Schools',u:'https://www.w3schools.com'},{n:'Stack Overflow',u:'https://stackoverflow.com'}]},
+{id:'hotels',emoji:'🏨',name:'Hotels & Rest',sites:[{n:'Airbnb',u:'https://www.airbnb.com'},{n:'Vrbo',u:'https://www.vrbo.com'},{n:'Marriott',u:'https://www.marriott.com'},{n:'Hilton',u:'https://www.hilton.com'},{n:'Hyatt',u:'https://www.hyatt.com'},{n:'IHG',u:'https://www.ihg.com'},{n:'Wyndham',u:'https://www.wyndhamhotels.com'},{n:'Choice Hotels',u:'https://www.choicehotels.com'},{n:'Best Western',u:'https://www.bestwestern.com'},{n:'Radisson',u:'https://www.radissonhotels.com'},{n:'Four Seasons',u:'https://www.fourseasons.com'},{n:'Ritz-Carlton',u:'https://www.ritzcarlton.com'},{n:'W Hotels',u:'https://www.marriott.com/w-hotels'},{n:'Westin',u:'https://www.marriott.com/westin'},{n:'Sheraton',u:'https://www.marriott.com/sheraton'},{n:'Holiday Inn',u:'https://www.ihg.com/holidayinn'},{n:'Motel 6',u:'https://www.motel6.com'},{n:'Hostelworld',u:'https://www.hostelworld.com'},{n:'Camping World',u:'https://www.campingworld.com'},{n:'KOA',u:'https://koa.com'}]},
+{id:'service',emoji:'⚙️',name:'Services',sites:[{n:'Google Maps',u:'https://maps.google.com'},{n:'Yelp',u:'https://www.yelp.com'},{n:'USPS',u:'https://www.usps.com'},{n:'UPS',u:'https://www.ups.com'},{n:'FedEx',u:'https://www.fedex.com'},{n:'DHL',u:'https://www.dhl.com/us-en/'},{n:'IRS',u:'https://www.irs.gov'},{n:'DMV',u:'https://www.dmv.org'},{n:'Zillow',u:'https://www.zillow.com'},{n:'Redfin',u:'https://www.redfin.com'},{n:'Realtor',u:'https://www.realtor.com'},{n:'Trulia',u:'https://www.trulia.com'},{n:'Craigslist',u:'https://www.craigslist.org'},{n:'Nextdoor',u:'https://nextdoor.com'},{n:'Angi',u:'https://www.angi.com'},{n:'TaskRabbit',u:'https://www.taskrabbit.com'},{n:'Thumbtack',u:'https://www.thumbtack.com'},{n:'Rover',u:'https://www.rover.com'},{n:'Care.com',u:'https://www.care.com'},{n:'LifeLock',u:'https://www.lifelock.com'}]},
+{id:'ai',emoji:'🤖',name:'AI',sites:[{n:'ChatGPT',u:'https://chat.openai.com'},{n:'Claude',u:'https://claude.ai'},{n:'Gemini',u:'https://gemini.google.com'},{n:'Perplexity',u:'https://www.perplexity.ai'},{n:'Midjourney',u:'https://www.midjourney.com'},{n:'GitHub Copilot',u:'https://github.com/features/copilot'},{n:'Notion AI',u:'https://www.notion.so/product/ai'},{n:'Character.AI',u:'https://character.ai'},{n:'Poe',u:'https://poe.com'},{n:'Runway',u:'https://runwayml.com'},{n:'ElevenLabs',u:'https://elevenlabs.io'},{n:'Hugging Face',u:'https://huggingface.co'},{n:'Replicate',u:'https://replicate.com'},{n:'Stability AI',u:'https://stability.ai'},{n:'Anthropic',u:'https://www.anthropic.com'},{n:'OpenAI',u:'https://openai.com'},{n:'DeepSeek',u:'https://chat.deepseek.com'},{n:'Grok',u:'https://grok.com'},{n:'Mistral',u:'https://mistral.ai'},{n:'Cohere',u:'https://cohere.com'}]},
+{id:'transport',emoji:'🚕',name:'Transport',sites:[{n:'Uber',u:'https://www.uber.com'},{n:'Lyft',u:'https://www.lyft.com'},{n:'Via',u:'https://ridewithvia.com'},{n:'Turo',u:'https://turo.com'},{n:'Getaround',u:'https://www.getaround.com'},{n:'Zipcar',u:'https://www.zipcar.com'},{n:'Hertz',u:'https://www.hertz.com'},{n:'Enterprise',u:'https://www.enterprise.com'},{n:'Amtrak',u:'https://www.amtrak.com'},{n:'Megabus',u:'https://us.megabus.com'},{n:'FlixBus',u:'https://www.flixbus.com'},{n:'Google Maps',u:'https://maps.google.com'},{n:'Waze',u:'https://www.waze.com'},{n:'Apple Maps',u:'https://maps.apple.com'},{n:'Transit',u:'https://transitapp.com'},{n:'Citymapper',u:'https://citymapper.com'},{n:'ParkMobile',u:'https://parkmobile.io'},{n:'SpotHero',u:'https://spothero.com'},{n:'EVgo',u:'https://www.evgo.com'},{n:'ChargePoint',u:'https://www.chargepoint.com'}]},
+{id:'social',emoji:'💬',name:'Social',sites:[{n:'Facebook',u:'https://www.facebook.com'},{n:'Instagram',u:'https://www.instagram.com'},{n:'X (Twitter)',u:'https://x.com'},{n:'TikTok',u:'https://www.tiktok.com'},{n:'Snapchat',u:'https://www.snapchat.com'},{n:'Reddit',u:'https://www.reddit.com'},{n:'Pinterest',u:'https://www.pinterest.com'},{n:'LinkedIn',u:'https://www.linkedin.com'},{n:'Discord',u:'https://discord.com'},{n:'Threads',u:'https://www.threads.net'},{n:'Tumblr',u:'https://www.tumblr.com'},{n:'Mastodon',u:'https://mastodon.social'},{n:'Bluesky',u:'https://bsky.app'},{n:'WhatsApp',u:'https://web.whatsapp.com'},{n:'Telegram',u:'https://web.telegram.org'},{n:'Signal',u:'https://signal.org'},{n:'Clubhouse',u:'https://www.clubhouse.com'},{n:'Nextdoor',u:'https://nextdoor.com'},{n:'Meetup',u:'https://www.meetup.com'},{n:'Quora',u:'https://www.quora.com'}]},
+{id:'games',emoji:'🎮',name:'Games',sites:[{n:'Steam',u:'https://store.steampowered.com'},{n:'Epic Games',u:'https://store.epicgames.com'},{n:'PlayStation',u:'https://www.playstation.com'},{n:'Xbox',u:'https://www.xbox.com'},{n:'Nintendo',u:'https://www.nintendo.com'},{n:'Roblox',u:'https://www.roblox.com'},{n:'Minecraft',u:'https://www.minecraft.net'},{n:'Battle.net',u:'https://us.shop.battle.net'},{n:'Ubisoft',u:'https://www.ubisoft.com'},{n:'EA',u:'https://www.ea.com'},{n:'Rockstar',u:'https://www.rockstargames.com'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'IGN',u:'https://www.ign.com'},{n:'GameSpot',u:'https://www.gamespot.com'},{n:'Polygon',u:'https://www.polygon.com'},{n:'Kotaku',u:'https://kotaku.com'},{n:'Eurogamer',u:'https://www.eurogamer.net'},{n:'PC Gamer',u:'https://www.pcgamer.com'},{n:'GameFAQs',u:'https://gamefaqs.gamespot.com'},{n:'HowLongToBeat',u:'https://howlongtobeat.com'}]}
 ]}};
 const LIB_STATE={region:'ru',activeCat:'all',query:''};
 
 /* ==========================================================
-   КАТЕГОРИИ (для поиска)
+   КАТЕГОРИИ (поиск)
    ========================================================== */
 const CATEGORIES=[
-{emoji:'🎬',name:'Кино и сериалы',sites:[{name:'Kinopoisk',url:'https://www.kinopoisk.ru/index.php?kp_query='},{name:'Filmix',url:'https://filmix.my/search/'},{name:'HDrezka',url:'https://rezka.ag/search/?q='},{name:'LordFilm',url:'https://lordfilm.la/index.php?do=search&story='},{name:'KinoGo',url:'https://kinoogo.zone/?s='},{name:'Иви',url:'https://www.ivi.ru/search/?q='},{name:'Okko',url:'https://okko.tv/search/'},{name:'Wink',url:'https://wink.ru/search?query='}]},
-{emoji:'🌸',name:'Аниме',sites:[{name:'Anilibria',url:'https://anilibria.tv/public/search.php?search='},{name:'AnimeGo',url:'https://animego.org/search/anime?q='},{name:'Shikimori',url:'https://shikimori.one/animes?search='},{name:'YummyAnime',url:'https://yummyanime.tv/search/'},{name:'AnimeVost',url:'https://animevost.org/?s='}]},
-{emoji:'⚽',name:'Спорт',sites:[{name:'Sports.ru',url:'https://www.sports.ru/search/?q='},{name:'Championat',url:'https://www.championat.com/search/?q='},{name:'Soccer.ru',url:'https://www.soccer.ru/search?q='},{name:'Sportbox',url:'https://news.sportbox.ru/search?q='},{name:'Матч ТВ',url:'https://matchtv.ru/search/?query='}]},
-{emoji:'🎮',name:'Игры',sites:[{name:'Steam',url:'https://store.steampowered.com/search/?term='},{name:'StopGame',url:'https://stopgame.ru/search?q='},{name:'Игромания',url:'https://www.igromania.ru/search/?q='},{name:'DTF',url:'https://dtf.ru/search/v2/content?q='}]},
-{emoji:'💰',name:'Криптовалюта',sites:[{name:'CoinMarketCap',url:'https://coinmarketcap.com/search/?q='},{name:'CoinGecko',url:'https://www.coingecko.com/en/search?query='},{name:'Binance',url:'https://www.binance.com/ru/search?q='},{name:'ForkLog',url:'https://forklog.com/?s='}]},
-{emoji:'🎵',name:'Музыка',sites:[{name:'Яндекс.Музыка',url:'https://music.yandex.ru/search?text='},{name:'Spotify',url:'https://open.spotify.com/search/'},{name:'SoundCloud',url:'https://soundcloud.com/search?q='},{name:'VK Музыка',url:'https://vk.com/audio?q='}]},
-{emoji:'📚',name:'Книги и обучение',sites:[{name:'Литрес',url:'https://www.litres.ru/search/?q='},{name:'Флибуста',url:'https://flibusta.is/booksearch?ask='},{name:'Хабр',url:'https://habr.com/ru/search/?q='},{name:'Coursera',url:'https://www.coursera.org/search?query='}]},
-{emoji:'📰',name:'Новости',sites:[{name:'Яндекс.Новости',url:'https://yandex.ru/news/search?text='},{name:'Lenta.ru',url:'https://lenta.ru/search?query='},{name:'РБК',url:'https://www.rbc.ru/search/?query='},{name:'РИА',url:'https://ria.ru/search/?query='}]},
-{emoji:'🍳',name:'Рецепты',sites:[{name:'Поварёшка',url:'https://povareshka.ru/?s='},{name:'ЕдимДома',url:'https://www.edimdoma.ru/search?q='},{name:'Гастрономъ',url:'https://www.gastronom.ru/search?query='}]},
-{emoji:'💼',name:'Работа',sites:[{name:'hh.ru',url:'https://hh.ru/search/vacancy?text='},{name:'SuperJob',url:'https://www.superjob.ru/vacancy/search/?keywords='},{name:'Работа.ру',url:'https://www.rabota.ru/vacancies?query='}]},
-{emoji:'🩺',name:'Здоровье',sites:[{name:'Rlsnet',url:'https://www.rlsnet.ru/search?query='},{name:'Здоровье Mail',url:'https://health.mail.ru/search/?q='},{name:'MedAboutMe',url:'https://medaboutme.ru/search/?q='}]},
-{emoji:'🚗',name:'Авто',sites:[{name:'Drive2',url:'https://www.drive2.ru/search/?text='},{name:'Drom',url:'https://www.drom.ru/search/?q='},{name:'Auto.ru',url:'https://auto.ru/search/?query='}]},
-{emoji:'✈️',name:'Путешествия',sites:[{name:'Aviasales',url:'https://www.aviasales.ru/search?q='},{name:'Ostrovok',url:'https://ostrovok.ru/search/?q='},{name:'Туту.ру',url:'https://www.tutu.ru/search/?q='}]},
-{emoji:'🛒',name:'Покупки',sites:[{name:'Ozon',url:'https://www.ozon.ru/search/?text='},{name:'Wildberries',url:'https://www.wildberries.ru/catalog/0/search.aspx?search='},{name:'Яндекс.Маркет',url:'https://market.yandex.ru/search?text='}]}
+{emoji:'🎬',name:'Кино и сериалы',sites:[{name:'Kinopoisk',url:'https://www.kinopoisk.ru/index.php?kp_query='},{name:'HDrezka',url:'https://rezka.ag/search/?q='},{name:'Иви',url:'https://www.ivi.ru/search/?q='},{name:'Okko',url:'https://okko.tv/search/'}]},
+{emoji:'🌸',name:'Аниме',sites:[{name:'Anilibria',url:'https://anilibria.tv/public/search.php?search='},{name:'AnimeGo',url:'https://animego.org/search/anime?q='},{name:'Shikimori',url:'https://shikimori.one/animes?search='}]},
+{emoji:'⚽',name:'Спорт',sites:[{name:'Sports.ru',url:'https://www.sports.ru/search/?q='},{name:'Championat',url:'https://www.championat.com/search/?q='}]},
+{emoji:'🎮',name:'Игры',sites:[{name:'Steam',url:'https://store.steampowered.com/search/?term='},{name:'StopGame',url:'https://stopgame.ru/search?q='}]},
+{emoji:'💰',name:'Криптовалюта',sites:[{name:'CoinMarketCap',url:'https://coinmarketcap.com/search/?q='},{name:'CoinGecko',url:'https://www.coingecko.com/en/search?query='}]},
+{emoji:'🎵',name:'Музыка',sites:[{name:'Яндекс.Музыка',url:'https://music.yandex.ru/search?text='},{name:'Spotify',url:'https://open.spotify.com/search/'}]},
+{emoji:'📚',name:'Книги и обучение',sites:[{name:'Литрес',url:'https://www.litres.ru/search/?q='},{name:'Хабр',url:'https://habr.com/ru/search/?q='}]},
+{emoji:'📰',name:'Новости',sites:[{name:'Яндекс.Новости',url:'https://yandex.ru/news/search?text='},{name:'Lenta.ru',url:'https://lenta.ru/search?query='}]},
+{emoji:'🍳',name:'Рецепты',sites:[{name:'Поварёшка',url:'https://povareshka.ru/?s='},{name:'ЕдимДома',url:'https://www.edimdoma.ru/search?q='}]},
+{emoji:'💼',name:'Работа',sites:[{name:'hh.ru',url:'https://hh.ru/search/vacancy?text='},{name:'SuperJob',url:'https://www.superjob.ru/vacancy/search/?keywords='}]},
+{emoji:'🩺',name:'Здоровье',sites:[{name:'Rlsnet',url:'https://www.rlsnet.ru/search?query='},{name:'Здоровье Mail',url:'https://health.mail.ru/search/?q='}]},
+{emoji:'🚗',name:'Авто',sites:[{name:'Drive2',url:'https://www.drive2.ru/search/?text='},{name:'Drom',url:'https://www.drom.ru/search/?q='}]},
+{emoji:'✈️',name:'Путешествия',sites:[{name:'Aviasales',url:'https://www.aviasales.ru/search?q='},{name:'Ostrovok',url:'https://ostrovok.ru/search/?q='}]},
+{emoji:'🛒',name:'Покупки',sites:[{name:'Ozon',url:'https://www.ozon.ru/search/?text='},{name:'Wildberries',url:'https://www.wildberries.ru/catalog/0/search.aspx?search='}]}
 ];
 
 /* ==========================================================
-   НАСТРОЙКИ/ЯЗЫК
+   ЯЗЫКИ
    ========================================================== */
 const SETTINGS_KEY='zero_settings';
 const LANG_PACKS={
-ru:{tagline:'Минимализм. Скорость. Приватность.',bigSearchPlaceholder:'Спросите Zero или введите адрес',bookmarksTitle:'Мои закладки',bookmarksCount:['закладка','закладки','закладок'],searchInProgress:'Ищем в интернете...',categoriesTitle:'Поиск по категориям',ytTitle:'Видео на YouTube',webTitle:'Веб-результаты',wikiTitle:'Из Википедии',found:'Найдено',results:'результатов',sitesFound:'сайтов',addBookmark:'Добавлено в закладки',removeBookmark:'Удалено из закладок',themeDark:'Тёмная',themeLight:'Светлая',themeAuto:'Системная',historyCount:['запись','записи','записей'],today:'Сегодня',yesterday:'Вчера',downloadsCount:['файл','файла','файлов'],exportDone:'Закладки экспортированы',importDone:'Закладки импортированы',importError:'Ошибка импорта',cleared:'Закладки очищены',allCleared:'Все данные очищены',resetDone:'Настройки сброшены',cookiesCleared:'Cookies очищены',webFallback:'Открыть поиск напрямую:',labelLang:'Язык интерфейса',labelTheme:'Тема оформления'},
-en:{tagline:'Minimalism. Speed. Privacy.',bigSearchPlaceholder:'Ask Zero or enter address',bookmarksTitle:'My bookmarks',bookmarksCount:['bookmark','bookmarks','bookmarks'],searchInProgress:'Searching...',categoriesTitle:'Search by category',ytTitle:'YouTube videos',webTitle:'Web results',wikiTitle:'From Wikipedia',found:'Found',results:'results',sitesFound:'sites',addBookmark:'Added to bookmarks',removeBookmark:'Removed from bookmarks',themeDark:'Dark',themeLight:'Light',themeAuto:'System',historyCount:['entry','entries','entries'],today:'Today',yesterday:'Yesterday',downloadsCount:['file','files','files'],exportDone:'Bookmarks exported',importDone:'Bookmarks imported',importError:'Import error',cleared:'Bookmarks cleared',allCleared:'All data cleared',resetDone:'Settings reset',cookiesCleared:'Cookies cleared',webFallback:'Open search directly:',labelLang:'Interface language',labelTheme:'Theme'}
+ru:{tagline:'Минимализм. Скорость. Приватность.',bigSearchPlaceholder:'Спросите Zero или введите адрес',bookmarksTitle:'Мои закладки',bookmarksCount:['закладка','закладки','закладок'],searchInProgress:'Ищем в интернете...',categoriesTitle:'Поиск по категориям',ytTitle:'Видео на YouTube',webTitle:'Веб-результаты',wikiTitle:'Из Википедии',found:'Найдено',results:'результатов',sitesFound:'сайтов',addBookmark:'Добавлено в закладки',removeBookmark:'Удалено из закладок',themeDark:'Тёмная',themeLight:'Светлая',themeAuto:'Системная',historyCount:['запись','записи','записей'],today:'Сегодня',yesterday:'Вчера',downloadsCount:['файл','файла','файлов'],exportDone:'Закладки экспортированы',importDone:'Закладки импортированы',importError:'Ошибка импорта',cleared:'Закладки очищены',allCleared:'Все данные очищены',resetDone:'Настройки сброшены',cookiesCleared:'Cookies очищены',webFallback:'Открыть поиск напрямую:',labelLang:'Язык интерфейса',labelTheme:'Тема оформления',tabsTitle:'Вкладки',tabsClose:'Закрыть все',tabsNew:'+ Новая вкладка',tabsActive:'активна',favoritesTitle:'Из закладок',tabsEmpty:'Нет открытых вкладок',tab:['вкладка','вкладки','вкладок']},
+en:{tagline:'Minimalism. Speed. Privacy.',bigSearchPlaceholder:'Ask Zero or enter address',bookmarksTitle:'My bookmarks',bookmarksCount:['bookmark','bookmarks','bookmarks'],searchInProgress:'Searching...',categoriesTitle:'Search by category',ytTitle:'YouTube videos',webTitle:'Web results',wikiTitle:'From Wikipedia',found:'Found',results:'results',sitesFound:'sites',addBookmark:'Added to bookmarks',removeBookmark:'Removed from bookmarks',themeDark:'Dark',themeLight:'Light',themeAuto:'System',historyCount:['entry','entries','entries'],today:'Today',yesterday:'Yesterday',downloadsCount:['file','files','files'],exportDone:'Bookmarks exported',importDone:'Bookmarks imported',importError:'Import error',cleared:'Bookmarks cleared',allCleared:'All data cleared',resetDone:'Settings reset',cookiesCleared:'Cookies cleared',webFallback:'Open search directly:',labelLang:'Interface language',labelTheme:'Theme',tabsTitle:'Tabs',tabsClose:'Close all',tabsNew:'+ New tab',tabsActive:'active',favoritesTitle:'From bookmarks',tabsEmpty:'No open tabs',tab:['tab','tabs','tabs']}
 };
 const LANG_NAMES={ru:{name:'Русский',flag:'🇷🇺'},en:{name:'English',flag:'🇬🇧'}};
 const THEMES=['dark','light','auto'];
@@ -703,7 +648,109 @@ const state={currentUrl:null,currentTitle:'',bookmarks:[],browsingHistory:[],dow
 const CORS_PROXIES=['https://api.allorigins.win/raw?url=','https://api.codetabs.com/v1/proxy?quest=','https://corsproxy.io/?url=','https://cors.eu.org/'];
 
 /* ==========================================================
-   НАСТРОЙКИ — функции
+   ВКЛАДКИ — РЕАЛЬНЫЕ
+   ========================================================== */
+const TABS_KEY='zero_tabs';
+const ACTIVE_TAB_KEY='zero_active_tab';
+let tabs=[];
+let activeTabId=null;
+
+function loadTabs(){
+  try{
+    const r=localStorage.getItem(TABS_KEY);
+    tabs=r?JSON.parse(r):[];
+    if(!Array.isArray(tabs))tabs=[];
+  }catch(e){tabs=[];}
+  try{
+    activeTabId=localStorage.getItem(ACTIVE_TAB_KEY)||null;
+  }catch(e){activeTabId=null;}
+  if(tabs.length===0){
+    const t=makeTabObj('zero://home','Новая вкладка');
+    tabs=[t];activeTabId=t.id;
+    saveTabs();
+  }
+  if(!activeTabId||!tabs.find(t=>t.id===activeTabId)){
+    activeTabId=tabs[0].id;
+    saveTabs();
+  }
+}
+function makeTabObj(url,title){
+  return {
+    id:'t_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
+    url:url||'zero://home',
+    title:title||'Новая вкладка',
+    created:Date.now()
+  };
+}
+function saveTabs(){
+  try{
+    localStorage.setItem(TABS_KEY,JSON.stringify(tabs.slice(0,30)));
+    if(activeTabId)localStorage.setItem(ACTIVE_TAB_KEY,activeTabId);
+  }catch(e){}
+}
+function getActiveTab(){return tabs.find(t=>t.id===activeTabId)||tabs[0];}
+function createTab(url,title){
+  const t=makeTabObj(url||'zero://home',title||'Новая вкладка');
+  tabs.unshift(t);
+  if(tabs.length>30)tabs.length=30;
+  activeTabId=t.id;
+  saveTabs();
+  return t;
+}
+function switchTab(id){
+  if(id===activeTabId)return;
+  const t=tabs.find(x=>x.id===id);
+  if(!t)return;
+  activeTabId=id;
+  saveTabs();
+  if(t.url&&t.url!=='zero://home'&&t.url!=='about:blank'){
+    if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl(t.url);
+  }else{
+    if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl('file:///android_asset/index.html');
+  }
+}
+function closeTab(id){
+  const idx=tabs.findIndex(x=>x.id===id);
+  if(idx<0)return;
+  tabs.splice(idx,1);
+  if(tabs.length===0){
+    const nt=makeTabObj('zero://home','Новая вкладка');
+    tabs=[nt];activeTabId=nt.id;
+    saveTabs();
+    if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl('file:///android_asset/index.html');
+    return;
+  }
+  if(id===activeTabId){
+    activeTabId=tabs[0].id;
+    saveTabs();
+    const t=tabs[0];
+    if(t.url&&t.url!=='zero://home'&&t.url!=='about:blank'){
+      if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl(t.url);
+    }else{
+      if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl('file:///android_asset/index.html');
+    }
+  }else{
+    saveTabs();
+  }
+}
+function closeAllTabs(){
+  const nt=makeTabObj('zero://home','Новая вкладка');
+  tabs=[nt];activeTabId=nt.id;
+  saveTabs();
+  if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl('file:///android_asset/index.html');
+}
+function updateActiveTabUrl(url,title){
+  const t=getActiveTab();
+  if(!t)return;
+  if(url)t.url=url;
+  if(title)t.title=title;
+  else if(url&&(!t.title||t.title==='Новая вкладка'))t.title=hostOf(url);
+  saveTabs();
+}
+function pluralTabs(n){return pluralN(n,T().tab);}
+
+/* ==========================================================
+   НАСТРОЙКИ
    ========================================================== */
 function loadSettings(){try{const r=localStorage.getItem(SETTINGS_KEY);if(r){const p=JSON.parse(r);if(p.lang&&LANG_PACKS[p.lang])settings.lang=p.lang;if(p.theme&&THEMES.includes(p.theme))settings.theme=p.theme;}}catch(e){}}
 function saveSettings(){try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}catch(e){}}
@@ -742,7 +789,7 @@ function updateDownloadsCount(){const el=$('#downloadsCount');if(!el)return;el.t
 /* ==========================================================
    RIPPLE
    ========================================================== */
-document.addEventListener('pointerdown',e=>{const el=e.target.closest('.tile,.tab-item,.bm-del,.hist-del,.dl-del,.head-action,.cat-link,.settings-item,.picker-option,.new-tab-btn,.lib-chip,.lib-site,.lib-cat-pill,.lib-open-btn,.maps-btn,.maps-layer-btn,.weather-card');if(!el)return;const r=el.getBoundingClientRect();const size=Math.max(r.width,r.height)*2.2;const s=document.createElement('span');s.className='ripple';s.style.width=s.style.height=size+'px';s.style.left=(e.clientX-r.left-size/2)+'px';s.style.top=(e.clientY-r.top-size/2)+'px';el.appendChild(s);setTimeout(()=>s.remove(),800);},{passive:true});
+document.addEventListener('pointerdown',e=>{const el=e.target.closest('.tile,.tab-item,.bm-del,.hist-del,.dl-del,.head-action,.cat-link,.settings-item,.picker-option,.new-tab-btn,.lib-chip,.lib-site,.lib-cat-pill,.lib-open-btn,.maps-btn,.maps-layer-btn,.weather-card,.fav-item,.tab-close,.sheet-tabs-close-all');if(!el)return;const r=el.getBoundingClientRect();const size=Math.max(r.width,r.height)*2.2;const s=document.createElement('span');s.className='ripple';s.style.width=s.style.height=size+'px';s.style.left=(e.clientX-r.left-size/2)+'px';s.style.top=(e.clientY-r.top-size/2)+'px';el.appendChild(s);setTimeout(()=>s.remove(),800);},{passive:true});
 
 /* ==========================================================
    УТИЛИТЫ
@@ -772,9 +819,14 @@ function showView(name){
 }
 
 /* ==========================================================
-   ОТКРЫТИЕ URL
+   ОТКРЫТИЕ URL — с обновлением активной вкладки
    ========================================================== */
-function openExternal(url){if(!url)return;if(window.ZeroMain&&window.ZeroMain.openUrl){window.ZeroMain.openUrl(url);}else{window.open(url,'_blank','noopener');}}
+function openExternal(url){
+  if(!url)return;
+  updateActiveTabUrl(url);
+  if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl(url);
+  else window.open(url,'_blank','noopener');
+}
 
 /* ==========================================================
    ПОГОДА
@@ -801,11 +853,7 @@ async function loadWeather(){
       });
       lat=pos.coords.latitude;lon=pos.coords.longitude;
     }catch(e){
-      try{
-        const r=await fetch('https://ipapi.co/json/');
-        const d=await r.json();
-        lat=d.latitude;lon=d.longitude;city=d.city;
-      }catch(e2){return;}
+      try{const r=await fetch('https://ipapi.co/json/');const d=await r.json();lat=d.latitude;lon=d.longitude;city=d.city;}catch(e2){return;}
     }
     if(lat===null||lon===null)return;
     const wUrl='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&timezone=auto';
@@ -839,7 +887,7 @@ function renderWeather(data,city){
 }
 
 /* ==========================================================
-   КАРТЫ (Leaflet + OpenStreetMap)
+   КАРТЫ — БЕЗ ПОДПИСИ
    ========================================================== */
 let leafletLoaded=false;
 let mapInstance=null;
@@ -847,17 +895,16 @@ let currentTileLayer=null;
 let currentMarker=null;
 let currentLayerKey='osm';
 const TILE_LAYERS={
-  osm:{url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',attr:'© OpenStreetMap contributors',max:19},
-  sat:{url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',attr:'© Esri, Maxar, Earthstar Geographics',max:19},
-  dark:{url:'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',attr:'© OpenStreetMap, © CARTO',max:20}
+  osm:{url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',attr:'',max:19},
+  sat:{url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',attr:'',max:19},
+  dark:{url:'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',attr:'',max:20}
 };
 function loadLeaflet(){
   return new Promise((resolve,reject)=>{
     if(window.L){leafletLoaded=true;return resolve();}
     if(!document.getElementById('leaflet-css')){
       const link=document.createElement('link');
-      link.id='leaflet-css';
-      link.rel='stylesheet';
+      link.id='leaflet-css';link.rel='stylesheet';
       link.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
       document.head.appendChild(link);
     }
@@ -874,26 +921,22 @@ function setTileLayer(key){
   if(currentTileLayer)mapInstance.removeLayer(currentTileLayer);
   currentTileLayer=L.tileLayer(cfg.url,{attribution:cfg.attr,maxZoom:cfg.max,subdomains:'abc'}).addTo(mapInstance);
   currentLayerKey=key;
-  document.querySelectorAll('.maps-layer-btn').forEach(b=>{
-    b.classList.toggle('on',b.dataset.layer===key);
-  });
+  document.querySelectorAll('.maps-layer-btn').forEach(b=>{b.classList.toggle('on',b.dataset.layer===key);});
 }
 async function openMaps(){
   showView('maps');
   if(!mapInstance){
-    try{
-      await loadLeaflet();
-    }catch(e){
+    try{await loadLeaflet();}catch(e){
       $('#mapContainer').innerHTML='<div style="padding:40px 20px;text-align:center;color:#8b8b96;font-size:14px">Не удалось загрузить карты.<br>Проверьте подключение к интернету.</div>';
       return;
     }
-    if(!window.L){return;}
+    if(!window.L)return;
     try{
       mapInstance=L.map('mapContainer',{
         center:[55.7558,37.6173],
         zoom:10,
         zoomControl:false,
-        attributionControl:true
+        attributionControl:false
       });
       L.control.zoom({position:'bottomleft'}).addTo(mapInstance);
       setTileLayer('osm');
@@ -921,9 +964,7 @@ async function mapSearch(q){
       const lat=parseFloat(data[0].lat);
       const lon=parseFloat(data[0].lon);
       mapGoTo(lat,lon,14,data[0].display_name);
-    }else{
-      flashMessage('Место не найдено');
-    }
+    }else flashMessage('Место не найдено');
   }catch(e){flashMessage('Ошибка поиска');}
 }
 function mapLocate(){
@@ -932,18 +973,13 @@ function mapLocate(){
   flashMessage('Определяем...');
   navigator.geolocation.getCurrentPosition(pos=>{
     mapGoTo(pos.coords.latitude,pos.coords.longitude,16,'Вы здесь');
-  },err=>{
-    flashMessage('Не удалось определить');
-  },{enableHighAccuracy:true,timeout:8000,maximumAge:60000});
+  },err=>{flashMessage('Не удалось определить');},{enableHighAccuracy:true,timeout:8000,maximumAge:60000});
 }
 $('#openMapsBtn').addEventListener('click',openMaps);
 $('#mapCloseBtn').addEventListener('click',()=>showView('home'));
 $('#mapLocateBtn').addEventListener('click',mapLocate);
 $('#mapSearch').addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    const v=e.target.value.trim();
-    if(v){mapSearch(v);e.target.value='';}
-  }
+  if(e.key==='Enter'){const v=e.target.value.trim();if(v){mapSearch(v);e.target.value='';}}
 });
 $('#mapsLayers').addEventListener('click',e=>{
   const b=e.target.closest('.maps-layer-btn');
@@ -952,7 +988,7 @@ $('#mapsLayers').addEventListener('click',e=>{
 });
 
 /* ==========================================================
-   БИБЛИОТЕКА
+   БИБЛИОТЕКА — рендер
    ========================================================== */
 function showLibrary(goKey){
   showView('library');
@@ -988,8 +1024,7 @@ function renderLibCatsScroll(){
   w.querySelectorAll('.lib-cat-pill').forEach(b=>{
     b.addEventListener('click',()=>{
       LIB_STATE.activeCat=b.dataset.cat;
-      renderLibCatsScroll();
-      renderLibrary();
+      renderLibCatsScroll();renderLibrary();
     });
   });
 }
@@ -1001,45 +1036,26 @@ function renderLibrary(){
   lib.groups.forEach((g,gi)=>{
     if(LIB_STATE.activeCat!=='all'&&LIB_STATE.activeCat!==g.id)return;
     let sites=g.sites;
-    if(q){
-      sites=sites.filter(s=>s.n.toLowerCase().includes(q)||hostOf(s.u).toLowerCase().includes(q));
-    }
+    if(q)sites=sites.filter(s=>s.n.toLowerCase().includes(q)||hostOf(s.u).toLowerCase().includes(q));
     if(!sites.length)return;
     html+='<div class="lib-group" style="animation-delay:'+(gi*0.04).toFixed(2)+'s">'+
-      '<div class="lib-group-head">'+
-        '<div class="lib-group-emoji">'+g.emoji+'</div>'+
-        '<div class="lib-group-name">'+escapeHtml(g.name)+'</div>'+
-        '<div class="lib-group-count">'+sites.length+'</div>'+
-      '</div>'+
+      '<div class="lib-group-head"><div class="lib-group-emoji">'+g.emoji+'</div><div class="lib-group-name">'+escapeHtml(g.name)+'</div><div class="lib-group-count">'+sites.length+'</div></div>'+
       '<div class="lib-sites-grid">'+
-        sites.map((s,si)=>'<button class="lib-site" data-url="'+escapeHtml(s.u)+'">'+
-          '<span class="lib-site-fav '+gradFor(gi*7+si)+'">'+escapeHtml(siteInitial(s.n))+'</span>'+
-          '<span class="lib-site-name">'+escapeHtml(s.n)+'</span>'+
-        '</button>').join('')+
-      '</div>'+
-    '</div>';
+      sites.map((s,si)=>'<button class="lib-site" data-url="'+escapeHtml(s.u)+'"><span class="lib-site-fav '+gradFor(gi*7+si)+'">'+escapeHtml(siteInitial(s.n))+'</span><span class="lib-site-name">'+escapeHtml(s.n)+'</span></button>').join('')+
+      '</div></div>';
   });
   if(!html)html='<div class="lib-empty">Ничего не найдено</div>';
   w.innerHTML=html;
-  w.querySelectorAll('.lib-site').forEach(b=>{
-    b.addEventListener('click',()=>openExternal(b.dataset.url));
-  });
+  w.querySelectorAll('.lib-site').forEach(b=>b.addEventListener('click',()=>openExternal(b.dataset.url)));
 }
-$('#libSearch').addEventListener('input',e=>{
-  LIB_STATE.query=e.target.value;
-  renderLibrary();
-});
+$('#libSearch').addEventListener('input',e=>{LIB_STATE.query=e.target.value;renderLibrary();});
 $('#regionTabs').addEventListener('click',e=>{
   const b=e.target.closest('.region-tab');
   if(!b)return;
   LIB_STATE.region=b.dataset.region;
-  LIB_STATE.activeCat='all';
-  LIB_STATE.query='';
+  LIB_STATE.activeCat='all';LIB_STATE.query='';
   $('#libSearch').value='';
-  renderRegionTabs();
-  renderLibCatsScroll();
-  renderLibrary();
-  updateLibSub();
+  renderRegionTabs();renderLibCatsScroll();renderLibrary();updateLibSub();
 });
 $('#openLibBtn').addEventListener('click',()=>showLibrary());
 $('#libBackBtn').addEventListener('click',()=>showView('home'));
@@ -1050,7 +1066,7 @@ $('#homeLibCard').addEventListener('click',e=>{
 });
 
 /* ==========================================================
-   КАТЕГОРИИ (HTML)
+   КАТЕГОРИИ — HTML
    ========================================================== */
 function buildCategoriesHTML(q){
   const enc=encodeURIComponent(q);
@@ -1066,23 +1082,21 @@ function buildCategoriesHTML(q){
    ПОИСК
    ========================================================== */
 async function searchWikipedia(q){try{const wl=settings.lang==='ru'?'ru':'en';const u='https://'+wl+'.wikipedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(q)+'&format=json&origin=*&srlimit=3';const r=await fetch(u);const d=await r.json();if(!d.query||!d.query.search)return[];return d.query.search.map(r=>({source:'wiki',engine:'Wikipedia',title:r.title,url:'https://'+wl+'.wikipedia.org/wiki/'+encodeURIComponent(r.title),desc:(r.snippet||'').replace(/<[^>]*>/g,''),icon:'W',grad:'g-e',badge:'Wikipedia'}));}catch(e){return[];}}
-async function searchDDGInstant(q){try{const u='https://api.duckduckgo.com/?q='+encodeURIComponent(q)+'&format=json&no_html=1&skip_disambig=1';const r=await fetch(u);const d=await r.json();const out=[];if(d.AbstractText&&d.AbstractURL){out.push({source:'web',engine:'DDG',title:d.Heading||q,url:d.AbstractURL,desc:d.AbstractText,icon:'D',grad:'g-c',badge:'DDG'});}if(d.RelatedTopics&&Array.isArray(d.RelatedTopics)){d.RelatedTopics.slice(0,8).forEach(t=>{if(t.FirstURL&&t.Text){out.push({source:'web',engine:'DDG',title:t.Text.split(' - ')[0]||t.Text,url:t.FirstURL,desc:t.Text,icon:'D',grad:'g-c',badge:'DDG'});}});}return out;}catch(e){return[];}}
-async function searchDDGHTML(q){try{const html=await fetchViaProxy('https://html.duckduckgo.com/html/?q='+encodeURIComponent(q)+'&kl=ru-ru');const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('.result').forEach(n=>{const a=n.querySelector('.result__a');const s=n.querySelector('.result__snippet');if(!a)return;let h=a.getAttribute('href')||'';if(h.startsWith('//duckduckgo.com/l/?uddg=')){try{const u=new URL('https:'+h);const r=u.searchParams.get('uddg');if(r)h=decodeURIComponent(r);}catch(e){}}if(!h.startsWith('http'))return;out.push({source:'web',engine:'DDG',title:a.textContent.trim(),url:h,desc:s?s.textContent.trim():'',icon:hostOf(h)[0]?hostOf(h)[0].toUpperCase():'?',grad:'g-c',badge:hostOf(h)});});return out;}catch(e){return[];}}
-async function searchBingHTML(q){try{const html=await fetchViaProxy('https://www.bing.com/search?q='+encodeURIComponent(q)+'&setlang=ru&cc=RU');const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('li.b_algo').forEach(li=>{const a=li.querySelector('h2 a');const d=li.querySelector('.b_caption p')||li.querySelector('p');if(!a||!a.href)return;out.push({source:'web',engine:'Bing',title:a.textContent.trim(),url:a.href,desc:d?d.textContent.trim():'',icon:hostOf(a.href)[0]?hostOf(a.href)[0].toUpperCase():'?',grad:'g-c',badge:hostOf(a.href)});});return out;}catch(e){return[];}}
-async function searchMojeekHTML(q){try{const html=await fetchViaProxy('https://www.mojeek.com/search?q='+encodeURIComponent(q));const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('ul.results-standard li').forEach(li=>{const a=li.querySelector('a.title')||li.querySelector('h2 a');const p=li.querySelector('p.s');if(!a||!a.href)return;out.push({source:'web',engine:'Mojeek',title:a.textContent.trim(),url:a.href,desc:p?p.textContent.trim():'',icon:hostOf(a.href)[0]?hostOf(a.href)[0].toUpperCase():'?',grad:'g-c',badge:hostOf(a.href)});});return out;}catch(e){return[];}}
-async function searchBraveHTML(q){try{const html=await fetchViaProxy('https://search.brave.com/search?q='+encodeURIComponent(q));const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('div.snippet').forEach(div=>{const a=div.querySelector('a.heading-serpresult, a.result-header');const p=div.querySelector('.snippet-description');if(!a||!a.href||!a.href.startsWith('http'))return;out.push({source:'web',engine:'Brave',title:a.textContent.trim(),url:a.href,desc:p?p.textContent.trim():'',icon:hostOf(a.href)[0]?hostOf(a.href)[0].toUpperCase():'?',grad:'g-c',badge:hostOf(a.href)});});return out;}catch(e){return[];}}
-async function searchGoogleHTML(q){try{const html=await fetchViaProxy('https://www.google.com/search?q='+encodeURIComponent(q)+'&hl=ru&num=15');const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('div.g, div[data-ved] > div > a[href^="http"]').forEach(node=>{const a=node.querySelector('a[href^="http"]')||(node.tagName==='A'?node:null);if(!a)return;const h=a.href;if(!h||!h.startsWith('http'))return;if(h.includes('google.com')||h.includes('gstatic'))return;const t=node.querySelector('h3')||a.querySelector('h3');const s=node.querySelector('span.aCOpRe, div.VwiC3b, span.st');out.push({source:'web',engine:'Google',title:t?t.textContent.trim():a.textContent.trim(),url:h,desc:s?s.textContent.trim():'',icon:hostOf(h)[0]?hostOf(h)[0].toUpperCase():'?',grad:'g-c',badge:hostOf(h)});});return out;}catch(e){return[];}}
-async function searchYandexHTML(q){try{const html=await fetchViaProxy('https://yandex.ru/search/?text='+encodeURIComponent(q));const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('li.serp-item, div.serp-item').forEach(li=>{const a=li.querySelector('a.organic__url, a.Link_theme_normal, h2 a');if(!a||!a.href)return;const h=a.href;if(!h.startsWith('http')||h.includes('yandex.'))return;const t=li.querySelector('h2')||a;const s=li.querySelector('.organic__content-wrapper, .text-container');out.push({source:'web',engine:'Яндекс',title:t?t.textContent.trim():a.textContent.trim(),url:h,desc:s?s.textContent.trim():'',icon:hostOf(h)[0]?hostOf(h)[0].toUpperCase():'?',grad:'g-c',badge:hostOf(h)});});return out;}catch(e){return[];}}
+async function searchDDGInstant(q){try{const u='https://api.duckduckgo.com/?q='+encodeURIComponent(q)+'&format=json&no_html=1&skip_disambig=1';const r=await fetch(u);const d=await r.json();const out=[];if(d.AbstractText&&d.AbstractURL)out.push({source:'web',engine:'DDG',title:d.Heading||q,url:d.AbstractURL,desc:d.AbstractText,icon:'D',grad:'g-c',badge:'DDG'});if(d.RelatedTopics&&Array.isArray(d.RelatedTopics)){d.RelatedTopics.slice(0,8).forEach(t=>{if(t.FirstURL&&t.Text)out.push({source:'web',engine:'DDG',title:t.Text.split(' - ')[0]||t.Text,url:t.FirstURL,desc:t.Text,icon:'D',grad:'g-c',badge:'DDG'});});}return out;}catch(e){return[];}}
+async function searchDDGHTML(q){try{const html=await fetchViaProxy('https://html.duckduckgo.com/html/?q='+encodeURIComponent(q)+'&kl=ru-ru');const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('.result').forEach(n=>{const a=n.querySelector('.result__a');const s=n.querySelector('.result__snippet');if(!a)return;let h=a.getAttribute('href')||'';if(h.startsWith('//duckduckgo.com/l/?uddg=')){try{const u=new URL('https:'+h);const r=u.searchParams.get('uddg');if(r)h=decodeURIComponent(r);}catch(e){}}if(!h.startsWith('http'))return;out.push({source:'web',engine:'DDG',title:a.textContent.trim(),url:h,desc:s?s.textContent.trim():'',icon:'D',grad:'g-c',badge:hostOf(h)});});return out;}catch(e){return[];}}
+async function searchBingHTML(q){try{const html=await fetchViaProxy('https://www.bing.com/search?q='+encodeURIComponent(q)+'&setlang=ru&cc=RU');const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('li.b_algo').forEach(li=>{const a=li.querySelector('h2 a');const d=li.querySelector('.b_caption p')||li.querySelector('p');if(!a||!a.href)return;out.push({source:'web',engine:'Bing',title:a.textContent.trim(),url:a.href,desc:d?d.textContent.trim():'',icon:'B',grad:'g-c',badge:hostOf(a.href)});});return out;}catch(e){return[];}}
+async function searchGoogleHTML(q){try{const html=await fetchViaProxy('https://www.google.com/search?q='+encodeURIComponent(q)+'&hl=ru&num=15');const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('div.g').forEach(node=>{const a=node.querySelector('a[href^="http"]');if(!a)return;const h=a.href;if(!h||h.includes('google.com'))return;const t=node.querySelector('h3');const s=node.querySelector('span.aCOpRe, div.VwiC3b');out.push({source:'web',engine:'Google',title:t?t.textContent.trim():a.textContent.trim(),url:h,desc:s?s.textContent.trim():'',icon:'G',grad:'g-c',badge:hostOf(h)});});return out;}catch(e){return[];}}
+async function searchYandexHTML(q){try{const html=await fetchViaProxy('https://yandex.ru/search/?text='+encodeURIComponent(q));const doc=new DOMParser().parseFromString(html,'text/html');const out=[];doc.querySelectorAll('li.serp-item, div.serp-item').forEach(li=>{const a=li.querySelector('a.organic__url, h2 a');if(!a||!a.href)return;const h=a.href;if(!h.startsWith('http')||h.includes('yandex.'))return;const t=li.querySelector('h2')||a;const s=li.querySelector('.organic__content-wrapper');out.push({source:'web',engine:'Яндекс',title:t?t.textContent.trim():a.textContent.trim(),url:h,desc:s?s.textContent.trim():'',icon:'Я',grad:'g-c',badge:hostOf(h)});});return out;}catch(e){return[];}}
 async function searchWebMulti(q){
   const reliable=await Promise.allSettled([searchWikipedia(q),searchDDGInstant(q)]);
-  const htmlEngines=await Promise.allSettled([searchDDGHTML(q),searchBingHTML(q),searchMojeekHTML(q),searchBraveHTML(q),searchGoogleHTML(q),searchYandexHTML(q)]);
+  const htmlEngines=await Promise.allSettled([searchDDGHTML(q),searchBingHTML(q),searchGoogleHTML(q),searchYandexHTML(q)]);
   const reliableResults=[];reliable.forEach(r=>{if(r.status==='fulfilled')reliableResults.push(...r.value);});
   const htmlResults=[];htmlEngines.forEach(r=>{if(r.status==='fulfilled')htmlResults.push(...r.value);});
   const seen=new Set();const merged=[];
   [...htmlResults,...reliableResults].forEach(item=>{const key=normalizeUrl(item.url);if(!key||seen.has(key))return;seen.add(key);merged.push(item);});
   return merged.slice(0,25);
 }
-const PIPED=['https://pipedapi.kavin.rocks','https://api.piped.private.coffee','https://pipedapi.adminforge.de','https://pipedapi.reallyaweso.me','https://pipedapi.drgns.space'];
+const PIPED=['https://pipedapi.kavin.rocks','https://api.piped.private.coffee','https://pipedapi.adminforge.de'];
 async function searchYouTube(q){for(const b of PIPED){try{const c=new AbortController();const timer=setTimeout(()=>c.abort(),6000);const r=await fetch(b+'/search?q='+encodeURIComponent(q)+'&filter=videos',{signal:c.signal});clearTimeout(timer);if(!r.ok)continue;const d=await r.json();if(!d||!d.items)continue;return d.items.slice(0,6).map(v=>({source:'youtube',engine:'YouTube',title:v.title,url:'https://www.youtube.com'+(v.url||''),desc:(v.uploaderName||'')+(v.views?' • '+formatViews(v.views):''),thumb:v.thumbnail,icon:'Y',grad:'g-a',badge:'YouTube'}));}catch(e){continue;}}return[];}
 function formatViews(n){if(!n&&n!==0)return'';if(n>=1e9)return(n/1e9).toFixed(1)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n+'';}
 
@@ -1098,8 +1112,7 @@ async function runSearch(q){
   const web=wR.status==='fulfilled'?wR.value:[];
   const yt=yR.status==='fulfilled'?yR.value:[];
   const wiki=wkR.status==='fulfilled'?wkR.value:[];
-  let html='';
-  html+='<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>'+t.webTitle+'</div>';
+  let html='<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>'+t.webTitle+'</div>';
   if(web.length){
     web.forEach((it,i)=>{
       const thumb='<div class="result-thumb '+(it.grad||'g-c')+'">'+(it.icon||'?')+'</div>';
@@ -1111,15 +1124,11 @@ async function runSearch(q){
   }
   if(yt.length){
     html+='<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>'+t.ytTitle+'</div>';
-    yt.forEach((it,i)=>{
-      html+='<div class="result" data-url="'+escapeHtml(it.url)+'" style="animation:up .5s var(--ease) '+(i*0.05).toFixed(2)+'s both"><div class="result-thumb"><img src="'+escapeHtml(it.thumb)+'" alt=""></div><div class="result-body"><div class="result-title">'+escapeHtml(it.title)+'</div><div class="result-url">'+escapeHtml(hostOf(it.url))+'</div><div class="result-desc">'+escapeHtml(it.desc||'')+'</div></div><div class="result-badge yt">YouTube</div></div>';
-    });
+    yt.forEach((it,i)=>{html+='<div class="result" data-url="'+escapeHtml(it.url)+'" style="animation:up .5s var(--ease) '+(i*0.05).toFixed(2)+'s both"><div class="result-thumb"><img src="'+escapeHtml(it.thumb)+'" alt=""></div><div class="result-body"><div class="result-title">'+escapeHtml(it.title)+'</div><div class="result-url">'+escapeHtml(hostOf(it.url))+'</div><div class="result-desc">'+escapeHtml(it.desc||'')+'</div></div><div class="result-badge yt">YouTube</div></div>';});
   }
   if(wiki.length){
     html+='<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>'+t.wikiTitle+'</div>';
-    wiki.forEach((it,i)=>{
-      html+='<div class="result" data-url="'+escapeHtml(it.url)+'" style="animation:up .5s var(--ease) '+(i*0.05).toFixed(2)+'s both"><div class="result-thumb '+it.grad+'">'+it.icon+'</div><div class="result-body"><div class="result-title">'+escapeHtml(it.title)+'</div><div class="result-url">'+escapeHtml(hostOf(it.url))+'</div><div class="result-desc">'+escapeHtml(it.desc||'')+'</div></div><div class="result-badge wiki">Wikipedia</div></div>';
-    });
+    wiki.forEach((it,i)=>{html+='<div class="result" data-url="'+escapeHtml(it.url)+'" style="animation:up .5s var(--ease) '+(i*0.05).toFixed(2)+'s both"><div class="result-thumb '+it.grad+'">'+it.icon+'</div><div class="result-body"><div class="result-title">'+escapeHtml(it.title)+'</div><div class="result-url">'+escapeHtml(hostOf(it.url))+'</div><div class="result-desc">'+escapeHtml(it.desc||'')+'</div></div><div class="result-badge wiki">Wikipedia</div></div>';});
   }
   html+=buildCategoriesHTML(q);
   rc.innerHTML=html;
@@ -1171,7 +1180,7 @@ function renderHistory(){
   list.innerHTML='';
   const q=($('#historySearch').value||'').toLowerCase().trim();
   let items=state.browsingHistory;
-  if(q){items=items.filter(i=>(i.title||'').toLowerCase().includes(q)||(i.url||'').toLowerCase().includes(q));}
+  if(q)items=items.filter(i=>(i.title||'').toLowerCase().includes(q)||(i.url||'').toLowerCase().includes(q));
   if(items.length===0){empty.style.display='';return;}
   empty.style.display='none';
   const now=new Date();
@@ -1241,9 +1250,7 @@ $('#itemTheme').addEventListener('click',()=>{
     {value:'dark',flag:'🌙',name:t.themeDark,selected:settings.theme==='dark'},
     {value:'light',flag:'☀️',name:t.themeLight,selected:settings.theme==='light'},
     {value:'auto',flag:'⚙️',name:t.themeAuto,selected:settings.theme==='auto'}
-  ],v=>{
-    settings.theme=v;saveSettings();applyTheme();applyLangAll();closeSheet();
-  });
+  ],v=>{settings.theme=v;saveSettings();applyTheme();applyLangAll();closeSheet();});
 });
 $('#itemImportBm').addEventListener('click',()=>{
   const input=document.createElement('input');
@@ -1277,9 +1284,10 @@ $('#itemClearAll').addEventListener('click',()=>{
   syncStar();updateBmCount();updateHistoryCount();updateDownloadsCount();flashMessage(T().allCleared);
 });
 $('#itemReset').addEventListener('click',()=>{
-  try{localStorage.removeItem(SETTINGS_KEY);localStorage.removeItem('zero_bookmarks');localStorage.removeItem('zero_history');localStorage.removeItem('zero_downloads');}catch(e){}
+  try{localStorage.removeItem(SETTINGS_KEY);localStorage.removeItem('zero_bookmarks');localStorage.removeItem('zero_history');localStorage.removeItem('zero_downloads');localStorage.removeItem(TABS_KEY);localStorage.removeItem(ACTIVE_TAB_KEY);}catch(e){}
   settings={lang:'ru',theme:'dark'};
   state.bookmarks=[];state.browsingHistory=[];state.downloads=[];
+  loadTabs();
   applyTheme();applyLangAll();syncStar();flashMessage(T().resetDone);
 });
 $('#clearHistoryBtn').addEventListener('click',()=>{state.browsingHistory=[];saveBrowsingHistory();renderHistory();});
@@ -1307,6 +1315,78 @@ function openPicker(title,opts,onSelect){
 }
 
 /* ==========================================================
+   ШТОРКА ВКЛАДОК — РЕАЛЬНАЯ
+   ========================================================== */
+function renderTabsSheet(){
+  const t=T();
+  let html='<div class="sheet-tabs-head"><div class="sheet-title">'+t.tabsTitle+' · '+tabs.length+' '+pluralTabs(tabs.length)+'</div>'+(tabs.length>1?'<button class="sheet-tabs-close-all" id="closeAllTabsBtn">'+t.tabsClose+'</button>':'')+'</div>';
+
+  /* Избранное (из закладок) — до 8 штук */
+  if(state.bookmarks.length>0){
+    html+='<div class="sheet-section-title">'+t.favoritesTitle+'</div>';
+    html+='<div class="fav-grid">';
+    state.bookmarks.slice(0,8).forEach((b,i)=>{
+      const h=hostOf(b.url);
+      html+='<button class="fav-item" data-fav-url="'+escapeHtml(b.url)+'"><div class="fav-icon '+GRADS[i%GRADS.length]+'">'+escapeHtml((h[0]||'?').toUpperCase())+'</div><div class="fav-label">'+escapeHtml(b.title||h)+'</div></button>';
+    });
+    html+='</div>';
+  }
+
+  /* Список вкладок */
+  tabs.forEach(tb=>{
+    const isActive=tb.id===activeTabId;
+    const h=tb.url==='zero://home'?'Zero':hostOf(tb.url);
+    html+='<div class="tab-item '+(isActive?'active':'')+'" data-tab-id="'+tb.id+'">'+
+      '<div class="tab-fav '+gradFor(tabs.indexOf(tb))+'">'+escapeHtml(siteInitial(tb.title||h))+'</div>'+
+      '<div class="tab-meta"><div class="tab-title">'+escapeHtml(tb.title||h)+'</div><div class="tab-url">'+escapeHtml(h)+'</div></div>'+
+      (isActive?'<div class="tab-active-badge">'+t.tabsActive+'</div>':'')+
+      '<button class="tab-close" data-close-tab="'+tb.id+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>'+
+    '</div>';
+  });
+
+  if(tabs.length===0){
+    html+='<div class="lib-empty">'+t.tabsEmpty+'</div>';
+  }
+
+  html+='<button class="new-tab-btn" id="newTabBtn">'+t.tabsNew+'</button>';
+  sheetContent.innerHTML=html;
+
+  /* Обработчики */
+  sheetContent.querySelectorAll('[data-tab-id]').forEach(el=>{
+    el.addEventListener('click',e=>{
+      if(e.target.closest('.tab-close'))return;
+      const id=el.dataset.tabId;
+      closeSheet();
+      setTimeout(()=>switchTab(id),150);
+    });
+  });
+  sheetContent.querySelectorAll('[data-close-tab]').forEach(b=>{
+    b.addEventListener('click',e=>{
+      e.stopPropagation();
+      closeTab(b.dataset.closeTab);
+      renderTabsSheet();
+    });
+  });
+  sheetContent.querySelectorAll('[data-fav-url]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      closeSheet();
+      setTimeout(()=>openExternal(b.dataset.favUrl),150);
+    });
+  });
+  const nb=$('#newTabBtn');
+  if(nb)nb.addEventListener('click',()=>{
+    createTab('zero://home','Новая вкладка');
+    closeSheet();
+    if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl('file:///android_asset/index.html');
+  });
+  const ca=$('#closeAllTabsBtn');
+  if(ca)ca.addEventListener('click',()=>{
+    closeAllTabs();
+    closeSheet();
+  });
+}
+
+/* ==========================================================
    ШТОРКА
    ========================================================== */
 function closeSheet(){scrim.classList.remove('show');sheet.classList.remove('show');}
@@ -1317,12 +1397,7 @@ scrim.addEventListener('click',closeSheet);
    ========================================================== */
 window.onToggleBookmark=function(){toggleBookmark();};
 window.onShowTabs=function(){
-  sheetContent.innerHTML='<div class="sheet-title">Вкладки</div><div class="tab-item" data-id="1"><div class="tab-fav g-e">Z</div><div class="tab-meta"><div class="tab-title">Новая вкладка</div><div class="tab-url">zero://home</div></div></div><button class="new-tab-btn" id="newTabBtn">+ Новая вкладка</button>';
-  sheetContent.querySelectorAll('.tab-item').forEach(item=>{
-    item.addEventListener('click',()=>{closeSheet();if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl('file:///android_asset/index.html');});
-  });
-  const nb=$('#newTabBtn');
-  if(nb)nb.addEventListener('click',()=>{closeSheet();if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl('file:///android_asset/index.html');});
+  renderTabsSheet();
   scrim.classList.add('show');sheet.classList.add('show');
 };
 window.onShowBookmarks=function(){showBookmarks();};
@@ -1331,7 +1406,11 @@ window.onShowMaps=function(){openMaps();};
 window.onShowMenu=function(){showSettings();};
 window.onNativeUrlChange=function(url,title){
   state.currentUrl=url;state.currentTitle=title||hostOf(url);
-  addToHistory(url,state.currentTitle);syncStar();
+  if(url&&!url.startsWith('file://')&&!url.startsWith('about:')&&url!=='zero://home'){
+    updateActiveTabUrl(url,state.currentTitle);
+    addToHistory(url,state.currentTitle);
+    syncStar();
+  }
 };
 
 /* ==========================================================
@@ -1358,6 +1437,7 @@ document.addEventListener('selectionchange',()=>{
    СТАРТ
    ========================================================== */
 loadSettings();
+loadTabs();
 applyTheme();
 applyLangAll();
 loadWeather();
