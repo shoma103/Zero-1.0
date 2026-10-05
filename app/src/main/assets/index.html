@@ -79,9 +79,11 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 .g-n{background:linear-gradient(135deg,#0891b2,#0e7490)}
 .g-o{background:linear-gradient(135deg,#db2777,#9d174d)}
 .g-p{background:linear-gradient(135deg,#ca8a04,#854d0e)}
-.lib-card{padding:20px;border-radius:22px;margin-top:26px;background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(236,72,153,.18),rgba(245,158,11,.16));border:1px solid rgba(167,139,250,.32);animation:up .8s var(--ease) .3s both;position:relative;overflow:hidden}
+.lib-card{padding:20px;border-radius:22px;margin-top:22px;background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(236,72,153,.18),rgba(245,158,11,.16));border:1px solid rgba(167,139,250,.32);animation:up .8s var(--ease) .3s both;position:relative;overflow:hidden}
+.lib-card.maps-card{background:linear-gradient(135deg,rgba(6,182,212,.22),rgba(59,130,246,.18))!important;border-color:rgba(103,232,249,.32)!important}
 .lib-card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .lib-card-icon{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#7c3aed,#ec4899);display:grid;place-items:center;flex:0 0 auto;box-shadow:0 10px 24px -10px rgba(124,58,237,.8)}
+.lib-card.maps-card .lib-card-icon{background:linear-gradient(135deg,#06b6d4,#3b82f6);box-shadow:0 10px 24px -10px rgba(6,182,212,.8)}
 .lib-card-icon svg{width:22px;height:22px;color:#fff}
 .lib-card-title{font-size:17px;font-weight:800;letter-spacing:-.3px}
 .lib-card-sub{font-size:12px;color:var(--muted);margin-top:2px;font-weight:500}
@@ -89,7 +91,43 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 .lib-chip{padding:7px 12px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--text);transition:transform .35s var(--spring),background .25s}
 .lib-chip:active{transform:scale(.94)}
 .lib-open-btn{width:100%;padding:14px;border-radius:15px;border:none;background:linear-gradient(135deg,#7c3aed,#ec4899);background-size:200% 100%;color:#fff;font-size:14px;font-weight:800;letter-spacing:.2px;box-shadow:0 12px 30px -12px rgba(124,58,237,.9);animation:shine 6s linear infinite;transition:transform .45s var(--spring)}
+.lib-card.maps-card .lib-open-btn{background:linear-gradient(135deg,#06b6d4,#3b82f6);background-size:200% 100%;animation:none;box-shadow:0 12px 30px -12px rgba(6,182,212,.9)}
 .lib-open-btn:active{transform:scale(.97)}
+.weather-card{padding:18px 20px;border-radius:22px;margin-top:22px;background:linear-gradient(135deg,rgba(6,182,212,.18),rgba(59,130,246,.15),rgba(124,58,237,.12));border:1px solid rgba(103,232,249,.28);animation:up .8s var(--ease) .25s both;display:flex;align-items:center;gap:16px;transition:transform .45s var(--spring);cursor:pointer}
+.weather-card:active{transform:scale(.98)}
+.weather-icon-big{font-size:44px;line-height:1;flex:0 0 auto;filter:drop-shadow(0 4px 12px rgba(6,182,212,.4))}
+.weather-info{flex:1;min-width:0}
+.weather-city{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.2px;display:flex;align-items:center;gap:5px}
+.weather-city svg{width:11px;height:11px}
+.weather-temp{font-size:28px;font-weight:800;letter-spacing:-1.2px;margin-top:2px;line-height:1}
+.weather-desc{font-size:12.5px;color:var(--muted);margin-top:4px;font-weight:600}
+.weather-extra{text-align:right;font-size:10.5px;color:var(--muted);font-weight:700;line-height:1.7;flex:0 0 auto}
+#mapsView{padding:0!important;overflow:hidden!important}
+#mapContainer{position:absolute;inset:0;z-index:0;background:#0b0b11}
+.maps-top{position:absolute;top:12px;left:12px;right:12px;z-index:500;display:flex;gap:8px;pointer-events:none}
+.maps-top > *{pointer-events:auto}
+.maps-search{flex:1;padding:12px 16px;border-radius:15px;background:rgba(15,15,22,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);display:flex;align-items:center;gap:10px;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)}
+.maps-search svg{width:16px;height:16px;color:var(--muted);flex:0 0 auto}
+.maps-search input{flex:1;min-width:0;border:none;outline:none;background:transparent;color:var(--text);font-size:14px}
+.maps-search input::placeholder{color:var(--muted)}
+.maps-btn{width:46px;height:46px;border-radius:15px;background:rgba(15,15,22,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);color:var(--text);display:grid;place-items:center;flex:0 0 auto;box-shadow:0 10px 30px -10px rgba(0,0,0,.6);transition:transform .4s var(--spring)}
+.maps-btn:active{transform:scale(.9)}
+.maps-btn svg{width:20px;height:20px}
+.maps-layers{position:absolute;bottom:22px;right:12px;z-index:500;display:flex;flex-direction:column;gap:8px}
+.maps-layer-btn{width:46px;height:46px;border-radius:15px;border:1px solid var(--line);background:rgba(15,15,22,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--text);display:grid;place-items:center;transition:transform .4s var(--spring),background .3s;font-size:19px;line-height:1}
+.maps-layer-btn.on{background:linear-gradient(135deg,#06b6d4,#3b82f6);border-color:transparent;box-shadow:0 8px 22px -10px rgba(6,182,212,.9)}
+.maps-layer-btn:active{transform:scale(.9)}
+.leaflet-container{background:#0b0b11!important;font-family:inherit!important;outline:none}
+.leaflet-control-attribution{background:rgba(15,15,22,.85)!important;color:var(--muted)!important;font-size:9px!important;border-radius:6px 0 0 0;padding:2px 6px!important}
+.leaflet-control-attribution a{color:#a78bfa!important}
+.leaflet-bar{border:none!important;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)!important}
+.leaflet-bar a{background:rgba(15,15,22,.94)!important;color:var(--text)!important;border-color:var(--line)!important;width:38px!important;height:38px!important;line-height:38px!important}
+.leaflet-bar a:hover{background:rgba(30,30,40,.96)!important}
+.leaflet-popup-content-wrapper{background:rgba(15,15,22,.97)!important;color:var(--text)!important;border-radius:14px!important;border:1px solid var(--line)!important;box-shadow:0 12px 40px -12px rgba(0,0,0,.8)!important}
+.leaflet-popup-tip{background:rgba(15,15,22,.97)!important;border:1px solid var(--line)!important}
+.leaflet-popup-content{margin:12px 14px!important;font-size:13px!important;line-height:1.5!important;color:var(--text)!important}
+.leaflet-popup-close-button{color:var(--muted)!important;padding:6px 8px 0 0!important}
+.leaflet-marker-icon{filter:drop-shadow(0 6px 12px rgba(0,0,0,.5))}
 .page-head{margin-bottom:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .page-q{font-size:26px;font-weight:800;letter-spacing:-.8px;line-height:1.15;animation:up .6s var(--ease) both}
 .page-q em{font-style:normal;background:var(--g1);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 5s linear infinite}
@@ -259,12 +297,23 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 <div class="tile" data-url="https://lenta.ru"><div class="tile-icon g-h">N</div><div class="tile-label">Новости</div></div>
 </div>
 
+<div class="weather-card" id="weatherCard" style="display:none">
+<div class="weather-icon-big" id="weatherIcon">🌤</div>
+<div class="weather-info">
+<div class="weather-city" id="weatherCity">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+<span id="weatherCityName">—</span>
+</div>
+<div class="weather-temp" id="weatherTemp">—°</div>
+<div class="weather-desc" id="weatherDesc">Загрузка...</div>
+</div>
+<div class="weather-extra" id="weatherExtra"></div>
+</div>
+
 <div class="lib-card" id="homeLibCard">
 <div class="lib-card-head">
 <div class="lib-card-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-<path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/>
-</svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
 </div>
 <div style="flex:1;min-width:0">
 <div class="lib-card-title">Библиотека сервисов</div>
@@ -280,6 +329,22 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 <button class="lib-chip" data-lib-go="us|ai">🤖 ChatGPT</button>
 </div>
 <button class="lib-open-btn" id="openLibBtn">Открыть библиотеку →</button>
+</div>
+
+<div class="lib-card maps-card" id="homeMapsCard">
+<div class="lib-card-head">
+<div class="lib-card-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/>
+<path d="M8 2v16M16 6v16"/>
+</svg>
+</div>
+<div style="flex:1;min-width:0">
+<div class="lib-card-title">Карты</div>
+<div class="lib-card-sub">OpenStreetMap · без рекламы и трекеров</div>
+</div>
+</div>
+<button class="lib-open-btn" id="openMapsBtn">Открыть карты →</button>
 </div>
 </section>
 
@@ -302,19 +367,37 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 </div>
 <button class="head-action" id="libBackBtn">Назад</button>
 </div>
-
 <div class="region-tabs" id="regionTabs">
 <button class="region-tab on" data-region="ru"><span class="flag">🇷🇺</span><span>Россия</span></button>
 <button class="region-tab" data-region="us"><span class="flag">🇺🇸</span><span>США</span></button>
 </div>
-
 <div class="search-box">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
 <input id="libSearch" placeholder="Поиск по библиотеке" autocomplete="off">
 </div>
-
 <div class="lib-cats-scroll" id="libCatsScroll"></div>
 <div id="libContent"></div>
+</section>
+
+<section class="view hidden" id="mapsView" style="padding:0">
+<div id="mapContainer"></div>
+<div class="maps-top">
+<div class="maps-search">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+<input id="mapSearch" placeholder="Найти место, адрес, город" autocomplete="off">
+</div>
+<button class="maps-btn" id="mapLocateBtn" title="Моё местоположение">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>
+</button>
+<button class="maps-btn" id="mapCloseBtn" title="Закрыть">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+</button>
+</div>
+<div class="maps-layers" id="mapsLayers">
+<button class="maps-layer-btn on" data-layer="osm" title="Обычная">🗺</button>
+<button class="maps-layer-btn" data-layer="sat" title="Спутник">🛰</button>
+<button class="maps-layer-btn" data-layer="dark" title="Тёмная">🌙</button>
+</div>
 </section>
 
 <section class="view hidden" id="historyView">
@@ -466,8 +549,8 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 <div class="settings-group-title">О приложении</div>
 <div class="about-box">
 <div class="about-logo">Zero</div>
-<div class="about-ver">Версия 5.2.0</div>
-<div class="about-desc">Приватный браузер с нативными панелями. Никаких аккаунтов, никакой аналитики. Все данные хранятся только на устройстве.</div>
+<div class="about-ver">Версия 5.3.0</div>
+<div class="about-desc">Приватный браузер с нативными панелями, картами и погодой. Никаких аккаунтов, никакой аналитики. Все данные хранятся только на устройстве.</div>
 </div>
 </div>
 </section>
@@ -483,741 +566,130 @@ body.light .bg::after{background:radial-gradient(circle at 50% 0%,transparent 0%
 
 <script>
 /* ==========================================================
-   ZERO BROWSER v5.2.0
+   ZERO BROWSER v5.3.0
    ========================================================== */
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
-
-const homeView=$('#homeView'),pageView=$('#pageView'),historyView=$('#historyView'),downloadsView=$('#downloadsView'),bookmarksView=$('#bookmarksView'),settingsView=$('#settingsView'),libraryView=$('#libraryView');
+const homeView=$('#homeView'),pageView=$('#pageView'),historyView=$('#historyView'),downloadsView=$('#downloadsView'),bookmarksView=$('#bookmarksView'),settingsView=$('#settingsView'),libraryView=$('#libraryView'),mapsView=$('#mapsView');
 const bigSearch=$('#bigSearch'),scrim=$('#scrim'),sheet=$('#sheet'),sheetContent=$('#sheetContent');
 
 /* ==========================================================
    БИБЛИОТЕКА СЕРВИСОВ
    ========================================================== */
 const GRADS=['g-a','g-b','g-c','g-d','g-e','g-f','g-g','g-h','g-i','g-j','g-k','g-l','g-m','g-n','g-o','g-p'];
-
 const LIBRARY={
-ru:{
-flag:'🇷🇺',name:'Россия',
-groups:[
+ru:{flag:'🇷🇺',name:'Россия',groups:[
 {id:'finance',emoji:'💳',name:'Финансы',sites:[
-{n:'Сбербанк',u:'https://online.sberbank.ru'},
-{n:'Т-Банк',u:'https://www.tbank.ru'},
-{n:'Альфа-Банк',u:'https://alfabank.ru'},
-{n:'ВТБ',u:'https://www.vtb.ru'},
-{n:'Газпромбанк',u:'https://www.gazprombank.ru'},
-{n:'Райффайзен',u:'https://www.raiffeisen.ru'},
-{n:'Совкомбанк',u:'https://sovcombank.ru'},
-{n:'Открытие',u:'https://www.open.ru'},
-{n:'Россельхозбанк',u:'https://www.rshb.ru'},
-{n:'Почта Банк',u:'https://www.pochtabank.ru'},
-{n:'ЮMoney',u:'https://yoomoney.ru'},
-{n:'СБП',u:'https://sbp.nspk.ru'},
-{n:'Банк России',u:'https://www.cbr.ru'},
-{n:'Мосбиржа',u:'https://www.moex.com'},
-{n:'Тинькофф Инвестиции',u:'https://www.tinkoff.ru/invest/'},
-{n:'Сбер Инвестиции',u:'https://www.sberbank.ru/ru/person/investments'},
-{n:'CoinMarketCap',u:'https://coinmarketcap.com'},
-{n:'Binance',u:'https://www.binance.com'},
-{n:'Bybit',u:'https://www.bybit.com'},
-{n:'OKX',u:'https://www.okx.com'}
+{n:'Сбербанк',u:'https://online.sberbank.ru'},{n:'Т-Банк',u:'https://www.tbank.ru'},{n:'Альфа-Банк',u:'https://alfabank.ru'},{n:'ВТБ',u:'https://www.vtb.ru'},{n:'Газпромбанк',u:'https://www.gazprombank.ru'},{n:'Райффайзен',u:'https://www.raiffeisen.ru'},{n:'Совкомбанк',u:'https://sovcombank.ru'},{n:'Открытие',u:'https://www.open.ru'},{n:'Россельхозбанк',u:'https://www.rshb.ru'},{n:'Почта Банк',u:'https://www.pochtabank.ru'},{n:'ЮMoney',u:'https://yoomoney.ru'},{n:'СБП',u:'https://sbp.nspk.ru'},{n:'Банк России',u:'https://www.cbr.ru'},{n:'Мосбиржа',u:'https://www.moex.com'},{n:'Тинькофф Инвестиции',u:'https://www.tinkoff.ru/invest/'},{n:'CoinMarketCap',u:'https://coinmarketcap.com'},{n:'Binance',u:'https://www.binance.com'},{n:'Bybit',u:'https://www.bybit.com'},{n:'OKX',u:'https://www.okx.com'}
 ]},
 {id:'food',emoji:'🍔',name:'Еда и продукты',sites:[
-{n:'Яндекс.Еда',u:'https://eda.yandex.ru'},
-{n:'Delivery Club',u:'https://delivery-club.ru'},
-{n:'Самокат',u:'https://samokat.ru'},
-{n:'ВкусВилл',u:'https://vkusvill.ru'},
-{n:'Купер',u:'https://kuper.ru'},
-{n:'Перекрёсток',u:'https://www.perekrestok.ru'},
-{n:'Пятёрочка',u:'https://5ka.ru'},
-{n:'Магнит',u:'https://magnit.ru'},
-{n:'Лента',u:'https://lenta.com'},
-{n:'Ашан',u:'https://www.auchan.ru'},
-{n:'Метро',u:'https://www.metro-cc.ru'},
-{n:'Окей',u:'https://www.okeydostavka.ru'},
-{n:'Дикси',u:'https://dixy.ru'},
-{n:'Додо Пицца',u:'https://dodopizza.ru'},
-{n:'Вкусно и точка',u:'https://vkusnoitochka.ru'},
-{n:'KFC',u:'https://kfc.ru'},
-{n:'Burger King',u:'https://burgerking.ru'},
-{n:'Тануки',u:'https://tanuki.ru'},
-{n:'Якитория',u:'https://yakitoriya.ru'},
-{n:'Пицца Хат',u:'https://pizzahut.ru'}
+{n:'Яндекс.Еда',u:'https://eda.yandex.ru'},{n:'Delivery Club',u:'https://delivery-club.ru'},{n:'Самокат',u:'https://samokat.ru'},{n:'ВкусВилл',u:'https://vkusvill.ru'},{n:'Купер',u:'https://kuper.ru'},{n:'Перекрёсток',u:'https://www.perekrestok.ru'},{n:'Пятёрочка',u:'https://5ka.ru'},{n:'Магнит',u:'https://magnit.ru'},{n:'Лента',u:'https://lenta.com'},{n:'Ашан',u:'https://www.auchan.ru'},{n:'Метро',u:'https://www.metro-cc.ru'},{n:'Окей',u:'https://www.okeydostavka.ru'},{n:'Дикси',u:'https://dixy.ru'},{n:'Додо Пицца',u:'https://dodopizza.ru'},{n:'Вкусно и точка',u:'https://vkusnoitochka.ru'},{n:'KFC',u:'https://kfc.ru'},{n:'Burger King',u:'https://burgerking.ru'},{n:'Тануки',u:'https://tanuki.ru'},{n:'Якитория',u:'https://yakitoriya.ru'},{n:'Пицца Хат',u:'https://pizzahut.ru'}
 ]},
 {id:'shop',emoji:'🛒',name:'Покупки',sites:[
-{n:'Ozon',u:'https://www.ozon.ru'},
-{n:'Wildberries',u:'https://www.wildberries.ru'},
-{n:'Яндекс.Маркет',u:'https://market.yandex.ru'},
-{n:'Avito',u:'https://www.avito.ru'},
-{n:'AliExpress',u:'https://aliexpress.ru'},
-{n:'Мегамаркет',u:'https://megamarket.ru'},
-{n:'М.Видео',u:'https://www.mvideo.ru'},
-{n:'DNS',u:'https://www.dns-shop.ru'},
-{n:'Эльдорадо',u:'https://www.eldorado.ru'},
-{n:'Ситилинк',u:'https://www.citilink.ru'},
-{n:'Связной',u:'https://www.svyaznoy.ru'},
-{n:'МТС',u:'https://www.mts.ru'},
-{n:'Билайн',u:'https://www.beeline.ru'},
-{n:'Мегафон',u:'https://www.megafon.ru'},
-{n:'Tele2',u:'https://msk.t2.ru'},
-{n:'Detmir',u:'https://www.detmir.ru'},
-{n:'Леруа Мерлен',u:'https://leroymerlin.ru'},
-{n:'Петрович',u:'https://petrovich.ru'},
-{n:'ВсеИнструменты',u:'https://www.vseinstrumenti.ru'},
-{n:'Твой Дом',u:'https://tdom.ru'}
+{n:'Ozon',u:'https://www.ozon.ru'},{n:'Wildberries',u:'https://www.wildberries.ru'},{n:'Яндекс.Маркет',u:'https://market.yandex.ru'},{n:'Avito',u:'https://www.avito.ru'},{n:'AliExpress',u:'https://aliexpress.ru'},{n:'Мегамаркет',u:'https://megamarket.ru'},{n:'М.Видео',u:'https://www.mvideo.ru'},{n:'DNS',u:'https://www.dns-shop.ru'},{n:'Эльдорадо',u:'https://www.eldorado.ru'},{n:'Ситилинк',u:'https://www.citilink.ru'},{n:'Связной',u:'https://www.svyaznoy.ru'},{n:'МТС',u:'https://www.mts.ru'},{n:'Билайн',u:'https://www.beeline.ru'},{n:'Мегафон',u:'https://www.megafon.ru'},{n:'Tele2',u:'https://msk.t2.ru'},{n:'Detmir',u:'https://www.detmir.ru'},{n:'Леруа Мерлен',u:'https://leroymerlin.ru'},{n:'Петрович',u:'https://petrovich.ru'},{n:'ВсеИнструменты',u:'https://www.vseinstrumenti.ru'},{n:'Твой Дом',u:'https://tdom.ru'}
 ]},
 {id:'fashion',emoji:'👕',name:'Одежда и обувь',sites:[
-{n:'Lamoda',u:'https://www.lamoda.ru'},
-{n:'Wildberries',u:'https://www.wildberries.ru'},
-{n:'Ozon',u:'https://www.ozon.ru'},
-{n:'Спортмастер',u:'https://www.sportmaster.ru'},
-{n:'Decathlon',u:'https://www.decathlon.ru'},
-{n:'Ostin',u:'https://www.ostin.com'},
-{n:'Befree',u:'https://befree.ru'},
-{n:'Zolla',u:'https://zolla.ru'},
-{n:'Baon',u:'https://www.baon.ru'},
-{n:'Finn Flare',u:'https://finn-flare.ru'},
-{n:'Savage',u:'https://savage.ru'},
-{n:'Gloria Jeans',u:'https://www.gloria-jeans.ru'},
-{n:'Zarina',u:'https://zarina.ru'},
-{n:'Love Republic',u:'https://loverepublic.ru'},
-{n:'Modis',u:'https://modis.ru'},
-{n:'Nike',u:'https://www.nike.com/ru/'},
-{n:'Adidas',u:'https://www.adidas.ru'},
-{n:'Puma',u:'https://ru.puma.com'},
-{n:'Reebok',u:'https://www.reebok.ru'},
-{n:'ECCO',u:'https://www.ecco.com/ru-ru/'}
+{n:'Lamoda',u:'https://www.lamoda.ru'},{n:'Wildberries',u:'https://www.wildberries.ru'},{n:'Ozon',u:'https://www.ozon.ru'},{n:'Спортмастер',u:'https://www.sportmaster.ru'},{n:'Decathlon',u:'https://www.decathlon.ru'},{n:'Ostin',u:'https://www.ostin.com'},{n:'Befree',u:'https://befree.ru'},{n:'Zolla',u:'https://zolla.ru'},{n:'Baon',u:'https://www.baon.ru'},{n:'Finn Flare',u:'https://finn-flare.ru'},{n:'Savage',u:'https://savage.ru'},{n:'Gloria Jeans',u:'https://www.gloria-jeans.ru'},{n:'Zarina',u:'https://zarina.ru'},{n:'Love Republic',u:'https://loverepublic.ru'},{n:'Modis',u:'https://modis.ru'},{n:'Nike',u:'https://www.nike.com/ru/'},{n:'Adidas',u:'https://www.adidas.ru'},{n:'Puma',u:'https://ru.puma.com'},{n:'Reebok',u:'https://www.reebok.ru'},{n:'ECCO',u:'https://www.ecco.com/ru-ru/'}
 ]},
 {id:'beauty',emoji:'💅',name:'Красота и здоровье',sites:[
-{n:'Золотое Яблоко',u:'https://goldapple.ru'},
-{n:'Летуаль',u:'https://www.letu.ru'},
-{n:'Иль де Ботэ',u:'https://iledebeaute.ru'},
-{n:'Rive Gauche',u:'https://rivegauche.ru'},
-{n:'Podrygka',u:'https://podrygka.ru'},
-{n:'Apteka.ru',u:'https://apteka.ru'},
-{n:'Здравсити',u:'https://zdravcity.ru'},
-{n:'Мегаптека',u:'https://megapteka.ru'},
-{n:'Асна',u:'https://asna.ru'},
-{n:'Ригла',u:'https://rigla.ru'},
-{n:'DocDoc',u:'https://docdoc.ru'},
-{n:'СберЗдоровье',u:'https://sberhealth.ru'},
-{n:'Яндекс.Здоровье',u:'https://health.yandex.ru'},
-{n:'Rlsnet',u:'https://www.rlsnet.ru'},
-{n:'Мед. портал',u:'https://health.mail.ru'},
-{n:'ПроДокторов',u:'https://prodoctorov.ru'},
-{n:'НаПоправку',u:'https://napopravku.ru'},
-{n:'Клиника.ру',u:'https://www.klinika.ru'},
-{n:'Инвитро',u:'https://www.invitro.ru'},
-{n:'Хеликс',u:'https://helix.ru'}
+{n:'Золотое Яблоко',u:'https://goldapple.ru'},{n:'Летуаль',u:'https://www.letu.ru'},{n:'Иль де Ботэ',u:'https://iledebeaute.ru'},{n:'Rive Gauche',u:'https://rivegauche.ru'},{n:'Подружка',u:'https://podrygka.ru'},{n:'Apteka.ru',u:'https://apteka.ru'},{n:'Здравсити',u:'https://zdravcity.ru'},{n:'Мегаптека',u:'https://megapteka.ru'},{n:'Асна',u:'https://asna.ru'},{n:'Ригла',u:'https://rigla.ru'},{n:'DocDoc',u:'https://docdoc.ru'},{n:'СберЗдоровье',u:'https://sberhealth.ru'},{n:'Яндекс.Здоровье',u:'https://health.yandex.ru'},{n:'Rlsnet',u:'https://www.rlsnet.ru'},{n:'Здоровье Mail',u:'https://health.mail.ru'},{n:'ПроДокторов',u:'https://prodoctorov.ru'},{n:'НаПоправку',u:'https://napopravku.ru'},{n:'Клиника.ру',u:'https://www.klinika.ru'},{n:'Инвитро',u:'https://www.invitro.ru'},{n:'Хеликс',u:'https://helix.ru'}
 ]},
 {id:'fun',emoji:'🎬',name:'Развлечения',sites:[
-{n:'Кинопоиск',u:'https://www.kinopoisk.ru'},
-{n:'Иви',u:'https://www.ivi.ru'},
-{n:'Wink',u:'https://wink.ru'},
-{n:'Okko',u:'https://okko.tv'},
-{n:'Premier',u:'https://premier.one'},
-{n:'More.tv',u:'https://more.tv'},
-{n:'Start',u:'https://start.ru'},
-{n:'Kion',u:'https://kion.ru'},
-{n:'YouTube',u:'https://m.youtube.com'},
-{n:'Rutube',u:'https://rutube.ru'},
-{n:'VK Видео',u:'https://vkvideo.ru'},
-{n:'Дзен',u:'https://dzen.ru'},
-{n:'Twitch',u:'https://www.twitch.tv'},
-{n:'Яндекс.Музыка',u:'https://music.yandex.ru'},
-{n:'VK Музыка',u:'https://vk.com/music'},
-{n:'Звук',u:'https://zvuk.com'},
-{n:'Spotify',u:'https://open.spotify.com'},
-{n:'SoundCloud',u:'https://soundcloud.com'},
-{n:'Кинопоиск HD',u:'https://hd.kinopoisk.ru'},
-{n:'Netflix',u:'https://www.netflix.com'}
+{n:'Кинопоиск',u:'https://www.kinopoisk.ru'},{n:'Иви',u:'https://www.ivi.ru'},{n:'Wink',u:'https://wink.ru'},{n:'Okko',u:'https://okko.tv'},{n:'Premier',u:'https://premier.one'},{n:'More.tv',u:'https://more.tv'},{n:'Start',u:'https://start.ru'},{n:'Kion',u:'https://kion.ru'},{n:'YouTube',u:'https://m.youtube.com'},{n:'Rutube',u:'https://rutube.ru'},{n:'VK Видео',u:'https://vkvideo.ru'},{n:'Дзен',u:'https://dzen.ru'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'Яндекс.Музыка',u:'https://music.yandex.ru'},{n:'VK Музыка',u:'https://vk.com/music'},{n:'Звук',u:'https://zvuk.com'},{n:'Spotify',u:'https://open.spotify.com'},{n:'SoundCloud',u:'https://soundcloud.com'},{n:'Кинопоиск HD',u:'https://hd.kinopoisk.ru'},{n:'Netflix',u:'https://www.netflix.com'}
 ]},
 {id:'travel',emoji:'✈️',name:'Путешествия',sites:[
-{n:'Авиасейлс',u:'https://www.aviasales.ru'},
-{n:'Яндекс.Путешествия',u:'https://travel.yandex.ru'},
-{n:'Ozon Travel',u:'https://ozon.ru/travel'},
-{n:'Туту.ру',u:'https://www.tutu.ru'},
-{n:'OneTwoTrip',u:'https://www.onetwotrip.com'},
-{n:'Biletix',u:'https://www.biletix.ru'},
-{n:'Kupi.com',u:'https://www.kupi.com'},
-{n:'Trip.com',u:'https://www.trip.com'},
-{n:'РЖД',u:'https://www.rzd.ru'},
-{n:'Аэрофлот',u:'https://www.aeroflot.ru'},
-{n:'S7',u:'https://www.s7.ru'},
-{n:'Utair',u:'https://www.utair.ru'},
-{n:'Победа',u:'https://www.pobeda.aero'},
-{n:'Россия',u:'https://www.rossiya-airlines.com'},
-{n:'Уральские',u:'https://www.uralairlines.ru'},
-{n:'Аврора',u:'https://www.flyaurora.ru'},
-{n:'Smartavia',u:'https://www.flysmartavia.com'},
-{n:'Nordwind',u:'https://nordwindairlines.ru'},
-{n:'ИрАэро',u:'https://iraero.ru'},
-{n:'ЮВТ Аэро',u:'https://uvtaero.ru'}
+{n:'Авиасейлс',u:'https://www.aviasales.ru'},{n:'Яндекс.Путешествия',u:'https://travel.yandex.ru'},{n:'Ozon Travel',u:'https://ozon.ru/travel'},{n:'Туту.ру',u:'https://www.tutu.ru'},{n:'OneTwoTrip',u:'https://www.onetwotrip.com'},{n:'Biletix',u:'https://www.biletix.ru'},{n:'Kupi.com',u:'https://www.kupi.com'},{n:'Trip.com',u:'https://www.trip.com'},{n:'РЖД',u:'https://www.rzd.ru'},{n:'Аэрофлот',u:'https://www.aeroflot.ru'},{n:'S7',u:'https://www.s7.ru'},{n:'Utair',u:'https://www.utair.ru'},{n:'Победа',u:'https://www.pobeda.aero'},{n:'Россия',u:'https://www.rossiya-airlines.com'},{n:'Уральские',u:'https://www.uralairlines.ru'},{n:'Аврора',u:'https://www.flyaurora.ru'},{n:'Smartavia',u:'https://www.flysmartavia.com'},{n:'Nordwind',u:'https://nordwindairlines.ru'},{n:'ИрАэро',u:'https://iraero.ru'},{n:'ЮВТ Аэро',u:'https://uvtaero.ru'}
 ]},
 {id:'edu',emoji:'📚',name:'Образование',sites:[
-{n:'Stepik',u:'https://stepik.org'},
-{n:'Skillbox',u:'https://skillbox.ru'},
-{n:'GeekBrains',u:'https://gb.ru'},
-{n:'Яндекс.Практикум',u:'https://practicum.yandex.ru'},
-{n:'Нетология',u:'https://netology.ru'},
-{n:'Skyeng',u:'https://skyeng.ru'},
-{n:'Учи.ру',u:'https://uchi.ru'},
-{n:'Фоксфорд',u:'https://foxford.ru'},
-{n:'Инфоурок',u:'https://infourok.ru'},
-{n:'Открытое образование',u:'https://openedu.ru'},
-{n:'Универсариум',u:'https://universarium.org'},
-{n:'Лекториум',u:'https://www.lektorium.tv'},
-{n:'Coursera',u:'https://www.coursera.org'},
-{n:'edX',u:'https://www.edx.org'},
-{n:'Khan Academy',u:'https://www.khanacademy.org'},
-{n:'Udemy',u:'https://www.udemy.com'},
-{n:'Duolingo',u:'https://www.duolingo.com'},
-{n:'Codecademy',u:'https://www.codecademy.com'},
-{n:'Хабр',u:'https://habr.com'},
-{n:'КиберЛенинка',u:'https://cyberleninka.ru'}
+{n:'Stepik',u:'https://stepik.org'},{n:'Skillbox',u:'https://skillbox.ru'},{n:'GeekBrains',u:'https://gb.ru'},{n:'Яндекс.Практикум',u:'https://practicum.yandex.ru'},{n:'Нетология',u:'https://netology.ru'},{n:'Skyeng',u:'https://skyeng.ru'},{n:'Учи.ру',u:'https://uchi.ru'},{n:'Фоксфорд',u:'https://foxford.ru'},{n:'Инфоурок',u:'https://infourok.ru'},{n:'Открытое образование',u:'https://openedu.ru'},{n:'Универсариум',u:'https://universarium.org'},{n:'Лекториум',u:'https://www.lektorium.tv'},{n:'Coursera',u:'https://www.coursera.org'},{n:'edX',u:'https://www.edx.org'},{n:'Khan Academy',u:'https://www.khanacademy.org'},{n:'Udemy',u:'https://www.udemy.com'},{n:'Duolingo',u:'https://www.duolingo.com'},{n:'Codecademy',u:'https://www.codecademy.com'},{n:'Хабр',u:'https://habr.com'},{n:'КиберЛенинка',u:'https://cyberleninka.ru'}
 ]},
 {id:'hotels',emoji:'🏨',name:'Отдых и отели',sites:[
-{n:'Островок',u:'https://ostrovok.ru'},
-{n:'Яндекс.Путешествия',u:'https://travel.yandex.ru/hotels/'},
-{n:'Суточно.ру',u:'https://sutochno.ru'},
-{n:'101Hotels',u:'https://101hotels.com'},
-{n:'Bronevik',u:'https://bronevik.com'},
-{n:'Академсервис',u:'https://www.academservice.ru'},
-{n:'Booking',u:'https://www.booking.com'},
-{n:'Airbnb',u:'https://www.airbnb.ru'},
-{n:'Agoda',u:'https://www.agoda.com'},
-{n:'Hotels.com',u:'https://www.hotels.com'},
-{n:'Tripadvisor',u:'https://www.tripadvisor.ru'},
-{n:'Trivago',u:'https://www.trivago.ru'},
-{n:'Marriott',u:'https://www.marriott.com'},
-{n:'Hilton',u:'https://www.hilton.com'},
-{n:'Radisson',u:'https://www.radissonhotels.com'},
-{n:'Accor',u:'https://all.accor.com'},
-{n:'Azimut',u:'https://azimuthotels.com'},
-{n:'Cosmos',u:'https://cosmos-hotel.ru'},
-{n:'Amaks',u:'https://amaks-hotels.ru'},
-{n:'Heliopark',u:'https://heliopark.ru'}
+{n:'Островок',u:'https://ostrovok.ru'},{n:'Яндекс.Путешествия',u:'https://travel.yandex.ru/hotels/'},{n:'Суточно.ру',u:'https://sutochno.ru'},{n:'101Hotels',u:'https://101hotels.com'},{n:'Bronevik',u:'https://bronevik.com'},{n:'Академсервис',u:'https://www.academservice.ru'},{n:'Booking',u:'https://www.booking.com'},{n:'Airbnb',u:'https://www.airbnb.ru'},{n:'Agoda',u:'https://www.agoda.com'},{n:'Hotels.com',u:'https://www.hotels.com'},{n:'Tripadvisor',u:'https://www.tripadvisor.ru'},{n:'Trivago',u:'https://www.trivago.ru'},{n:'Marriott',u:'https://www.marriott.com'},{n:'Hilton',u:'https://www.hilton.com'},{n:'Radisson',u:'https://www.radissonhotels.com'},{n:'Accor',u:'https://all.accor.com'},{n:'Azimut',u:'https://azimuthotels.com'},{n:'Cosmos',u:'https://cosmos-hotel.ru'},{n:'Amaks',u:'https://amaks-hotels.ru'},{n:'Heliopark',u:'https://heliopark.ru'}
 ]},
 {id:'service',emoji:'⚙️',name:'Сервисы',sites:[
-{n:'Госуслуги',u:'https://www.gosuslugi.ru'},
-{n:'Мос.ру',u:'https://www.mos.ru'},
-{n:'Налог.ру',u:'https://www.nalog.gov.ru'},
-{n:'Почта России',u:'https://www.pochta.ru'},
-{n:'СДЭК',u:'https://www.cdek.ru'},
-{n:'Boxberry',u:'https://boxberry.ru'},
-{n:'DPD',u:'https://www.dpd.ru'},
-{n:'Яндекс.Карты',u:'https://yandex.ru/maps'},
-{n:'2ГИС',u:'https://2gis.ru'},
-{n:'Домклик',u:'https://domclick.ru'},
-{n:'Циан',u:'https://www.cian.ru'},
-{n:'Авито Недвижимость',u:'https://www.avito.ru/nedvizhimost'},
-{n:'ЖКХ',u:'https://www.gosuslugi.ru/category/house'},
-{n:'ФНС Личный кабинет',u:'https://lknpd.nalog.ru'},
-{n:'ПФР',u:'https://sfr.gov.ru'},
-{n:'ФСС',u:'https://sfr.gov.ru'},
-{n:'Росреестр',u:'https://rosreestr.gov.ru'},
-{n:'МФЦ',u:'https://md.mos.ru'},
-{n:'ФССП',u:'https://fssp.gov.ru'},
-{n:'ГИБДД',u:'https://гибдд.рф'}
+{n:'Госуслуги',u:'https://www.gosuslugi.ru'},{n:'Мос.ру',u:'https://www.mos.ru'},{n:'Налог.ру',u:'https://www.nalog.gov.ru'},{n:'Почта России',u:'https://www.pochta.ru'},{n:'СДЭК',u:'https://www.cdek.ru'},{n:'Boxberry',u:'https://boxberry.ru'},{n:'DPD',u:'https://www.dpd.ru'},{n:'Яндекс.Карты',u:'https://yandex.ru/maps'},{n:'2ГИС',u:'https://2gis.ru'},{n:'Домклик',u:'https://domclick.ru'},{n:'Циан',u:'https://www.cian.ru'},{n:'Авито Недвижимость',u:'https://www.avito.ru/nedvizhimost'},{n:'ЖКХ',u:'https://www.gosuslugi.ru/category/house'},{n:'ФНС ЛК',u:'https://lknpd.nalog.ru'},{n:'СФР',u:'https://sfr.gov.ru'},{n:'Росреестр',u:'https://rosreestr.gov.ru'},{n:'МФЦ',u:'https://md.mos.ru'},{n:'ФССП',u:'https://fssp.gov.ru'},{n:'ГИБДД',u:'https://гибдд.рф'},{n:'ЕМИАС',u:'https://emias.info'}
 ]},
 {id:'ai',emoji:'🤖',name:'Нейросети',sites:[
-{n:'GigaChat',u:'https://giga.chat'},
-{n:'YandexGPT',u:'https://ya.ru/ai/chat'},
-{n:'Kandinsky',u:'https://www.sberbank.com/promo/kandinsky/'},
-{n:'Шедеврум',u:'https://shedevrum.ai'},
-{n:'Алиса',u:'https://alice.yandex.ru'},
-{n:'ChatGPT',u:'https://chat.openai.com'},
-{n:'Claude',u:'https://claude.ai'},
-{n:'Gemini',u:'https://gemini.google.com'},
-{n:'Perplexity',u:'https://www.perplexity.ai'},
-{n:'Midjourney',u:'https://www.midjourney.com'},
-{n:'DeepSeek',u:'https://chat.deepseek.com'},
-{n:'Qwen',u:'https://chat.qwen.ai'},
-{n:'Copilot',u:'https://copilot.microsoft.com'},
-{n:'Poe',u:'https://poe.com'},
-{n:'Character.AI',u:'https://character.ai'},
-{n:'Hugging Face',u:'https://huggingface.co'},
-{n:'Leonardo AI',u:'https://leonardo.ai'},
-{n:'Runway',u:'https://runwayml.com'},
-{n:'Suno',u:'https://suno.com'},
-{n:'ElevenLabs',u:'https://elevenlabs.io'}
+{n:'GigaChat',u:'https://giga.chat'},{n:'YandexGPT',u:'https://ya.ru/ai/chat'},{n:'Kandinsky',u:'https://www.sberbank.com/promo/kandinsky/'},{n:'Шедеврум',u:'https://shedevrum.ai'},{n:'Алиса',u:'https://alice.yandex.ru'},{n:'ChatGPT',u:'https://chat.openai.com'},{n:'Claude',u:'https://claude.ai'},{n:'Gemini',u:'https://gemini.google.com'},{n:'Perplexity',u:'https://www.perplexity.ai'},{n:'Midjourney',u:'https://www.midjourney.com'},{n:'DeepSeek',u:'https://chat.deepseek.com'},{n:'Qwen',u:'https://chat.qwen.ai'},{n:'Copilot',u:'https://copilot.microsoft.com'},{n:'Poe',u:'https://poe.com'},{n:'Character.AI',u:'https://character.ai'},{n:'Hugging Face',u:'https://huggingface.co'},{n:'Leonardo AI',u:'https://leonardo.ai'},{n:'Runway',u:'https://runwayml.com'},{n:'Suno',u:'https://suno.com'},{n:'ElevenLabs',u:'https://elevenlabs.io'}
 ]},
 {id:'transport',emoji:'🚕',name:'Транспорт',sites:[
-{n:'Яндекс.Такси',u:'https://taxi.yandex.ru'},
-{n:'Яндекс.Драйв',u:'https://yandex.ru/drive'},
-{n:'Делимобиль',u:'https://delimobil.ru'},
-{n:'Ситидрайв',u:'https://citydrive.ru'},
-{n:'BelkaCar',u:'https://belkacar.ru'},
-{n:'Uber',u:'https://www.uber.com'},
-{n:'Bolt',u:'https://bolt.eu'},
-{n:'inDrive',u:'https://indrive.com'},
-{n:'Ситимобил',u:'https://city-mobil.ru'},
-{n:'Яндекс.Транспорт',u:'https://yandex.ru/maps/transport'},
-{n:'Мосгортранс',u:'https://mosgortrans.ru'},
-{n:'Метро Москвы',u:'https://mosmetro.ru'},
-{n:'РЖД',u:'https://www.rzd.ru'},
-{n:'РЖД Билеты',u:'https://ticket.rzd.ru'},
-{n:'Аэроэкспресс',u:'https://aeroexpress.ru'},
-{n:'BlaBlaCar',u:'https://www.blablacar.ru'},
-{n:'Попутчик',u:'https://poputchik.ru'},
-{n:'Едем.рф',u:'https://едем.рф'},
-{n:'Туту.ру',u:'https://www.tutu.ru'},
-{n:'Яндекс.Заправки',u:'https://yandex.ru/maps/fuel'}
+{n:'Яндекс.Такси',u:'https://taxi.yandex.ru'},{n:'Яндекс.Драйв',u:'https://yandex.ru/drive'},{n:'Делимобиль',u:'https://delimobil.ru'},{n:'Ситидрайв',u:'https://citydrive.ru'},{n:'BelkaCar',u:'https://belkacar.ru'},{n:'Uber',u:'https://www.uber.com'},{n:'Bolt',u:'https://bolt.eu'},{n:'inDrive',u:'https://indrive.com'},{n:'Яндекс.Транспорт',u:'https://yandex.ru/maps/transport'},{n:'Мосгортранс',u:'https://mosgortrans.ru'},{n:'Метро Москвы',u:'https://mosmetro.ru'},{n:'РЖД Билеты',u:'https://ticket.rzd.ru'},{n:'Аэроэкспресс',u:'https://aeroexpress.ru'},{n:'BlaBlaCar',u:'https://www.blablacar.ru'},{n:'Попутчик',u:'https://poputchik.ru'},{n:'Туту.ру',u:'https://www.tutu.ru'},{n:'Яндекс.Заправки',u:'https://yandex.ru/maps/fuel'},{n:'Газпромнефть',u:'https://gazpromneft-gas.ru'},{n:'Лукойл',u:'https://lukoil.ru'},{n:'Роснефть',u:'https://rosneft.ru'}
 ]},
-{id:'social',emoji:'💬',name:'Соцсети и мессенджеры',sites:[
-{n:'ВКонтакте',u:'https://m.vk.com'},
-{n:'Одноклассники',u:'https://m.ok.ru'},
-{n:'Telegram',u:'https://web.telegram.org'},
-{n:'WhatsApp',u:'https://web.whatsapp.com'},
-{n:'Viber',u:'https://web.viber.com'},
-{n:'TikTok',u:'https://www.tiktok.com'},
-{n:'YouTube',u:'https://m.youtube.com'},
-{n:'Дзен',u:'https://dzen.ru'},
-{n:'Rutube',u:'https://rutube.ru'},
-{n:'X (Twitter)',u:'https://x.com'},
-{n:'Pinterest',u:'https://ru.pinterest.com'},
-{n:'Reddit',u:'https://www.reddit.com'},
-{n:'Discord',u:'https://discord.com'},
-{n:'LinkedIn',u:'https://www.linkedin.com'},
-{n:'Facebook',u:'https://www.facebook.com'},
-{n:'Instagram',u:'https://www.instagram.com'},
-{n:'Threads',u:'https://www.threads.net'},
-{n:'Snapchat',u:'https://www.snapchat.com'},
-{n:'Mastodon',u:'https://mastodon.social'},
-{n:'Bluesky',u:'https://bsky.app'}
+{id:'social',emoji:'💬',name:'Соцсети',sites:[
+{n:'ВКонтакте',u:'https://m.vk.com'},{n:'Одноклассники',u:'https://m.ok.ru'},{n:'Telegram',u:'https://web.telegram.org'},{n:'WhatsApp',u:'https://web.whatsapp.com'},{n:'Viber',u:'https://web.viber.com'},{n:'TikTok',u:'https://www.tiktok.com'},{n:'YouTube',u:'https://m.youtube.com'},{n:'Дзен',u:'https://dzen.ru'},{n:'Rutube',u:'https://rutube.ru'},{n:'X (Twitter)',u:'https://x.com'},{n:'Pinterest',u:'https://ru.pinterest.com'},{n:'Reddit',u:'https://www.reddit.com'},{n:'Discord',u:'https://discord.com'},{n:'LinkedIn',u:'https://www.linkedin.com'},{n:'Facebook',u:'https://www.facebook.com'},{n:'Instagram',u:'https://www.instagram.com'},{n:'Threads',u:'https://www.threads.net'},{n:'Snapchat',u:'https://www.snapchat.com'},{n:'Mastodon',u:'https://mastodon.social'},{n:'Bluesky',u:'https://bsky.app'}
 ]},
 {id:'games',emoji:'🎮',name:'Игры',sites:[
-{n:'Steam',u:'https://store.steampowered.com'},
-{n:'Epic Games',u:'https://store.epicgames.com'},
-{n:'VK Play',u:'https://vkplay.ru'},
-{n:'My.Games',u:'https://my.games'},
-{n:'Mail Games',u:'https://games.mail.ru'},
-{n:'Genshin Impact',u:'https://genshin.hoyoverse.com'},
-{n:'Roblox',u:'https://www.roblox.com'},
-{n:'Minecraft',u:'https://www.minecraft.net'},
-{n:'PlayStation',u:'https://www.playstation.com'},
-{n:'Xbox',u:'https://www.xbox.com'},
-{n:'Nintendo',u:'https://www.nintendo.com'},
-{n:'Battle.net',u:'https://eu.shop.battle.net'},
-{n:'Ubisoft',u:'https://www.ubisoft.com'},
-{n:'EA',u:'https://www.ea.com'},
-{n:'Rockstar',u:'https://www.rockstargames.com'},
-{n:'Wargaming',u:'https://wargaming.com'},
-{n:'Lesta Games',u:'https://lesta.ru'},
-{n:'Twitch',u:'https://www.twitch.tv'},
-{n:'StopGame',u:'https://stopgame.ru'},
-{n:'DTF',u:'https://dtf.ru'}
+{n:'Steam',u:'https://store.steampowered.com'},{n:'Epic Games',u:'https://store.epicgames.com'},{n:'VK Play',u:'https://vkplay.ru'},{n:'My.Games',u:'https://my.games'},{n:'Mail Games',u:'https://games.mail.ru'},{n:'Genshin Impact',u:'https://genshin.hoyoverse.com'},{n:'Roblox',u:'https://www.roblox.com'},{n:'Minecraft',u:'https://www.minecraft.net'},{n:'PlayStation',u:'https://www.playstation.com'},{n:'Xbox',u:'https://www.xbox.com'},{n:'Nintendo',u:'https://www.nintendo.com'},{n:'Battle.net',u:'https://eu.shop.battle.net'},{n:'Ubisoft',u:'https://www.ubisoft.com'},{n:'EA',u:'https://www.ea.com'},{n:'Rockstar',u:'https://www.rockstargames.com'},{n:'Wargaming',u:'https://wargaming.com'},{n:'Lesta Games',u:'https://lesta.ru'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'StopGame',u:'https://stopgame.ru'},{n:'DTF',u:'https://dtf.ru'}
 ]}
 ]},
-
-us:{
-flag:'🇺🇸',name:'США',
-groups:[
+us:{flag:'🇺🇸',name:'США',groups:[
 {id:'finance',emoji:'💳',name:'Finance',sites:[
-{n:'PayPal',u:'https://www.paypal.com'},
-{n:'Venmo',u:'https://venmo.com'},
-{n:'Cash App',u:'https://cash.app'},
-{n:'Stripe',u:'https://stripe.com'},
-{n:'Square',u:'https://squareup.com'},
-{n:'Chase',u:'https://www.chase.com'},
-{n:'Bank of America',u:'https://www.bankofamerica.com'},
-{n:'Wells Fargo',u:'https://www.wellsfargo.com'},
-{n:'Citi',u:'https://www.citi.com'},
-{n:'Capital One',u:'https://www.capitalone.com'},
-{n:'Robinhood',u:'https://robinhood.com'},
-{n:'Coinbase',u:'https://www.coinbase.com'},
-{n:'Kraken',u:'https://www.kraken.com'},
-{n:'Fidelity',u:'https://www.fidelity.com'},
-{n:'Vanguard',u:'https://investor.vanguard.com'},
-{n:'NYSE',u:'https://www.nyse.com'},
-{n:'Nasdaq',u:'https://www.nasdaq.com'},
-{n:'IRS',u:'https://www.irs.gov'},
-{n:'Mint',u:'https://mint.intuit.com'},
-{n:'Zelle',u:'https://www.zellepay.com'}
+{n:'PayPal',u:'https://www.paypal.com'},{n:'Venmo',u:'https://venmo.com'},{n:'Cash App',u:'https://cash.app'},{n:'Stripe',u:'https://stripe.com'},{n:'Square',u:'https://squareup.com'},{n:'Chase',u:'https://www.chase.com'},{n:'Bank of America',u:'https://www.bankofamerica.com'},{n:'Wells Fargo',u:'https://www.wellsfargo.com'},{n:'Citi',u:'https://www.citi.com'},{n:'Capital One',u:'https://www.capitalone.com'},{n:'Robinhood',u:'https://robinhood.com'},{n:'Coinbase',u:'https://www.coinbase.com'},{n:'Kraken',u:'https://www.kraken.com'},{n:'Fidelity',u:'https://www.fidelity.com'},{n:'Vanguard',u:'https://investor.vanguard.com'},{n:'NYSE',u:'https://www.nyse.com'},{n:'Nasdaq',u:'https://www.nasdaq.com'},{n:'IRS',u:'https://www.irs.gov'},{n:'Mint',u:'https://mint.intuit.com'},{n:'Zelle',u:'https://www.zellepay.com'}
 ]},
 {id:'food',emoji:'🍔',name:'Food',sites:[
-{n:'DoorDash',u:'https://www.doordash.com'},
-{n:'Uber Eats',u:'https://www.ubereats.com'},
-{n:'Grubhub',u:'https://www.grubhub.com'},
-{n:'Postmates',u:'https://postmates.com'},
-{n:'Instacart',u:'https://www.instacart.com'},
-{n:'Whole Foods',u:'https://www.wholefoodsmarket.com'},
-{n:'Walmart Grocery',u:'https://grocery.walmart.com'},
-{n:'Kroger',u:'https://www.kroger.com'},
-{n:'Safeway',u:'https://www.safeway.com'},
-{n:'Trader Joe\'s',u:'https://www.traderjoes.com'},
-{n:'McDonald\'s',u:'https://www.mcdonalds.com'},
-{n:'Starbucks',u:'https://www.starbucks.com'},
-{n:'Chipotle',u:'https://www.chipotle.com'},
-{n:'Subway',u:'https://www.subway.com'},
-{n:'KFC',u:'https://www.kfc.com'},
-{n:'Taco Bell',u:'https://www.tacobell.com'},
-{n:'Burger King',u:'https://www.burgerking.com'},
-{n:'Pizza Hut',u:'https://www.pizzahut.com'},
-{n:'Domino\'s',u:'https://www.dominos.com'},
-{n:'Shake Shack',u:'https://shakeshack.com'}
+{n:'DoorDash',u:'https://www.doordash.com'},{n:'Uber Eats',u:'https://www.ubereats.com'},{n:'Grubhub',u:'https://www.grubhub.com'},{n:'Postmates',u:'https://postmates.com'},{n:'Instacart',u:'https://www.instacart.com'},{n:'Whole Foods',u:'https://www.wholefoodsmarket.com'},{n:'Walmart Grocery',u:'https://grocery.walmart.com'},{n:'Kroger',u:'https://www.kroger.com'},{n:'Safeway',u:'https://www.safeway.com'},{n:"Trader Joe's",u:'https://www.traderjoes.com'},{n:"McDonald's",u:'https://www.mcdonalds.com'},{n:'Starbucks',u:'https://www.starbucks.com'},{n:'Chipotle',u:'https://www.chipotle.com'},{n:'Subway',u:'https://www.subway.com'},{n:'KFC',u:'https://www.kfc.com'},{n:'Taco Bell',u:'https://www.tacobell.com'},{n:'Burger King',u:'https://www.burgerking.com'},{n:'Pizza Hut',u:'https://www.pizzahut.com'},{n:"Domino's",u:'https://www.dominos.com'},{n:'Shake Shack',u:'https://shakeshack.com'}
 ]},
 {id:'shop',emoji:'🛒',name:'Shopping',sites:[
-{n:'Amazon',u:'https://www.amazon.com'},
-{n:'eBay',u:'https://www.ebay.com'},
-{n:'Walmart',u:'https://www.walmart.com'},
-{n:'Target',u:'https://www.target.com'},
-{n:'Best Buy',u:'https://www.bestbuy.com'},
-{n:'Costco',u:'https://www.costco.com'},
-{n:'Etsy',u:'https://www.etsy.com'},
-{n:'Wish',u:'https://www.wish.com'},
-{n:'Temu',u:'https://www.temu.com'},
-{n:'AliExpress',u:'https://www.aliexpress.com'},
-{n:'Home Depot',u:'https://www.homedepot.com'},
-{n:'Lowe\'s',u:'https://www.lowes.com'},
-{n:'IKEA',u:'https://www.ikea.com/us/'},
-{n:'Wayfair',u:'https://www.wayfair.com'},
-{n:'Sam\'s Club',u:'https://www.samsclub.com'},
-{n:'Kohl\'s',u:'https://www.kohls.com'},
-{n:'Macy\'s',u:'https://www.macys.com'},
-{n:'Nordstrom',u:'https://www.nordstrom.com'},
-{n:'Bloomingdale\'s',u:'https://www.bloomingdales.com'},
-{n:'Saks',u:'https://www.saksfifthavenue.com'}
+{n:'Amazon',u:'https://www.amazon.com'},{n:'eBay',u:'https://www.ebay.com'},{n:'Walmart',u:'https://www.walmart.com'},{n:'Target',u:'https://www.target.com'},{n:'Best Buy',u:'https://www.bestbuy.com'},{n:'Costco',u:'https://www.costco.com'},{n:'Etsy',u:'https://www.etsy.com'},{n:'Wish',u:'https://www.wish.com'},{n:'Temu',u:'https://www.temu.com'},{n:'AliExpress',u:'https://www.aliexpress.com'},{n:'Home Depot',u:'https://www.homedepot.com'},{n:"Lowe's",u:'https://www.lowes.com'},{n:'IKEA',u:'https://www.ikea.com/us/'},{n:'Wayfair',u:'https://www.wayfair.com'},{n:"Sam's Club",u:'https://www.samsclub.com'},{n:"Kohl's",u:'https://www.kohls.com'},{n:"Macy's",u:'https://www.macys.com'},{n:'Nordstrom',u:'https://www.nordstrom.com'},{n:"Bloomingdale's",u:'https://www.bloomingdales.com'},{n:'Saks',u:'https://www.saksfifthavenue.com'}
 ]},
 {id:'fashion',emoji:'👕',name:'Fashion',sites:[
-{n:'Nike',u:'https://www.nike.com'},
-{n:'Adidas',u:'https://www.adidas.com/us'},
-{n:'Gap',u:'https://www.gap.com'},
-{n:'Old Navy',u:'https://oldnavy.gap.com'},
-{n:'H&M',u:'https://www2.hm.com/en_us/'},
-{n:'Zara',u:'https://www.zara.com/us/'},
-{n:'Forever 21',u:'https://www.forever21.com'},
-{n:'Uniqlo',u:'https://www.uniqlo.com/us/'},
-{n:'Levi\'s',u:'https://www.levi.com/US/'},
-{n:'Ralph Lauren',u:'https://www.ralphlauren.com'},
-{n:'Tommy Hilfiger',u:'https://usa.tommy.com'},
-{n:'Calvin Klein',u:'https://www.calvinklein.us'},
-{n:'Under Armour',u:'https://www.underarmour.com'},
-{n:'Puma',u:'https://us.puma.com'},
-{n:'Reebok',u:'https://www.reebok.com/us/'},
-{n:'New Balance',u:'https://www.newbalance.com'},
-{n:'Foot Locker',u:'https://www.footlocker.com'},
-{n:'ASOS',u:'https://www.asos.com/us/'},
-{n:'Shein',u:'https://us.shein.com'},
-{n:'Revolve',u:'https://www.revolve.com'}
+{n:'Nike',u:'https://www.nike.com'},{n:'Adidas',u:'https://www.adidas.com/us'},{n:'Gap',u:'https://www.gap.com'},{n:'Old Navy',u:'https://oldnavy.gap.com'},{n:'H&M',u:'https://www2.hm.com/en_us/'},{n:'Zara',u:'https://www.zara.com/us/'},{n:'Forever 21',u:'https://www.forever21.com'},{n:'Uniqlo',u:'https://www.uniqlo.com/us/'},{n:"Levi's",u:'https://www.levi.com/US/'},{n:'Ralph Lauren',u:'https://www.ralphlauren.com'},{n:'Tommy Hilfiger',u:'https://usa.tommy.com'},{n:'Calvin Klein',u:'https://www.calvinklein.us'},{n:'Under Armour',u:'https://www.underarmour.com'},{n:'Puma',u:'https://us.puma.com'},{n:'Reebok',u:'https://www.reebok.com/us/'},{n:'New Balance',u:'https://www.newbalance.com'},{n:'Foot Locker',u:'https://www.footlocker.com'},{n:'ASOS',u:'https://www.asos.com/us/'},{n:'Shein',u:'https://us.shein.com'},{n:'Revolve',u:'https://www.revolve.com'}
 ]},
 {id:'beauty',emoji:'💅',name:'Beauty & Health',sites:[
-{n:'Sephora',u:'https://www.sephora.com'},
-{n:'Ulta Beauty',u:'https://www.ulta.com'},
-{n:'CVS',u:'https://www.cvs.com'},
-{n:'Walgreens',u:'https://www.walgreens.com'},
-{n:'Rite Aid',u:'https://www.riteaid.com'},
-{n:'WebMD',u:'https://www.webmd.com'},
-{n:'Mayo Clinic',u:'https://www.mayoclinic.org'},
-{n:'Cleveland Clinic',u:'https://my.clevelandclinic.org'},
-{n:'Johns Hopkins',u:'https://www.hopkinsmedicine.org'},
-{n:'Healthline',u:'https://www.healthline.com'},
-{n:'Zocdoc',u:'https://www.zocdoc.com'},
-{n:'GoodRx',u:'https://www.goodrx.com'},
-{n:'Glossier',u:'https://www.glossier.com'},
-{n:'MAC Cosmetics',u:'https://www.maccosmetics.com'},
-{n:'Estée Lauder',u:'https://www.esteelauder.com'},
-{n:'Clinique',u:'https://www.clinique.com'},
-{n:'L\'Oreal',u:'https://www.lorealparisusa.com'},
-{n:'Fenty Beauty',u:'https://fentybeauty.com'},
-{n:'Rare Beauty',u:'https://www.rarebeauty.com'},
-{n:'Drunk Elephant',u:'https://www.drunkelephant.com'}
+{n:'Sephora',u:'https://www.sephora.com'},{n:'Ulta Beauty',u:'https://www.ulta.com'},{n:'CVS',u:'https://www.cvs.com'},{n:'Walgreens',u:'https://www.walgreens.com'},{n:'Rite Aid',u:'https://www.riteaid.com'},{n:'WebMD',u:'https://www.webmd.com'},{n:'Mayo Clinic',u:'https://www.mayoclinic.org'},{n:'Cleveland Clinic',u:'https://my.clevelandclinic.org'},{n:'Johns Hopkins',u:'https://www.hopkinsmedicine.org'},{n:'Healthline',u:'https://www.healthline.com'},{n:'Zocdoc',u:'https://www.zocdoc.com'},{n:'GoodRx',u:'https://www.goodrx.com'},{n:'Glossier',u:'https://www.glossier.com'},{n:'MAC Cosmetics',u:'https://www.maccosmetics.com'},{n:'Estée Lauder',u:'https://www.esteelauder.com'},{n:'Clinique',u:'https://www.clinique.com'},{n:"L'Oreal",u:'https://www.lorealparisusa.com'},{n:'Fenty Beauty',u:'https://fentybeauty.com'},{n:'Rare Beauty',u:'https://www.rarebeauty.com'},{n:'Drunk Elephant',u:'https://www.drunkelephant.com'}
 ]},
 {id:'fun',emoji:'🎬',name:'Entertainment',sites:[
-{n:'Netflix',u:'https://www.netflix.com'},
-{n:'Hulu',u:'https://www.hulu.com'},
-{n:'Disney+',u:'https://www.disneyplus.com'},
-{n:'HBO Max',u:'https://www.max.com'},
-{n:'Amazon Prime Video',u:'https://www.primevideo.com'},
-{n:'Apple TV+',u:'https://tv.apple.com'},
-{n:'Peacock',u:'https://www.peacocktv.com'},
-{n:'Paramount+',u:'https://www.paramountplus.com'},
-{n:'YouTube',u:'https://www.youtube.com'},
-{n:'Twitch',u:'https://www.twitch.tv'},
-{n:'Spotify',u:'https://open.spotify.com'},
-{n:'Apple Music',u:'https://music.apple.com'},
-{n:'SoundCloud',u:'https://soundcloud.com'},
-{n:'Pandora',u:'https://www.pandora.com'},
-{n:'Tidal',u:'https://tidal.com'},
-{n:'IMDb',u:'https://www.imdb.com'},
-{n:'Rotten Tomatoes',u:'https://www.rottentomatoes.com'},
-{n:'Metacritic',u:'https://www.metacritic.com'},
-{n:'Letterboxd',u:'https://letterboxd.com'},
-{n:'IGN',u:'https://www.ign.com'}
+{n:'Netflix',u:'https://www.netflix.com'},{n:'Hulu',u:'https://www.hulu.com'},{n:'Disney+',u:'https://www.disneyplus.com'},{n:'HBO Max',u:'https://www.max.com'},{n:'Prime Video',u:'https://www.primevideo.com'},{n:'Apple TV+',u:'https://tv.apple.com'},{n:'Peacock',u:'https://www.peacocktv.com'},{n:'Paramount+',u:'https://www.paramountplus.com'},{n:'YouTube',u:'https://www.youtube.com'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'Spotify',u:'https://open.spotify.com'},{n:'Apple Music',u:'https://music.apple.com'},{n:'SoundCloud',u:'https://soundcloud.com'},{n:'Pandora',u:'https://www.pandora.com'},{n:'Tidal',u:'https://tidal.com'},{n:'IMDb',u:'https://www.imdb.com'},{n:'Rotten Tomatoes',u:'https://www.rottentomatoes.com'},{n:'Metacritic',u:'https://www.metacritic.com'},{n:'Letterboxd',u:'https://letterboxd.com'},{n:'IGN',u:'https://www.ign.com'}
 ]},
 {id:'travel',emoji:'✈️',name:'Travel',sites:[
-{n:'Booking',u:'https://www.booking.com'},
-{n:'Expedia',u:'https://www.expedia.com'},
-{n:'Airbnb',u:'https://www.airbnb.com'},
-{n:'Kayak',u:'https://www.kayak.com'},
-{n:'Priceline',u:'https://www.priceline.com'},
-{n:'Tripadvisor',u:'https://www.tripadvisor.com'},
-{n:'United',u:'https://www.united.com'},
-{n:'Delta',u:'https://www.delta.com'},
-{n:'American Airlines',u:'https://www.aa.com'},
-{n:'Southwest',u:'https://www.southwest.com'},
-{n:'JetBlue',u:'https://www.jetblue.com'},
-{n:'Alaska Air',u:'https://www.alaskaair.com'},
-{n:'Spirit',u:'https://www.spirit.com'},
-{n:'Frontier',u:'https://www.flyfrontier.com'},
-{n:'Amtrak',u:'https://www.amtrak.com'},
-{n:'Greyhound',u:'https://www.greyhound.com'},
-{n:'Hertz',u:'https://www.hertz.com'},
-{n:'Avis',u:'https://www.avis.com'},
-{n:'Enterprise',u:'https://www.enterprise.com'},
-{n:'Budget',u:'https://www.budget.com'}
+{n:'Booking',u:'https://www.booking.com'},{n:'Expedia',u:'https://www.expedia.com'},{n:'Airbnb',u:'https://www.airbnb.com'},{n:'Kayak',u:'https://www.kayak.com'},{n:'Priceline',u:'https://www.priceline.com'},{n:'Tripadvisor',u:'https://www.tripadvisor.com'},{n:'United',u:'https://www.united.com'},{n:'Delta',u:'https://www.delta.com'},{n:'American Airlines',u:'https://www.aa.com'},{n:'Southwest',u:'https://www.southwest.com'},{n:'JetBlue',u:'https://www.jetblue.com'},{n:'Alaska Air',u:'https://www.alaskaair.com'},{n:'Spirit',u:'https://www.spirit.com'},{n:'Frontier',u:'https://www.flyfrontier.com'},{n:'Amtrak',u:'https://www.amtrak.com'},{n:'Greyhound',u:'https://www.greyhound.com'},{n:'Hertz',u:'https://www.hertz.com'},{n:'Avis',u:'https://www.avis.com'},{n:'Enterprise',u:'https://www.enterprise.com'},{n:'Budget',u:'https://www.budget.com'}
 ]},
 {id:'edu',emoji:'📚',name:'Education',sites:[
-{n:'Coursera',u:'https://www.coursera.org'},
-{n:'edX',u:'https://www.edx.org'},
-{n:'Khan Academy',u:'https://www.khanacademy.org'},
-{n:'Udemy',u:'https://www.udemy.com'},
-{n:'Codecademy',u:'https://www.codecademy.com'},
-{n:'Duolingo',u:'https://www.duolingo.com'},
-{n:'Skillshare',u:'https://www.skillshare.com'},
-{n:'MIT OpenCourseWare',u:'https://ocw.mit.edu'},
-{n:'Harvard Online',u:'https://online-learning.harvard.edu'},
-{n:'Stanford Online',u:'https://online.stanford.edu'},
-{n:'Berkeley Online',u:'https://www.unex.berkeley.edu'},
-{n:'Udacity',u:'https://www.udacity.com'},
-{n:'Pluralsight',u:'https://www.pluralsight.com'},
-{n:'LinkedIn Learning',u:'https://www.linkedin.com/learning/'},
-{n:'MasterClass',u:'https://www.masterclass.com'},
-{n:'Brilliant',u:'https://brilliant.org'},
-{n:'DataCamp',u:'https://www.datacamp.com'},
-{n:'freeCodeCamp',u:'https://www.freecodecamp.org'},
-{n:'W3Schools',u:'https://www.w3schools.com'},
-{n:'Stack Overflow',u:'https://stackoverflow.com'}
+{n:'Coursera',u:'https://www.coursera.org'},{n:'edX',u:'https://www.edx.org'},{n:'Khan Academy',u:'https://www.khanacademy.org'},{n:'Udemy',u:'https://www.udemy.com'},{n:'Codecademy',u:'https://www.codecademy.com'},{n:'Duolingo',u:'https://www.duolingo.com'},{n:'Skillshare',u:'https://www.skillshare.com'},{n:'MIT OCW',u:'https://ocw.mit.edu'},{n:'Harvard Online',u:'https://online-learning.harvard.edu'},{n:'Stanford Online',u:'https://online.stanford.edu'},{n:'Berkeley Online',u:'https://www.unex.berkeley.edu'},{n:'Udacity',u:'https://www.udacity.com'},{n:'Pluralsight',u:'https://www.pluralsight.com'},{n:'LinkedIn Learning',u:'https://www.linkedin.com/learning/'},{n:'MasterClass',u:'https://www.masterclass.com'},{n:'Brilliant',u:'https://brilliant.org'},{n:'DataCamp',u:'https://www.datacamp.com'},{n:'freeCodeCamp',u:'https://www.freecodecamp.org'},{n:'W3Schools',u:'https://www.w3schools.com'},{n:'Stack Overflow',u:'https://stackoverflow.com'}
 ]},
 {id:'hotels',emoji:'🏨',name:'Hotels & Rest',sites:[
-{n:'Airbnb',u:'https://www.airbnb.com'},
-{n:'Vrbo',u:'https://www.vrbo.com'},
-{n:'Marriott',u:'https://www.marriott.com'},
-{n:'Hilton',u:'https://www.hilton.com'},
-{n:'Hyatt',u:'https://www.hyatt.com'},
-{n:'IHG',u:'https://www.ihg.com'},
-{n:'Wyndham',u:'https://www.wyndhamhotels.com'},
-{n:'Choice Hotels',u:'https://www.choicehotels.com'},
-{n:'Best Western',u:'https://www.bestwestern.com'},
-{n:'Radisson',u:'https://www.radissonhotels.com'},
-{n:'Four Seasons',u:'https://www.fourseasons.com'},
-{n:'Ritz-Carlton',u:'https://www.ritzcarlton.com'},
-{n:'W Hotels',u:'https://www.marriott.com/w-hotels'},
-{n:'Westin',u:'https://www.marriott.com/westin'},
-{n:'Sheraton',u:'https://www.marriott.com/sheraton'},
-{n:'Holiday Inn',u:'https://www.ihg.com/holidayinn'},
-{n:'Motel 6',u:'https://www.motel6.com'},
-{n:'Hostelworld',u:'https://www.hostelworld.com'},
-{n:'Camping World',u:'https://www.campingworld.com'},
-{n:'KOA',u:'https://koa.com'}
+{n:'Airbnb',u:'https://www.airbnb.com'},{n:'Vrbo',u:'https://www.vrbo.com'},{n:'Marriott',u:'https://www.marriott.com'},{n:'Hilton',u:'https://www.hilton.com'},{n:'Hyatt',u:'https://www.hyatt.com'},{n:'IHG',u:'https://www.ihg.com'},{n:'Wyndham',u:'https://www.wyndhamhotels.com'},{n:'Choice Hotels',u:'https://www.choicehotels.com'},{n:'Best Western',u:'https://www.bestwestern.com'},{n:'Radisson',u:'https://www.radissonhotels.com'},{n:'Four Seasons',u:'https://www.fourseasons.com'},{n:'Ritz-Carlton',u:'https://www.ritzcarlton.com'},{n:'W Hotels',u:'https://www.marriott.com/w-hotels'},{n:'Westin',u:'https://www.marriott.com/westin'},{n:'Sheraton',u:'https://www.marriott.com/sheraton'},{n:'Holiday Inn',u:'https://www.ihg.com/holidayinn'},{n:'Motel 6',u:'https://www.motel6.com'},{n:'Hostelworld',u:'https://www.hostelworld.com'},{n:'Camping World',u:'https://www.campingworld.com'},{n:'KOA',u:'https://koa.com'}
 ]},
 {id:'service',emoji:'⚙️',name:'Services',sites:[
-{n:'Google Maps',u:'https://maps.google.com'},
-{n:'Yelp',u:'https://www.yelp.com'},
-{n:'USPS',u:'https://www.usps.com'},
-{n:'UPS',u:'https://www.ups.com'},
-{n:'FedEx',u:'https://www.fedex.com'},
-{n:'DHL',u:'https://www.dhl.com/us-en/'},
-{n:'IRS',u:'https://www.irs.gov'},
-{n:'DMV',u:'https://www.dmv.org'},
-{n:'Zillow',u:'https://www.zillow.com'},
-{n:'Redfin',u:'https://www.redfin.com'},
-{n:'Realtor',u:'https://www.realtor.com'},
-{n:'Trulia',u:'https://www.trulia.com'},
-{n:'Craigslist',u:'https://www.craigslist.org'},
-{n:'Nextdoor',u:'https://nextdoor.com'},
-{n:'Angi',u:'https://www.angi.com'},
-{n:'TaskRabbit',u:'https://www.taskrabbit.com'},
-{n:'Thumbtack',u:'https://www.thumbtack.com'},
-{n:'Rover',u:'https://www.rover.com'},
-{n:'Care.com',u:'https://www.care.com'},
-{n:'LifeLock',u:'https://www.lifelock.com'}
+{n:'Google Maps',u:'https://maps.google.com'},{n:'Yelp',u:'https://www.yelp.com'},{n:'USPS',u:'https://www.usps.com'},{n:'UPS',u:'https://www.ups.com'},{n:'FedEx',u:'https://www.fedex.com'},{n:'DHL',u:'https://www.dhl.com/us-en/'},{n:'IRS',u:'https://www.irs.gov'},{n:'DMV',u:'https://www.dmv.org'},{n:'Zillow',u:'https://www.zillow.com'},{n:'Redfin',u:'https://www.redfin.com'},{n:'Realtor',u:'https://www.realtor.com'},{n:'Trulia',u:'https://www.trulia.com'},{n:'Craigslist',u:'https://www.craigslist.org'},{n:'Nextdoor',u:'https://nextdoor.com'},{n:'Angi',u:'https://www.angi.com'},{n:'TaskRabbit',u:'https://www.taskrabbit.com'},{n:'Thumbtack',u:'https://www.thumbtack.com'},{n:'Rover',u:'https://www.rover.com'},{n:'Care.com',u:'https://www.care.com'},{n:'LifeLock',u:'https://www.lifelock.com'}
 ]},
 {id:'ai',emoji:'🤖',name:'AI',sites:[
-{n:'ChatGPT',u:'https://chat.openai.com'},
-{n:'Claude',u:'https://claude.ai'},
-{n:'Gemini',u:'https://gemini.google.com'},
-{n:'Perplexity',u:'https://www.perplexity.ai'},
-{n:'Midjourney',u:'https://www.midjourney.com'},
-{n:'GitHub Copilot',u:'https://github.com/features/copilot'},
-{n:'Notion AI',u:'https://www.notion.so/product/ai'},
-{n:'Character.AI',u:'https://character.ai'},
-{n:'Poe',u:'https://poe.com'},
-{n:'Runway',u:'https://runwayml.com'},
-{n:'ElevenLabs',u:'https://elevenlabs.io'},
-{n:'Hugging Face',u:'https://huggingface.co'},
-{n:'Replicate',u:'https://replicate.com'},
-{n:'Stability AI',u:'https://stability.ai'},
-{n:'Anthropic',u:'https://www.anthropic.com'},
-{n:'OpenAI',u:'https://openai.com'},
-{n:'DeepSeek',u:'https://chat.deepseek.com'},
-{n:'Grok',u:'https://grok.com'},
-{n:'Mistral',u:'https://mistral.ai'},
-{n:'Cohere',u:'https://cohere.com'}
+{n:'ChatGPT',u:'https://chat.openai.com'},{n:'Claude',u:'https://claude.ai'},{n:'Gemini',u:'https://gemini.google.com'},{n:'Perplexity',u:'https://www.perplexity.ai'},{n:'Midjourney',u:'https://www.midjourney.com'},{n:'GitHub Copilot',u:'https://github.com/features/copilot'},{n:'Notion AI',u:'https://www.notion.so/product/ai'},{n:'Character.AI',u:'https://character.ai'},{n:'Poe',u:'https://poe.com'},{n:'Runway',u:'https://runwayml.com'},{n:'ElevenLabs',u:'https://elevenlabs.io'},{n:'Hugging Face',u:'https://huggingface.co'},{n:'Replicate',u:'https://replicate.com'},{n:'Stability AI',u:'https://stability.ai'},{n:'Anthropic',u:'https://www.anthropic.com'},{n:'OpenAI',u:'https://openai.com'},{n:'DeepSeek',u:'https://chat.deepseek.com'},{n:'Grok',u:'https://grok.com'},{n:'Mistral',u:'https://mistral.ai'},{n:'Cohere',u:'https://cohere.com'}
 ]},
 {id:'transport',emoji:'🚕',name:'Transport',sites:[
-{n:'Uber',u:'https://www.uber.com'},
-{n:'Lyft',u:'https://www.lyft.com'},
-{n:'Via',u:'https://ridewithvia.com'},
-{n:'Turo',u:'https://turo.com'},
-{n:'Getaround',u:'https://www.getaround.com'},
-{n:'Zipcar',u:'https://www.zipcar.com'},
-{n:'Hertz',u:'https://www.hertz.com'},
-{n:'Enterprise',u:'https://www.enterprise.com'},
-{n:'Amtrak',u:'https://www.amtrak.com'},
-{n:'Megabus',u:'https://us.megabus.com'},
-{n:'FlixBus',u:'https://www.flixbus.com'},
-{n:'BoltBus',u:'https://www.boltbus.com'},
-{n:'Google Maps',u:'https://maps.google.com'},
-{n:'Waze',u:'https://www.waze.com'},
-{n:'Apple Maps',u:'https://maps.apple.com'},
-{n:'Transit',u:'https://transitapp.com'},
-{n:'Citymapper',u:'https://citymapper.com'},
-{n:'ParkMobile',u:'https://parkmobile.io'},
-{n:'SpotHero',u:'https://spothero.com'},
-{n:'EVgo',u:'https://www.evgo.com'}
+{n:'Uber',u:'https://www.uber.com'},{n:'Lyft',u:'https://www.lyft.com'},{n:'Via',u:'https://ridewithvia.com'},{n:'Turo',u:'https://turo.com'},{n:'Getaround',u:'https://www.getaround.com'},{n:'Zipcar',u:'https://www.zipcar.com'},{n:'Hertz',u:'https://www.hertz.com'},{n:'Enterprise',u:'https://www.enterprise.com'},{n:'Amtrak',u:'https://www.amtrak.com'},{n:'Megabus',u:'https://us.megabus.com'},{n:'FlixBus',u:'https://www.flixbus.com'},{n:'Google Maps',u:'https://maps.google.com'},{n:'Waze',u:'https://www.waze.com'},{n:'Apple Maps',u:'https://maps.apple.com'},{n:'Transit',u:'https://transitapp.com'},{n:'Citymapper',u:'https://citymapper.com'},{n:'ParkMobile',u:'https://parkmobile.io'},{n:'SpotHero',u:'https://spothero.com'},{n:'EVgo',u:'https://www.evgo.com'},{n:'ChargePoint',u:'https://www.chargepoint.com'}
 ]},
 {id:'social',emoji:'💬',name:'Social',sites:[
-{n:'Facebook',u:'https://www.facebook.com'},
-{n:'Instagram',u:'https://www.instagram.com'},
-{n:'X (Twitter)',u:'https://x.com'},
-{n:'TikTok',u:'https://www.tiktok.com'},
-{n:'Snapchat',u:'https://www.snapchat.com'},
-{n:'Reddit',u:'https://www.reddit.com'},
-{n:'Pinterest',u:'https://www.pinterest.com'},
-{n:'LinkedIn',u:'https://www.linkedin.com'},
-{n:'Discord',u:'https://discord.com'},
-{n:'Threads',u:'https://www.threads.net'},
-{n:'Tumblr',u:'https://www.tumblr.com'},
-{n:'Mastodon',u:'https://mastodon.social'},
-{n:'Bluesky',u:'https://bsky.app'},
-{n:'WhatsApp',u:'https://web.whatsapp.com'},
-{n:'Telegram',u:'https://web.telegram.org'},
-{n:'Signal',u:'https://signal.org'},
-{n:'Clubhouse',u:'https://www.clubhouse.com'},
-{n:'Nextdoor',u:'https://nextdoor.com'},
-{n:'Meetup',u:'https://www.meetup.com'},
-{n:'Quora',u:'https://www.quora.com'}
+{n:'Facebook',u:'https://www.facebook.com'},{n:'Instagram',u:'https://www.instagram.com'},{n:'X (Twitter)',u:'https://x.com'},{n:'TikTok',u:'https://www.tiktok.com'},{n:'Snapchat',u:'https://www.snapchat.com'},{n:'Reddit',u:'https://www.reddit.com'},{n:'Pinterest',u:'https://www.pinterest.com'},{n:'LinkedIn',u:'https://www.linkedin.com'},{n:'Discord',u:'https://discord.com'},{n:'Threads',u:'https://www.threads.net'},{n:'Tumblr',u:'https://www.tumblr.com'},{n:'Mastodon',u:'https://mastodon.social'},{n:'Bluesky',u:'https://bsky.app'},{n:'WhatsApp',u:'https://web.whatsapp.com'},{n:'Telegram',u:'https://web.telegram.org'},{n:'Signal',u:'https://signal.org'},{n:'Clubhouse',u:'https://www.clubhouse.com'},{n:'Nextdoor',u:'https://nextdoor.com'},{n:'Meetup',u:'https://www.meetup.com'},{n:'Quora',u:'https://www.quora.com'}
 ]},
 {id:'games',emoji:'🎮',name:'Games',sites:[
-{n:'Steam',u:'https://store.steampowered.com'},
-{n:'Epic Games',u:'https://store.epicgames.com'},
-{n:'PlayStation',u:'https://www.playstation.com'},
-{n:'Xbox',u:'https://www.xbox.com'},
-{n:'Nintendo',u:'https://www.nintendo.com'},
-{n:'Roblox',u:'https://www.roblox.com'},
-{n:'Minecraft',u:'https://www.minecraft.net'},
-{n:'Battle.net',u:'https://us.shop.battle.net'},
-{n:'Ubisoft',u:'https://www.ubisoft.com'},
-{n:'EA',u:'https://www.ea.com'},
-{n:'Rockstar',u:'https://www.rockstargames.com'},
-{n:'Twitch',u:'https://www.twitch.tv'},
-{n:'IGN',u:'https://www.ign.com'},
-{n:'GameSpot',u:'https://www.gamespot.com'},
-{n:'Polygon',u:'https://www.polygon.com'},
-{n:'Kotaku',u:'https://kotaku.com'},
-{n:'Eurogamer',u:'https://www.eurogamer.net'},
-{n:'PC Gamer',u:'https://www.pcgamer.com'},
-{n:'GameFAQs',u:'https://gamefaqs.gamespot.com'},
-{n:'HowLongToBeat',u:'https://howlongtobeat.com'}
+{n:'Steam',u:'https://store.steampowered.com'},{n:'Epic Games',u:'https://store.epicgames.com'},{n:'PlayStation',u:'https://www.playstation.com'},{n:'Xbox',u:'https://www.xbox.com'},{n:'Nintendo',u:'https://www.nintendo.com'},{n:'Roblox',u:'https://www.roblox.com'},{n:'Minecraft',u:'https://www.minecraft.net'},{n:'Battle.net',u:'https://us.shop.battle.net'},{n:'Ubisoft',u:'https://www.ubisoft.com'},{n:'EA',u:'https://www.ea.com'},{n:'Rockstar',u:'https://www.rockstargames.com'},{n:'Twitch',u:'https://www.twitch.tv'},{n:'IGN',u:'https://www.ign.com'},{n:'GameSpot',u:'https://www.gamespot.com'},{n:'Polygon',u:'https://www.polygon.com'},{n:'Kotaku',u:'https://kotaku.com'},{n:'Eurogamer',u:'https://www.eurogamer.net'},{n:'PC Gamer',u:'https://www.pcgamer.com'},{n:'GameFAQs',u:'https://gamefaqs.gamespot.com'},{n:'HowLongToBeat',u:'https://howlongtobeat.com'}
 ]}
-]}
-};
-
+]}};
 const LIB_STATE={region:'ru',activeCat:'all',query:''};
 
 /* ==========================================================
    КАТЕГОРИИ (для поиска)
    ========================================================== */
 const CATEGORIES=[
-{emoji:'🎬',name:'Кино и сериалы',sites:[
-{name:'Kinopoisk',url:'https://www.kinopoisk.ru/index.php?kp_query='},
-{name:'Filmix',url:'https://filmix.my/search/'},
-{name:'HDrezka',url:'https://rezka.ag/search/?q='},
-{name:'LordFilm',url:'https://lordfilm.la/index.php?do=search&story='},
-{name:'KinoGo',url:'https://kinoogo.zone/?s='},
-{name:'Иви',url:'https://www.ivi.ru/search/?q='},
-{name:'Okko',url:'https://okko.tv/search/'},
-{name:'Wink',url:'https://wink.ru/search?query='}
-]},
-{emoji:'🌸',name:'Аниме',sites:[
-{name:'Anilibria',url:'https://anilibria.tv/public/search.php?search='},
-{name:'AnimeGo',url:'https://animego.org/search/anime?q='},
-{name:'Shikimori',url:'https://shikimori.one/animes?search='},
-{name:'YummyAnime',url:'https://yummyanime.tv/search/'},
-{name:'AnimeVost',url:'https://animevost.org/?s='}
-]},
-{emoji:'⚽',name:'Спорт',sites:[
-{name:'Sports.ru',url:'https://www.sports.ru/search/?q='},
-{name:'Championat',url:'https://www.championat.com/search/?q='},
-{name:'Soccer.ru',url:'https://www.soccer.ru/search?q='},
-{name:'Sportbox',url:'https://news.sportbox.ru/search?q='},
-{name:'Матч ТВ',url:'https://matchtv.ru/search/?query='}
-]},
-{emoji:'🎮',name:'Игры',sites:[
-{name:'Steam',url:'https://store.steampowered.com/search/?term='},
-{name:'StopGame',url:'https://stopgame.ru/search?q='},
-{name:'Игромания',url:'https://www.igromania.ru/search/?q='},
-{name:'DTF',url:'https://dtf.ru/search/v2/content?q='}
-]},
-{emoji:'💰',name:'Криптовалюта',sites:[
-{name:'CoinMarketCap',url:'https://coinmarketcap.com/search/?q='},
-{name:'CoinGecko',url:'https://www.coingecko.com/en/search?query='},
-{name:'Binance',url:'https://www.binance.com/ru/search?q='},
-{name:'ForkLog',url:'https://forklog.com/?s='}
-]},
-{emoji:'🎵',name:'Музыка',sites:[
-{name:'Яндекс.Музыка',url:'https://music.yandex.ru/search?text='},
-{name:'Spotify',url:'https://open.spotify.com/search/'},
-{name:'SoundCloud',url:'https://soundcloud.com/search?q='},
-{name:'VK Музыка',url:'https://vk.com/audio?q='}
-]},
-{emoji:'📚',name:'Книги и обучение',sites:[
-{name:'Литрес',url:'https://www.litres.ru/search/?q='},
-{name:'Флибуста',url:'https://flibusta.is/booksearch?ask='},
-{name:'Хабр',url:'https://habr.com/ru/search/?q='},
-{name:'Coursera',url:'https://www.coursera.org/search?query='}
-]},
-{emoji:'📰',name:'Новости',sites:[
-{name:'Яндекс.Новости',url:'https://yandex.ru/news/search?text='},
-{name:'Lenta.ru',url:'https://lenta.ru/search?query='},
-{name:'РБК',url:'https://www.rbc.ru/search/?query='},
-{name:'РИА',url:'https://ria.ru/search/?query='}
-]},
-{emoji:'🍳',name:'Рецепты',sites:[
-{name:'Поварёшка',url:'https://povareshka.ru/?s='},
-{name:'ЕдимДома',url:'https://www.edimdoma.ru/search?q='},
-{name:'Гастрономъ',url:'https://www.gastronom.ru/search?query='}
-]},
-{emoji:'💼',name:'Работа',sites:[
-{name:'hh.ru',url:'https://hh.ru/search/vacancy?text='},
-{name:'SuperJob',url:'https://www.superjob.ru/vacancy/search/?keywords='},
-{name:'Работа.ру',url:'https://www.rabota.ru/vacancies?query='}
-]},
-{emoji:'🩺',name:'Здоровье',sites:[
-{name:'Rlsnet',url:'https://www.rlsnet.ru/search?query='},
-{name:'Здоровье Mail',url:'https://health.mail.ru/search/?q='},
-{name:'MedAboutMe',url:'https://medaboutme.ru/search/?q='}
-]},
-{emoji:'🚗',name:'Авто',sites:[
-{name:'Drive2',url:'https://www.drive2.ru/search/?text='},
-{name:'Drom',url:'https://www.drom.ru/search/?q='},
-{name:'Auto.ru',url:'https://auto.ru/search/?query='}
-]},
-{emoji:'✈️',name:'Путешествия',sites:[
-{name:'Aviasales',url:'https://www.aviasales.ru/search?q='},
-{name:'Ostrovok',url:'https://ostrovok.ru/search/?q='},
-{name:'Туту.ру',url:'https://www.tutu.ru/search/?q='}
-]},
-{emoji:'🛒',name:'Покупки',sites:[
-{name:'Ozon',url:'https://www.ozon.ru/search/?text='},
-{name:'Wildberries',url:'https://www.wildberries.ru/catalog/0/search.aspx?search='},
-{name:'Яндекс.Маркет',url:'https://market.yandex.ru/search?text='}
-]}
+{emoji:'🎬',name:'Кино и сериалы',sites:[{name:'Kinopoisk',url:'https://www.kinopoisk.ru/index.php?kp_query='},{name:'Filmix',url:'https://filmix.my/search/'},{name:'HDrezka',url:'https://rezka.ag/search/?q='},{name:'LordFilm',url:'https://lordfilm.la/index.php?do=search&story='},{name:'KinoGo',url:'https://kinoogo.zone/?s='},{name:'Иви',url:'https://www.ivi.ru/search/?q='},{name:'Okko',url:'https://okko.tv/search/'},{name:'Wink',url:'https://wink.ru/search?query='}]},
+{emoji:'🌸',name:'Аниме',sites:[{name:'Anilibria',url:'https://anilibria.tv/public/search.php?search='},{name:'AnimeGo',url:'https://animego.org/search/anime?q='},{name:'Shikimori',url:'https://shikimori.one/animes?search='},{name:'YummyAnime',url:'https://yummyanime.tv/search/'},{name:'AnimeVost',url:'https://animevost.org/?s='}]},
+{emoji:'⚽',name:'Спорт',sites:[{name:'Sports.ru',url:'https://www.sports.ru/search/?q='},{name:'Championat',url:'https://www.championat.com/search/?q='},{name:'Soccer.ru',url:'https://www.soccer.ru/search?q='},{name:'Sportbox',url:'https://news.sportbox.ru/search?q='},{name:'Матч ТВ',url:'https://matchtv.ru/search/?query='}]},
+{emoji:'🎮',name:'Игры',sites:[{name:'Steam',url:'https://store.steampowered.com/search/?term='},{name:'StopGame',url:'https://stopgame.ru/search?q='},{name:'Игромания',url:'https://www.igromania.ru/search/?q='},{name:'DTF',url:'https://dtf.ru/search/v2/content?q='}]},
+{emoji:'💰',name:'Криптовалюта',sites:[{name:'CoinMarketCap',url:'https://coinmarketcap.com/search/?q='},{name:'CoinGecko',url:'https://www.coingecko.com/en/search?query='},{name:'Binance',url:'https://www.binance.com/ru/search?q='},{name:'ForkLog',url:'https://forklog.com/?s='}]},
+{emoji:'🎵',name:'Музыка',sites:[{name:'Яндекс.Музыка',url:'https://music.yandex.ru/search?text='},{name:'Spotify',url:'https://open.spotify.com/search/'},{name:'SoundCloud',url:'https://soundcloud.com/search?q='},{name:'VK Музыка',url:'https://vk.com/audio?q='}]},
+{emoji:'📚',name:'Книги и обучение',sites:[{name:'Литрес',url:'https://www.litres.ru/search/?q='},{name:'Флибуста',url:'https://flibusta.is/booksearch?ask='},{name:'Хабр',url:'https://habr.com/ru/search/?q='},{name:'Coursera',url:'https://www.coursera.org/search?query='}]},
+{emoji:'📰',name:'Новости',sites:[{name:'Яндекс.Новости',url:'https://yandex.ru/news/search?text='},{name:'Lenta.ru',url:'https://lenta.ru/search?query='},{name:'РБК',url:'https://www.rbc.ru/search/?query='},{name:'РИА',url:'https://ria.ru/search/?query='}]},
+{emoji:'🍳',name:'Рецепты',sites:[{name:'Поварёшка',url:'https://povareshka.ru/?s='},{name:'ЕдимДома',url:'https://www.edimdoma.ru/search?q='},{name:'Гастрономъ',url:'https://www.gastronom.ru/search?query='}]},
+{emoji:'💼',name:'Работа',sites:[{name:'hh.ru',url:'https://hh.ru/search/vacancy?text='},{name:'SuperJob',url:'https://www.superjob.ru/vacancy/search/?keywords='},{name:'Работа.ру',url:'https://www.rabota.ru/vacancies?query='}]},
+{emoji:'🩺',name:'Здоровье',sites:[{name:'Rlsnet',url:'https://www.rlsnet.ru/search?query='},{name:'Здоровье Mail',url:'https://health.mail.ru/search/?q='},{name:'MedAboutMe',url:'https://medaboutme.ru/search/?q='}]},
+{emoji:'🚗',name:'Авто',sites:[{name:'Drive2',url:'https://www.drive2.ru/search/?text='},{name:'Drom',url:'https://www.drom.ru/search/?q='},{name:'Auto.ru',url:'https://auto.ru/search/?query='}]},
+{emoji:'✈️',name:'Путешествия',sites:[{name:'Aviasales',url:'https://www.aviasales.ru/search?q='},{name:'Ostrovok',url:'https://ostrovok.ru/search/?q='},{name:'Туту.ру',url:'https://www.tutu.ru/search/?q='}]},
+{emoji:'🛒',name:'Покупки',sites:[{name:'Ozon',url:'https://www.ozon.ru/search/?text='},{name:'Wildberries',url:'https://www.wildberries.ru/catalog/0/search.aspx?search='},{name:'Яндекс.Маркет',url:'https://market.yandex.ru/search?text='}]}
 ];
 
 /* ==========================================================
-   ЯЗЫКИ
+   НАСТРОЙКИ/ЯЗЫК
    ========================================================== */
 const SETTINGS_KEY='zero_settings';
 const LANG_PACKS={
@@ -1228,11 +700,10 @@ const LANG_NAMES={ru:{name:'Русский',flag:'🇷🇺'},en:{name:'English',
 const THEMES=['dark','light','auto'];
 let settings={lang:'ru',theme:'dark'};
 const state={currentUrl:null,currentTitle:'',bookmarks:[],browsingHistory:[],downloads:[],private:false,lastSelection:''};
-
 const CORS_PROXIES=['https://api.allorigins.win/raw?url=','https://api.codetabs.com/v1/proxy?quest=','https://corsproxy.io/?url=','https://cors.eu.org/'];
 
 /* ==========================================================
-   НАСТРОЙКИ
+   НАСТРОЙКИ — функции
    ========================================================== */
 function loadSettings(){try{const r=localStorage.getItem(SETTINGS_KEY);if(r){const p=JSON.parse(r);if(p.lang&&LANG_PACKS[p.lang])settings.lang=p.lang;if(p.theme&&THEMES.includes(p.theme))settings.theme=p.theme;}}catch(e){}}
 function saveSettings(){try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}catch(e){}}
@@ -1271,7 +742,7 @@ function updateDownloadsCount(){const el=$('#downloadsCount');if(!el)return;el.t
 /* ==========================================================
    RIPPLE
    ========================================================== */
-document.addEventListener('pointerdown',e=>{const el=e.target.closest('.tile,.tab-item,.bm-del,.hist-del,.dl-del,.head-action,.cat-link,.settings-item,.picker-option,.new-tab-btn,.lib-chip,.lib-site,.lib-cat-pill,.lib-open-btn');if(!el)return;const r=el.getBoundingClientRect();const size=Math.max(r.width,r.height)*2.2;const s=document.createElement('span');s.className='ripple';s.style.width=s.style.height=size+'px';s.style.left=(e.clientX-r.left-size/2)+'px';s.style.top=(e.clientY-r.top-size/2)+'px';el.appendChild(s);setTimeout(()=>s.remove(),800);},{passive:true});
+document.addEventListener('pointerdown',e=>{const el=e.target.closest('.tile,.tab-item,.bm-del,.hist-del,.dl-del,.head-action,.cat-link,.settings-item,.picker-option,.new-tab-btn,.lib-chip,.lib-site,.lib-cat-pill,.lib-open-btn,.maps-btn,.maps-layer-btn,.weather-card');if(!el)return;const r=el.getBoundingClientRect();const size=Math.max(r.width,r.height)*2.2;const s=document.createElement('span');s.className='ripple';s.style.width=s.style.height=size+'px';s.style.left=(e.clientX-r.left-size/2)+'px';s.style.top=(e.clientY-r.top-size/2)+'px';el.appendChild(s);setTimeout(()=>s.remove(),800);},{passive:true});
 
 /* ==========================================================
    УТИЛИТЫ
@@ -1288,7 +759,17 @@ async function fetchViaProxy(u){let lastErr=null;for(const p of CORS_PROXIES){tr
 /* ==========================================================
    ВИДЫ
    ========================================================== */
-function showView(name){homeView.classList.toggle('hidden',name!=='home');pageView.classList.toggle('hidden',name!=='page');historyView.classList.toggle('hidden',name!=='history');downloadsView.classList.toggle('hidden',name!=='downloads');bookmarksView.classList.toggle('hidden',name!=='bookmarks');settingsView.classList.toggle('hidden',name!=='settings');libraryView.classList.toggle('hidden',name!=='library');}
+function showView(name){
+  homeView.classList.toggle('hidden',name!=='home');
+  pageView.classList.toggle('hidden',name!=='page');
+  historyView.classList.toggle('hidden',name!=='history');
+  downloadsView.classList.toggle('hidden',name!=='downloads');
+  bookmarksView.classList.toggle('hidden',name!=='bookmarks');
+  settingsView.classList.toggle('hidden',name!=='settings');
+  libraryView.classList.toggle('hidden',name!=='library');
+  mapsView.classList.toggle('hidden',name!=='maps');
+  if(name==='maps'&&mapInstance){setTimeout(()=>{try{mapInstance.invalidateSize();}catch(e){}},120);}
+}
 
 /* ==========================================================
    ОТКРЫТИЕ URL
@@ -1296,7 +777,182 @@ function showView(name){homeView.classList.toggle('hidden',name!=='home');pageVi
 function openExternal(url){if(!url)return;if(window.ZeroMain&&window.ZeroMain.openUrl){window.ZeroMain.openUrl(url);}else{window.open(url,'_blank','noopener');}}
 
 /* ==========================================================
-   БИБЛИОТЕКА — ОТРИСОВКА
+   ПОГОДА
+   ========================================================== */
+const WCODE={
+0:['Ясно','☀️'],1:['Преим. ясно','🌤'],2:['Перем. облачно','⛅'],3:['Облачно','☁️'],
+45:['Туман','🌫'],48:['Изморозь','🌫'],
+51:['Слабая морось','🌦'],53:['Морось','🌦'],55:['Сильная морось','🌧'],56:['Лед. морось','🌧'],57:['Лед. морось','🌧'],
+61:['Слабый дождь','🌦'],63:['Дождь','🌧'],65:['Сильный дождь','🌧'],66:['Лед. дождь','🌧'],67:['Лед. дождь','🌧'],
+71:['Слабый снег','🌨'],73:['Снег','🌨'],75:['Сильный снег','❄️'],77:['Снег. зёрна','🌨'],
+80:['Ливень','🌧'],81:['Сильный ливень','🌧'],82:['Очень сильный ливень','⛈'],
+85:['Снегопад','🌨'],86:['Сильный снегопад','❄️'],
+95:['Гроза','⛈'],96:['Гроза с градом','⛈'],99:['Сильная гроза','⛈']
+};
+let weatherLoaded=false;
+async function loadWeather(){
+  if(weatherLoaded)return;
+  try{
+    let lat=null,lon=null,city=null;
+    try{
+      const pos=await new Promise((resolve,reject)=>{
+        if(!navigator.geolocation)return reject(new Error('no-geo'));
+        navigator.geolocation.getCurrentPosition(resolve,reject,{timeout:3500,maximumAge:900000});
+      });
+      lat=pos.coords.latitude;lon=pos.coords.longitude;
+    }catch(e){
+      try{
+        const r=await fetch('https://ipapi.co/json/');
+        const d=await r.json();
+        lat=d.latitude;lon=d.longitude;city=d.city;
+      }catch(e2){return;}
+    }
+    if(lat===null||lon===null)return;
+    const wUrl='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&timezone=auto';
+    const wr=await fetch(wUrl);
+    const wd=await wr.json();
+    if(!city){
+      try{
+        const nr=await fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lon+'&format=json&accept-language=ru&zoom=10');
+        const nd=await nr.json();
+        const a=nd.address||{};
+        city=a.city||a.town||a.village||a.county||a.state||'Моё место';
+      }catch(e){city='Моё место';}
+    }
+    renderWeather(wd,city);
+    weatherLoaded=true;
+  }catch(e){}
+}
+function renderWeather(data,city){
+  const card=$('#weatherCard');
+  if(!card||!data||!data.current)return;
+  const cur=data.current;
+  const info=WCODE[cur.weather_code]||['—','🌡'];
+  $('#weatherIcon').textContent=info[1];
+  $('#weatherCityName').textContent=city;
+  $('#weatherTemp').textContent=Math.round(cur.temperature_2m)+'°';
+  $('#weatherDesc').textContent=info[0];
+  const humid=cur.relative_humidity_2m!=null?('💧 '+cur.relative_humidity_2m+'%'):'';
+  const wind=cur.wind_speed_10m!=null?('💨 '+Math.round(cur.wind_speed_10m)+' км/ч'):'';
+  $('#weatherExtra').innerHTML=[humid,wind].filter(Boolean).join('<br>');
+  card.style.display='';
+}
+
+/* ==========================================================
+   КАРТЫ (Leaflet + OpenStreetMap)
+   ========================================================== */
+let leafletLoaded=false;
+let mapInstance=null;
+let currentTileLayer=null;
+let currentMarker=null;
+let currentLayerKey='osm';
+const TILE_LAYERS={
+  osm:{url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',attr:'© OpenStreetMap contributors',max:19},
+  sat:{url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',attr:'© Esri, Maxar, Earthstar Geographics',max:19},
+  dark:{url:'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',attr:'© OpenStreetMap, © CARTO',max:20}
+};
+function loadLeaflet(){
+  return new Promise((resolve,reject)=>{
+    if(window.L){leafletLoaded=true;return resolve();}
+    if(!document.getElementById('leaflet-css')){
+      const link=document.createElement('link');
+      link.id='leaflet-css';
+      link.rel='stylesheet';
+      link.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+    }
+    const s=document.createElement('script');
+    s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    s.onload=()=>{leafletLoaded=true;resolve();};
+    s.onerror=()=>reject(new Error('leaflet-fail'));
+    document.head.appendChild(s);
+  });
+}
+function setTileLayer(key){
+  if(!mapInstance)return;
+  const cfg=TILE_LAYERS[key]||TILE_LAYERS.osm;
+  if(currentTileLayer)mapInstance.removeLayer(currentTileLayer);
+  currentTileLayer=L.tileLayer(cfg.url,{attribution:cfg.attr,maxZoom:cfg.max,subdomains:'abc'}).addTo(mapInstance);
+  currentLayerKey=key;
+  document.querySelectorAll('.maps-layer-btn').forEach(b=>{
+    b.classList.toggle('on',b.dataset.layer===key);
+  });
+}
+async function openMaps(){
+  showView('maps');
+  if(!mapInstance){
+    try{
+      await loadLeaflet();
+    }catch(e){
+      $('#mapContainer').innerHTML='<div style="padding:40px 20px;text-align:center;color:#8b8b96;font-size:14px">Не удалось загрузить карты.<br>Проверьте подключение к интернету.</div>';
+      return;
+    }
+    if(!window.L){return;}
+    try{
+      mapInstance=L.map('mapContainer',{
+        center:[55.7558,37.6173],
+        zoom:10,
+        zoomControl:false,
+        attributionControl:true
+      });
+      L.control.zoom({position:'bottomleft'}).addTo(mapInstance);
+      setTileLayer('osm');
+      setTimeout(()=>{try{mapInstance.invalidateSize();}catch(e){}},150);
+    }catch(e){}
+  }else{
+    setTimeout(()=>{try{mapInstance.invalidateSize();}catch(e){}},120);
+  }
+}
+function mapGoTo(lat,lon,zoom,label){
+  if(!mapInstance)return;
+  mapInstance.setView([lat,lon],zoom||14);
+  if(currentMarker){try{mapInstance.removeLayer(currentMarker);}catch(e){}}
+  currentMarker=L.marker([lat,lon]).addTo(mapInstance);
+  if(label)currentMarker.bindPopup(escapeHtml(label)).openPopup();
+}
+async function mapSearch(q){
+  q=String(q||'').trim();
+  if(!q||!mapInstance)return;
+  try{
+    const url='https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(q)+'&format=json&limit=1&accept-language=ru';
+    const r=await fetch(url,{headers:{'Accept':'application/json'}});
+    const data=await r.json();
+    if(data&&data[0]){
+      const lat=parseFloat(data[0].lat);
+      const lon=parseFloat(data[0].lon);
+      mapGoTo(lat,lon,14,data[0].display_name);
+    }else{
+      flashMessage('Место не найдено');
+    }
+  }catch(e){flashMessage('Ошибка поиска');}
+}
+function mapLocate(){
+  if(!mapInstance)return;
+  if(!navigator.geolocation){flashMessage('Геолокация недоступна');return;}
+  flashMessage('Определяем...');
+  navigator.geolocation.getCurrentPosition(pos=>{
+    mapGoTo(pos.coords.latitude,pos.coords.longitude,16,'Вы здесь');
+  },err=>{
+    flashMessage('Не удалось определить');
+  },{enableHighAccuracy:true,timeout:8000,maximumAge:60000});
+}
+$('#openMapsBtn').addEventListener('click',openMaps);
+$('#mapCloseBtn').addEventListener('click',()=>showView('home'));
+$('#mapLocateBtn').addEventListener('click',mapLocate);
+$('#mapSearch').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    const v=e.target.value.trim();
+    if(v){mapSearch(v);e.target.value='';}
+  }
+});
+$('#mapsLayers').addEventListener('click',e=>{
+  const b=e.target.closest('.maps-layer-btn');
+  if(!b)return;
+  setTileLayer(b.dataset.layer);
+});
+
+/* ==========================================================
+   БИБЛИОТЕКА
    ========================================================== */
 function showLibrary(goKey){
   showView('library');
@@ -1317,17 +973,16 @@ function updateLibSub(){
   $('#libSub').textContent=lib.flag+' '+lib.name+' · '+total+' сервисов · '+lib.groups.length+' категорий';
 }
 function renderRegionTabs(){
-  const w=$('#regionTabs');
-  w.querySelectorAll('.region-tab').forEach(b=>{
+  document.querySelectorAll('#regionTabs .region-tab').forEach(b=>{
     b.classList.toggle('on',b.dataset.region===LIB_STATE.region);
   });
 }
 function renderLibCatsScroll(){
   const lib=LIBRARY[LIB_STATE.region];
   const w=$('#libCatsScroll');
-  let html=`<button class="lib-cat-pill ${LIB_STATE.activeCat==='all'?'on':''}" data-cat="all"><span class="ico">✨</span><span>Все</span></button>`;
+  let html='<button class="lib-cat-pill '+(LIB_STATE.activeCat==='all'?'on':'')+'" data-cat="all"><span class="ico">✨</span><span>Все</span></button>';
   lib.groups.forEach(g=>{
-    html+=`<button class="lib-cat-pill ${LIB_STATE.activeCat===g.id?'on':''}" data-cat="${g.id}"><span class="ico">${g.emoji}</span><span>${escapeHtml(g.name)}</span></button>`;
+    html+='<button class="lib-cat-pill '+(LIB_STATE.activeCat===g.id?'on':'')+'" data-cat="'+g.id+'"><span class="ico">'+g.emoji+'</span><span>'+escapeHtml(g.name)+'</span></button>';
   });
   w.innerHTML=html;
   w.querySelectorAll('.lib-cat-pill').forEach(b=>{
@@ -1343,8 +998,6 @@ function renderLibrary(){
   const q=LIB_STATE.query.toLowerCase().trim();
   const w=$('#libContent');
   let html='';
-  let total=0;
-
   lib.groups.forEach((g,gi)=>{
     if(LIB_STATE.activeCat!=='all'&&LIB_STATE.activeCat!==g.id)return;
     let sites=g.sites;
@@ -1352,27 +1005,21 @@ function renderLibrary(){
       sites=sites.filter(s=>s.n.toLowerCase().includes(q)||hostOf(s.u).toLowerCase().includes(q));
     }
     if(!sites.length)return;
-    total+=sites.length;
-    html+=`<div class="lib-group" style="animation-delay:${(gi*0.04).toFixed(2)}s">
-      <div class="lib-group-head">
-        <div class="lib-group-emoji">${g.emoji}</div>
-        <div class="lib-group-name">${escapeHtml(g.name)}</div>
-        <div class="lib-group-count">${sites.length}</div>
-      </div>
-      <div class="lib-sites-grid">
-        ${sites.map((s,si)=>`
-          <button class="lib-site" data-url="${escapeHtml(s.u)}">
-            <span class="lib-site-fav ${gradFor(gi*7+si)}">${escapeHtml(siteInitial(s.n))}</span>
-            <span class="lib-site-name">${escapeHtml(s.n)}</span>
-          </button>
-        `).join('')}
-      </div>
-    </div>`;
+    html+='<div class="lib-group" style="animation-delay:'+(gi*0.04).toFixed(2)+'s">'+
+      '<div class="lib-group-head">'+
+        '<div class="lib-group-emoji">'+g.emoji+'</div>'+
+        '<div class="lib-group-name">'+escapeHtml(g.name)+'</div>'+
+        '<div class="lib-group-count">'+sites.length+'</div>'+
+      '</div>'+
+      '<div class="lib-sites-grid">'+
+        sites.map((s,si)=>'<button class="lib-site" data-url="'+escapeHtml(s.u)+'">'+
+          '<span class="lib-site-fav '+gradFor(gi*7+si)+'">'+escapeHtml(siteInitial(s.n))+'</span>'+
+          '<span class="lib-site-name">'+escapeHtml(s.n)+'</span>'+
+        '</button>').join('')+
+      '</div>'+
+    '</div>';
   });
-
-  if(!html){
-    html=`<div class="lib-empty">Ничего не найдено</div>`;
-  }
+  if(!html)html='<div class="lib-empty">Ничего не найдено</div>';
   w.innerHTML=html;
   w.querySelectorAll('.lib-site').forEach(b=>{
     b.addEventListener('click',()=>openExternal(b.dataset.url));
@@ -1403,14 +1050,14 @@ $('#homeLibCard').addEventListener('click',e=>{
 });
 
 /* ==========================================================
-   КАТЕГОРИИ (HTML для поиска)
+   КАТЕГОРИИ (HTML)
    ========================================================== */
 function buildCategoriesHTML(q){
   const enc=encodeURIComponent(q);
   const t=T();
-  let html=`<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>${t.categoriesTitle}</div>`;
+  let html='<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>'+t.categoriesTitle+'</div>';
   CATEGORIES.forEach((cat,i)=>{
-    html+=`<div class="cat-block" style="animation-delay:${(i*0.04).toFixed(2)}s"><div class="cat-head"><div class="cat-emoji">${cat.emoji}</div><div>${escapeHtml(cat.name)}</div><div class="cat-count">${cat.sites.length} ${t.sitesFound}</div></div><div class="cat-grid">${cat.sites.map(s=>`<button class="cat-link" data-url="${escapeHtml(s.url+enc)}"><span class="cat-link-dot"></span><span class="cat-link-name">${escapeHtml(s.name)}</span></button>`).join('')}</div></div>`;
+    html+='<div class="cat-block" style="animation-delay:'+(i*0.04).toFixed(2)+'s"><div class="cat-head"><div class="cat-emoji">'+cat.emoji+'</div><div>'+escapeHtml(cat.name)+'</div><div class="cat-count">'+cat.sites.length+' '+t.sitesFound+'</div></div><div class="cat-grid">'+cat.sites.map(s=>'<button class="cat-link" data-url="'+escapeHtml(s.url+enc)+'"><span class="cat-link-dot"></span><span class="cat-link-name">'+escapeHtml(s.name)+'</span></button>').join('')+'</div></div>';
   });
   return html;
 }
@@ -1447,45 +1094,37 @@ async function runSearch(q){
   $('#pageQuery').textContent=q;
   $('#pageSub').textContent=t.searchInProgress;
   const rc=$('#results');rc.innerHTML='';
-
   const [wR,yR,wkR]=await Promise.allSettled([searchWebMulti(q),searchYouTube(q),searchWikipedia(q)]);
   const web=wR.status==='fulfilled'?wR.value:[];
   const yt=yR.status==='fulfilled'?yR.value:[];
   const wiki=wkR.status==='fulfilled'?wkR.value:[];
-
   let html='';
-
-  html+=`<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>${t.webTitle}</div>`;
-
+  html+='<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>'+t.webTitle+'</div>';
   if(web.length){
     web.forEach((it,i)=>{
-      const thumb=`<div class="result-thumb ${it.grad||'g-c'}">${it.icon||'?'}</div>`;
-      html+=`<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.04).toFixed(2)}s both">${thumb}<div class="result-body"><div class="result-title">${escapeHtml(it.title)}</div><div class="result-url">${escapeHtml(hostOf(it.url))}</div><div class="result-desc">${escapeHtml(it.desc||'')}</div></div><div class="result-badge web">${escapeHtml(it.engine||'web')}</div></div>`;
+      const thumb='<div class="result-thumb '+(it.grad||'g-c')+'">'+(it.icon||'?')+'</div>';
+      html+='<div class="result" data-url="'+escapeHtml(it.url)+'" style="animation:up .5s var(--ease) '+(i*0.04).toFixed(2)+'s both">'+thumb+'<div class="result-body"><div class="result-title">'+escapeHtml(it.title)+'</div><div class="result-url">'+escapeHtml(hostOf(it.url))+'</div><div class="result-desc">'+escapeHtml(it.desc||'')+'</div></div><div class="result-badge web">'+escapeHtml(it.engine||'web')+'</div></div>';
     });
   }else{
     const enc=encodeURIComponent(q);
-    html+=`<div class="result" style="display:block"><div style="font-size:13px;color:var(--muted);margin-bottom:12px">${t.webFallback}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="cat-link" data-url="https://www.google.com/search?q=${enc}"><span class="cat-link-dot"></span><span class="cat-link-name">Google</span></button><button class="cat-link" data-url="https://yandex.ru/search/?text=${enc}"><span class="cat-link-dot"></span><span class="cat-link-name">Яндекс</span></button><button class="cat-link" data-url="https://duckduckgo.com/?q=${enc}"><span class="cat-link-dot"></span><span class="cat-link-name">DuckDuckGo</span></button><button class="cat-link" data-url="https://www.bing.com/search?q=${enc}"><span class="cat-link-dot"></span><span class="cat-link-name">Bing</span></button></div></div>`;
+    html+='<div class="result" style="display:block"><div style="font-size:13px;color:var(--muted);margin-bottom:12px">'+t.webFallback+'</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="cat-link" data-url="https://www.google.com/search?q='+enc+'"><span class="cat-link-dot"></span><span class="cat-link-name">Google</span></button><button class="cat-link" data-url="https://yandex.ru/search/?text='+enc+'"><span class="cat-link-dot"></span><span class="cat-link-name">Яндекс</span></button><button class="cat-link" data-url="https://duckduckgo.com/?q='+enc+'"><span class="cat-link-dot"></span><span class="cat-link-name">DuckDuckGo</span></button><button class="cat-link" data-url="https://www.bing.com/search?q='+enc+'"><span class="cat-link-dot"></span><span class="cat-link-name">Bing</span></button></div></div>';
   }
-
   if(yt.length){
-    html+=`<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>${t.ytTitle}</div>`;
+    html+='<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>'+t.ytTitle+'</div>';
     yt.forEach((it,i)=>{
-      html+=`<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.05).toFixed(2)}s both"><div class="result-thumb"><img src="${escapeHtml(it.thumb)}" alt=""></div><div class="result-body"><div class="result-title">${escapeHtml(it.title)}</div><div class="result-url">${escapeHtml(hostOf(it.url))}</div><div class="result-desc">${escapeHtml(it.desc||'')}</div></div><div class="result-badge yt">YouTube</div></div>`;
+      html+='<div class="result" data-url="'+escapeHtml(it.url)+'" style="animation:up .5s var(--ease) '+(i*0.05).toFixed(2)+'s both"><div class="result-thumb"><img src="'+escapeHtml(it.thumb)+'" alt=""></div><div class="result-body"><div class="result-title">'+escapeHtml(it.title)+'</div><div class="result-url">'+escapeHtml(hostOf(it.url))+'</div><div class="result-desc">'+escapeHtml(it.desc||'')+'</div></div><div class="result-badge yt">YouTube</div></div>';
     });
   }
-
   if(wiki.length){
-    html+=`<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>${t.wikiTitle}</div>`;
+    html+='<div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>'+t.wikiTitle+'</div>';
     wiki.forEach((it,i)=>{
-      html+=`<div class="result" data-url="${escapeHtml(it.url)}" style="animation:up .5s var(--ease) ${(i*0.05).toFixed(2)}s both"><div class="result-thumb ${it.grad}">${it.icon}</div><div class="result-body"><div class="result-title">${escapeHtml(it.title)}</div><div class="result-url">${escapeHtml(hostOf(it.url))}</div><div class="result-desc">${escapeHtml(it.desc||'')}</div></div><div class="result-badge wiki">Wikipedia</div></div>`;
+      html+='<div class="result" data-url="'+escapeHtml(it.url)+'" style="animation:up .5s var(--ease) '+(i*0.05).toFixed(2)+'s both"><div class="result-thumb '+it.grad+'">'+it.icon+'</div><div class="result-body"><div class="result-title">'+escapeHtml(it.title)+'</div><div class="result-url">'+escapeHtml(hostOf(it.url))+'</div><div class="result-desc">'+escapeHtml(it.desc||'')+'</div></div><div class="result-badge wiki">Wikipedia</div></div>';
     });
   }
-
   html+=buildCategoriesHTML(q);
   rc.innerHTML=html;
   rc.querySelectorAll('.cat-link').forEach(b=>b.addEventListener('click',()=>openExternal(b.dataset.url)));
   rc.querySelectorAll('.result[data-url]').forEach(el=>el.addEventListener('click',()=>openExternal(el.dataset.url)));
-
   const enginesHit=[...new Set(web.map(x=>x.engine).filter(Boolean))].slice(0,5).join(' · ');
   $('#pageSub').textContent=t.found+': '+(yt.length+web.length+wiki.length)+' '+t.results+(enginesHit?' • '+enginesHit:'');
   setTimeout(()=>pageView.classList.remove('loading'),500);
@@ -1507,12 +1146,11 @@ function renderBookmarks(){
   updateBmCount();list.innerHTML='';
   if(state.bookmarks.length===0){empty.style.display='';return;}
   empty.style.display='none';
-  const grads=GRADS;
   state.bookmarks.forEach((b,i)=>{
     const h=hostOf(b.url);
     const item=document.createElement('div');
     item.className='bm-item';item.style.animationDelay=(i*0.04)+'s';
-    item.innerHTML=`<div class="bm-thumb ${grads[i%grads.length]}">${(h[0]||'?').toUpperCase()}</div><div class="bm-body"><div class="bm-title">${escapeHtml(b.title)}</div><div class="bm-url">${escapeHtml(h)}</div></div><button class="bm-del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>`;
+    item.innerHTML='<div class="bm-thumb '+GRADS[i%GRADS.length]+'">'+((h[0]||'?').toUpperCase())+'</div><div class="bm-body"><div class="bm-title">'+escapeHtml(b.title)+'</div><div class="bm-url">'+escapeHtml(h)+'</div></div><button class="bm-del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>';
     item.querySelector('.bm-body').parentElement.addEventListener('click',e=>{if(e.target.closest('.bm-del'))return;openExternal(b.url);});
     item.querySelector('.bm-del').addEventListener('click',e=>{
       e.stopPropagation();
@@ -1551,13 +1189,13 @@ function renderHistory(){
   Object.entries(groups).forEach(([date,its])=>{
     const g=document.createElement('div');
     g.className='hist-group';g.style.animationDelay=(idx*0.04)+'s';
-    g.innerHTML=`<div class="hist-date">${escapeHtml(date)}</div>`;
+    g.innerHTML='<div class="hist-date">'+escapeHtml(date)+'</div>';
     its.slice(0,50).forEach(item=>{
       const d=new Date(item.visited);
       const time=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
       const el=document.createElement('div');
       el.className='hist-item';
-      el.innerHTML=`<div class="hist-time">${time}</div><div class="hist-body"><div class="hist-title">${escapeHtml(item.title)}</div><div class="hist-url">${escapeHtml(hostOf(item.url))}</div></div><button class="hist-del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>`;
+      el.innerHTML='<div class="hist-time">'+time+'</div><div class="hist-body"><div class="hist-title">'+escapeHtml(item.title)+'</div><div class="hist-url">'+escapeHtml(hostOf(item.url))+'</div></div><button class="hist-del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>';
       el.querySelector('.hist-body').parentElement.addEventListener('click',e=>{if(e.target.closest('.hist-del'))return;openExternal(item.url);});
       el.querySelector('.hist-del').addEventListener('click',e=>{
         e.stopPropagation();
@@ -1583,7 +1221,7 @@ function renderDownloads(){
   state.downloads.forEach((d,i)=>{
     const el=document.createElement('div');
     el.className='dl-item';el.style.animationDelay=(i*0.04)+'s';
-    el.innerHTML=`<div class="dl-icon g-a">${(d.name[0]||'?').toUpperCase()}</div><div class="dl-body"><div class="dl-name">${escapeHtml(d.name)}</div><div class="dl-meta">${new Date(d.date).toLocaleString('ru-RU')}</div></div>`;
+    el.innerHTML='<div class="dl-icon g-a">'+((d.name[0]||'?').toUpperCase())+'</div><div class="dl-body"><div class="dl-name">'+escapeHtml(d.name)+'</div><div class="dl-meta">'+new Date(d.date).toLocaleString('ru-RU')+'</div></div>';
     list.appendChild(el);
   });
 }
@@ -1592,7 +1230,6 @@ function renderDownloads(){
    НАСТРОЙКИ
    ========================================================== */
 function showSettings(){showView('settings');}
-
 $('#itemLang').addEventListener('click',()=>{
   openPicker(T().labelLang,Object.keys(LANG_PACKS).map(c=>({value:c,flag:LANG_NAMES[c].flag,name:LANG_NAMES[c].name,selected:settings.lang===c})),v=>{
     settings.lang=v;saveSettings();applyLangAll();closeSheet();flashMessage('OK');
@@ -1664,7 +1301,7 @@ $('#bmExportBtn').addEventListener('click',()=>{
    ПИКЕР
    ========================================================== */
 function openPicker(title,opts,onSelect){
-  sheetContent.innerHTML=`<div class="picker-title">${escapeHtml(title)}</div>`+opts.map(o=>`<button class="picker-option ${o.selected?'selected':''}" data-value="${escapeHtml(o.value)}"><span class="picker-flag">${o.flag||'●'}</span><span class="picker-name">${escapeHtml(o.name)}</span><span class="picker-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span></button>`).join('');
+  sheetContent.innerHTML='<div class="picker-title">'+escapeHtml(title)+'</div>'+opts.map(o=>'<button class="picker-option '+(o.selected?'selected':'')+'" data-value="'+escapeHtml(o.value)+'"><span class="picker-flag">'+(o.flag||'●')+'</span><span class="picker-name">'+escapeHtml(o.name)+'</span><span class="picker-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span></button>').join('');
   sheetContent.querySelectorAll('.picker-option').forEach(b=>{b.addEventListener('click',()=>onSelect(b.dataset.value));});
   scrim.classList.add('show');sheet.classList.add('show');
 }
@@ -1680,7 +1317,7 @@ scrim.addEventListener('click',closeSheet);
    ========================================================== */
 window.onToggleBookmark=function(){toggleBookmark();};
 window.onShowTabs=function(){
-  sheetContent.innerHTML=`<div class="sheet-title">Вкладки</div><div class="tab-item" data-id="1"><div class="tab-fav g-e">Z</div><div class="tab-meta"><div class="tab-title">Новая вкладка</div><div class="tab-url">zero://home</div></div></div><button class="new-tab-btn" id="newTabBtn">+ Новая вкладка</button>`;
+  sheetContent.innerHTML='<div class="sheet-title">Вкладки</div><div class="tab-item" data-id="1"><div class="tab-fav g-e">Z</div><div class="tab-meta"><div class="tab-title">Новая вкладка</div><div class="tab-url">zero://home</div></div></div><button class="new-tab-btn" id="newTabBtn">+ Новая вкладка</button>';
   sheetContent.querySelectorAll('.tab-item').forEach(item=>{
     item.addEventListener('click',()=>{closeSheet();if(window.ZeroMain&&window.ZeroMain.openUrl)window.ZeroMain.openUrl('file:///android_asset/index.html');});
   });
@@ -1690,6 +1327,7 @@ window.onShowTabs=function(){
 };
 window.onShowBookmarks=function(){showBookmarks();};
 window.onShowLibrary=function(){showLibrary();};
+window.onShowMaps=function(){openMaps();};
 window.onShowMenu=function(){showSettings();};
 window.onNativeUrlChange=function(url,title){
   state.currentUrl=url;state.currentTitle=title||hostOf(url);
@@ -1722,7 +1360,8 @@ document.addEventListener('selectionchange',()=>{
 loadSettings();
 applyTheme();
 applyLangAll();
+loadWeather();
 window.matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(settings.theme==='auto')applyTheme();});
 </script>
 </body>
-</html>
+   </html>
